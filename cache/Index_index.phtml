@@ -1,0 +1,29 @@
+<h2>Hello from the Index/Hello View!</h2>
+
+<p>The variable that was set in the controller was: Hello world!</p>
+
+<h2>How to use this MVC</h2>
+
+<h3>Routing</h3>
+
+<p>We take URI's such as <code>/index/hello/my/variables/go/here/foobar</code> and turn it into:</p>
+
+<pre><pre class='xdebug-var-dump' dir='ltr'>
+<b>array</b>
+  'controller' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Index'</font> <i>(length=5)</i>
+  'action' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'index'</font> <i>(length=5)</i>
+</pre> will give you:
+
+array(
+	'controller' => 'index',
+	'action'     => 'hello',
+	'my'         => 'variables',
+	'go'         => 'here',
+	'foobar'     => true
+)</pre>
+
+<p>This will forward the request onto the <code>index</code> controller and into the <code>hello</code> action.</p>
+
+<h3>Controllers</h3>
+
+<p>Controllers are created in <code>/libs/Controller</code>, the file name begins with an uppercase letter and ends in a <code>class.php</code> extension, so <code>index</code> would be called <code>Index.class.php</code>.</p>

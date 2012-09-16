@@ -1,0 +1,21 @@
+body{margin:0;padding:0;background:#EEE;color:#555;font-family:Arial;font-size:14px}
+
+/* Contains the content to 960px wide */
+#container{position:relative;width:960px;margin:20px auto}
+	.section{position:relative;background:#FFF;margin-bottom:30px;padding:40px 80px;border-bottom:2px solid #CCC;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+
+/* Typography */
+h1{font-size:48px;margin:0;padding-bottom:0;letter-spacing:-2px;font-weight:normal}
+h2{font-family:Arial;font-size:28px;margin-bottom:0;padding-bottom:0;letter-spacing:-1px;font-weight:normal}
+h3{}
+p,ol{margin-bottom:25px}
+p,li{line-height:30px}
+a{color:#4fbae9;text-decoration:underline}
+    a:hover{text-decoration:none}
+    a img{border:none}
+abbr{border-bottom:1px dotted #BBB;cursor:help}
+hr{margin:30px 0;padding:0;background:#FFF;color:#FFF;border:0;border-bottom:1px dotted #BBB}
+code,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:4px 5px;border-radius:3px}
+
+/* Clear floated divs */
+.clear{clear:both}
