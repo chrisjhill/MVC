@@ -18,6 +18,9 @@ class Core_Router
 		// Get the address the user navigated to
 		Core_Url::getUrlBreakdown();
 
+		// Inform the bootstrap a request has been initialised
+		Core_Bootstrap::initRequest($_GET['controller'], $_GET['action']);
+
 		// Try and instantiate the controller
 		$this->loadController($_GET['controller']);
 	}
@@ -40,6 +43,9 @@ class Core_Router
 
 			// We need to set the child to the parent so we can forward
 			$controller->child = $controller;
+
+			// Inform the bootstrap a controller has been initialised
+			Core_Bootstrap::initController($controller);
 
 			// Call the init method, if it exists
 			if (method_exists($controller, 'init')) {

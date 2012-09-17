@@ -96,6 +96,9 @@ class Core_View extends Core_ViewHelper
 		// Include the layout
 		include PATH_LAYOUT . $this->layout . '.phtml';
 
+		// Inform the bootstrap that we are about to shutdown
+		Core_Bootstrap::initShutdown($this->controller, $this->action);
+
 		// And now, the journey ends
 		// We die so that we do not call other action's render()
 		die();
