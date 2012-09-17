@@ -95,5 +95,9 @@ class Core_View extends Core_ViewHelper
 
 		// Include the layout
 		include PATH_LAYOUT . $this->layout . '.phtml';
+
+		// And now, the journey ends
+		// We die so that we do not call other action's render()
+		die();
 	}
 }

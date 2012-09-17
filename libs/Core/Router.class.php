@@ -55,9 +55,6 @@ class Core_Router
 
 		// Load the action
 		Core_Router::loadAction($controller, $action);
-
-		// And now render the view
-		$controller->render();
 	}
 
 	/**
@@ -96,5 +93,8 @@ class Core_Router
 
 		// And call the action
 		$controller->{$action . 'Action'}();
+
+		// And now render the view
+		$controller->render();
 	}
 }
