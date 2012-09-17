@@ -72,21 +72,16 @@ class Core_Router
 	 */
 	public function loadAction($controller, $action) {
 		// Does the method exist?
-		if (! method_exists($controller, $action . 'Action')) {
-			// Nope, doesn't exist
-			// Fall back to the 404
-			if ($action != 'error') {
-				// There was an error with the action, and we were not running the 404 action
-				// Try and run the 404 action
-				Core_Router::loadAction($controller, 'error');
+		$actionExists = method_exists($controller, $action . 'Action');
 
-				// No need to go any further
-				return false;
-			} else if ($action == 'error') {
-				// Even the 404 action does not work
-				// Just die
-				die('Sorry, we were unable to load the action your requested.');
-			}
+		// If the method does not exist then we need to run the error action
+		if (! $actionExists && $action != 'error') {
+			// There was an error with the action, and we were not running the 404 action
+			// Try and run the 404 action
+			Core_Router::loadAction($controller, 'error');
+
+			// No need to go any further
+			return false;
 		}
 
 		// Yes, it exists
@@ -98,7 +93,9 @@ class Core_Router
 		$controller->cache();
 
 		// And call the action
-		$controller->{$action . 'Action'}();
+		if ($actionExists) {
+			$controller->{$action . 'Action'}();
+		}
 
 		// And now render the view
 		$controller->render();
