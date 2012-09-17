@@ -37,7 +37,14 @@ class Core_Router
 		try {
 			// Instantiate
 			$controller = new $controller();
+
+			// We need to set the child to the parent so we can forward
 			$controller->child = $controller;
+
+			// Call the init method, if it exists
+			if (method_exists($controller, 'init')) {
+				$controller->init();
+			}
 		} catch (Exception $e) {
 			// Forward to the utilities 404
 			die('Sorry, we were unable to load the page your requested.');
