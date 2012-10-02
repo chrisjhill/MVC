@@ -7,5 +7,5 @@ ini_set('display_errors', 1);
 session_start();
 
 // Include autoloader and config
-include 'config.php';
-include 'autoloader.php';
+include $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include PATH_LIBRARY . 'autoloader.php';
