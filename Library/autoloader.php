@@ -2,10 +2,11 @@
 // Autoload any classes we have not previously included
 function autoloader($class) {
 	// Set the file we want to try and include
-	$file = PATH_LIBRARY . str_replace('_', DS, $class) . '.class.php';
+	$file = dirname(__FILE__) . '/' . str_replace('\\', '/', $class) . '.class.php';
 
 	// Could we find the class?
 	if (! file_exists($file)) {
+		echo $file;
 		throw new Exception('Unable to locate the class ' . $class);
 	}
 

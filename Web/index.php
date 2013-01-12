@@ -1,6 +1,9 @@
 <?php
+// Namespace configuration
+use Core;
+
 // Global configurations
-include $_SERVER['DOCUMENT_ROOT'] . '/../Library/global.php';
+include dirname(__FILE__) . '/../Library/global.php';
 
 // Start the router
-new Core_Router();
+new Core\Front('MyProject');

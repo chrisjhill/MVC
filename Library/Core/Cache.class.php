@@ -1,4 +1,6 @@
 <?php
+namespace Core;
+
 /**
  * Handles caching of files.
  *
@@ -6,23 +8,23 @@
  * @author      Christopher Hill <cjhill@gmail.com>
  * @since       15/09/2012
  */
-class Core_Cache
+class Cache
 {
 	/**
 	 * The file that we want to use.
 	 * 
 	 * @access protected
-	 * @var string
+	 * @var    string
 	 */
 	protected $_file;
 
 	/**
 	 * Whether we can actually use the cache.
 	 *
-	 * Set to false by default as we shouldn't need to use it.
+	 * Set to false by default as we should not need to use it.
 	 *
 	 * @access protected
-	 * @var boolean
+	 * @var    boolean
 	 */
 	protected $_enableCache = false;
 
@@ -32,7 +34,7 @@ class Core_Cache
 	 * Set to one hour by default.
 	 *
 	 * @access private
-	 * @var int
+	 * @var    int
 	 */
 	private $_cacheLife = 3600;
 
@@ -43,7 +45,7 @@ class Core_Cache
 	 * 123_file_name.tpl
 	 *
 	 * @access private
-	 * @var int
+	 * @var    int
 	 */
 	private $_cacheUser;
 
@@ -51,7 +53,7 @@ class Core_Cache
 	 * The location that we are going to use to store the cached file.
 	 *
 	 * @access private
-	 * @var string
+	 * @var    string
 	 */
 	private $_cacheLocation;
 
@@ -62,12 +64,12 @@ class Core_Cache
 	 * too much power, and we would rather build the cache up as we go along.
 	 *
 	 * @access public
-	 * @param $file string
-	 * @param $path string
-	 * @param $performExist boolean
-	 * @throws Exception
+	 * @param  string    $file         The file we wish to cache.
+	 * @param  string    $path         The path to the file we wish to cache.
+	 * @param  boolean   $performExist Check to see whether the file exists before caching.
+	 * @throws Exception               If the file we want to cache does not exist.
 	 */
-	public function __construct($file, $path = PATH_VIEW, $performExist = true) {
+	public function __construct($file, $path, $performExist = true) {
 		// Do we actually have this file?
 		if ($performExist) {
 			if (! file_exists($path . $file)) {
@@ -77,14 +79,15 @@ class Core_Cache
 
 		// Set the file to use
 		$this->_file = $file;
+		$this->setCacheLocation();
 	}
 
 	/**
 	 * Set whether we want to use the cache or not.
 	 *
 	 * @access public
-	 * @param $enableCache boolean
-	 * @return Core_Cache
+	 * @param  boolean $enableCache Set whether we wish to enable to disable.
+	 * @return Cache
 	 */
 	public function setCache($enableCache) {
 		$this->_enableCache = $enableCache;
@@ -97,8 +100,8 @@ class Core_Cache
 	 * Pass in seconds (3600 = one hour, 86400 = one day, etc.).
 	 *
 	 * @access public
-	 * @param $life int
-	 * @return Core_Cache
+	 * @param  int    $life How long we want our cached object to live for.
+	 * @return Cache
 	 */
 	public function setCacheLife($life) {
 		$this->_cacheLife = $life;
@@ -109,8 +112,8 @@ class Core_Cache
 	 * Set whether this cache is meant for a particular user.
 	 *
 	 * @access public
-	 * @param $userId int
-	 * @return Core_Cache
+	 * @param  int    $userId The user ID for this cached object.
+	 * @return Cache
 	 */
 	public function setUser($userId) {
 		$this->_cacheUser = $userId;
@@ -136,7 +139,7 @@ class Core_Cache
 		}
 
 		// And set the non-unique file name section
-		$this->_cacheLocation = str_replace(DIRECTORY_SEPARATOR, '_', $this->_file);
+		$this->_cacheLocation = str_replace('/', '_', $this->_file);
 	}
 
 	/**
@@ -155,12 +158,12 @@ class Core_Cache
 		$this->setCacheLocation();
 
 		// Does the file already exist?
-		if (! file_exists(PATH_CACHE . $this->_cacheLocation)) {
+		if (! file_exists(Config::get('path', 'cache') . $this->_cacheLocation)) {
 			return false;
 		}
 
 		// The file exists, but is it too stale?
-		return $_SERVER['REQUEST_TIME'] - filemtime(PATH_CACHE . $this->_cacheLocation) <= $this->_cacheLife;
+		return $_SERVER['REQUEST_TIME'] - filemtime(Config::get('path', 'cache') . $this->_cacheLocation) <= $this->_cacheLife;
 	}
 
 	/**
@@ -170,21 +173,20 @@ class Core_Cache
 	 * @return string
 	 */
 	public function getCachedFile() {
-		return file_get_contents(PATH_CACHE . $this->_cacheLocation);
+		return file_get_contents(Config::get('path', 'cache') . $this->_cacheLocation);
 	}
 
 	/**
 	 * Save the file to the cache.
 	 * 
 	 * @access public
-	 * @param $content string
+	 * @param  string $content The string that we wish to cache.
 	 */
 	public function saveFileToCache($content) {
 		// If the content is nothing then something has obviously gone wrong
 		// Do not cache otherwise we'll have nothing but problems
-		//if ($content != '' && $this->_cacheLocation != '') {
 		if ($content != '') {
-			file_put_contents(PATH_CACHE . $this->_cacheLocation, $content);
+			file_put_contents(Config::get('path', 'cache') . $this->_cacheLocation, $content);
 		}
 	}
 

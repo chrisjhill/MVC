@@ -1,4 +1,6 @@
 <?php
+namespace Core;
+
 /**
  * Dispatches requests to a controller and an action. Can be called by the
  * controller live to forward to another controller.
@@ -7,34 +9,36 @@
  * @author      Christopher Hill <cjhill@gmail.com>
  * @since       15/09/2012
  */
-class Core_Router
+class Router
 {
 	/**
 	 * Router constructor, try and load a controller and action.
 	 *
 	 * @access public
 	 */
-	public function __construct() {
+	public function route() {
 		// Get the address the user navigated to
-		Core_Url::getUrlBreakdown();
+		Request::getUrlBreakdown();
 
 		// Inform the bootstrap a request has been initialised
-		Core_Bootstrap::initRequest($_GET['controller'], $_GET['action']);
+		Bootstrap::initRequest(Request::get('controller'), Request::get('action'));
 
 		// Try and instantiate the controller
-		$this->loadController($_GET['controller']);
+		$this->loadController(Request::get('controller'));
 	}
 
 	/**
 	 * Try and load the controller.
 	 *
 	 * @access public
-	 * @param $controller string
-	 * @param $action string
+	 * @param  string    $controller The controller we wish to load.
+	 * @param  string    $action     The action we wish to load.
+	 * @throws Exception             If we cannot load the controller.
+     * @static
 	 */
-	public function loadController($controller, $action = '') {
+	public static function loadController($controller, $action = '') {
 		// Format the controller name correctly
-		$controller = 'Controller_' . $controller;
+		$controller = Config::get('settings', 'project') . '\\Controller\\' . $controller;
 
 		// Can we load the controller?
 		try {
@@ -45,32 +49,38 @@ class Core_Router
 			$controller->child = $controller;
 
 			// Inform the bootstrap a controller has been initialised
-			Core_Bootstrap::initController($controller);
+			Bootstrap::initController($controller);
 
 			// Call the init method, if it exists
 			if (method_exists($controller, 'init')) {
 				$controller->init();
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			// Forward to the utilities 404
+			var_dump($e);
 			die('Sorry, we were unable to load the page your requested.');
 		}
 
 		// Which action shall we run?
-		$action = $action ? $action : $_GET['action'];
+		$action = $action ? $action : Request::get('action');
 
 		// Load the action
-		Core_Router::loadAction($controller, $action);
+		Router::loadAction($controller, $action);
 	}
 
 	/**
 	 * Try and run the action.
 	 *
 	 * @access public
-	 * @param $controller string
-	 * @param $action string
+	 * @param  string $controller The controller we wish to load.
+	 * @param  string $action     The action we wish to load.
+     * @return boolean
+     * @static
 	 */
-	public function loadAction($controller, $action) {
+	public static function loadAction($controller, $action) {
+		// We want pretty URL's, there might be dashes
+		$action = str_replace('-', '', $action);
+
 		// Does the method exist?
 		$actionExists = method_exists($controller, $action . 'Action');
 
@@ -78,7 +88,7 @@ class Core_Router
 		if (! $actionExists && $action != 'error') {
 			// There was an error with the action, and we were not running the 404 action
 			// Try and run the 404 action
-			Core_Router::loadAction($controller, 'error');
+			Router::loadAction($controller, 'error');
 
 			// No need to go any further
 			return false;
@@ -86,7 +96,11 @@ class Core_Router
 
 		// Yes, it exists
 		// Set the controller and action that we are heading to
-		$controller->view->controller = str_replace('Controller_', '', get_class($controller));
+		$controller->view->controller = str_replace(
+			Config::get('settings', 'project') . '\\Controller\\',
+			'',
+			get_class($controller)
+		);
 		$controller->view->action     = $action;
 
 		// Start the cache, if required

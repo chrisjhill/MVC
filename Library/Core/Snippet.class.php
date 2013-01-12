@@ -1,4 +1,6 @@
 <?php
+namespace Core;
+
 /**
  * Return snippets of HTML with variable replacement.
  *
@@ -6,7 +8,7 @@
  * @author      Christopher Hill <cjhill@gmail.com>
  * @since       15/09/2012
  */
-class Core_Snippet extends Core_Cache
+class Snippet extends Cache
 {
 	/**
 	 * The variables that we wish to replace.
@@ -19,7 +21,7 @@ class Core_Snippet extends Core_Cache
 	 * </code>
 	 *
 	 * @access private
-	 * @var array
+	 * @var    array
 	 */
 	private $_variable = array();
 
@@ -30,11 +32,11 @@ class Core_Snippet extends Core_Cache
 	 * constructor too much power, and we would rather build the snippet up as we go along.
 	 *
 	 * @access public
-	 * @param $file string
-	 * @param $path srring
-	 * @throws Exception
+	 * @param  string    $file The snippet we wish to include.
+	 * @param  string    $path The path to the snippet we wish to include.
+	 * @throws Exception       If the snippet cannot be located.
 	 */
-	public function __construct($file, $path = PATH_SNIPPET) {
+	public function __construct($file, $path) {
 		parent::__construct($file, $path);
 	}
 
@@ -44,9 +46,9 @@ class Core_Snippet extends Core_Cache
 	 * Note: If you pass in the same variable twice then it will overwrite the first.
 	 *
 	 * @access public
-	 * @param $variable string
-	 * @param $value string
-	 * @return Core_Snippet
+	 * @param  string  $variable The variable we wish to add.
+	 * @param  string  $value    The value of the variable.
+	 * @return Snippet
 	 */
 	public function addVariable($variable, $value) {
 		$this->_variable[$variable] = $value;
@@ -65,7 +67,7 @@ class Core_Snippet extends Core_Cache
 	public function render() {
 		// Can we use a cached snippet?
 		if ($this->cachedFileAvailable()) {
-			// We can use a cached copy, mucho quick
+			// We can use a cached copy, much quick
 			return $this->getCachedFile();
 		}
 
@@ -76,7 +78,7 @@ class Core_Snippet extends Core_Cache
 		extract($this->_variable);
 
 		// Include the snippet
-		include PATH_SNIPPET . $this->_file;
+		include Config::get('path', 'view_snippet') . $this->_file;
 
 		// Place the buffer contents into a string
 		$content = ob_get_contents();

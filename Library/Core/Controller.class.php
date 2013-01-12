@@ -1,4 +1,6 @@
 <?php
+namespace Core;
+
 /**
  * Connects the Controllers to the Views.
  *
@@ -6,13 +8,13 @@
  * @author      Christopher Hill <cjhill@gmail.com>
  * @since       15/09/2012
  */
-class Core_Controller
+class Controller
 {
 	/**
 	 * The controller that we are managing.
 	 *
 	 * @access public
-	 * @var Core_Controller
+	 * @var    Controller
 	 */
 	public $child;
 
@@ -20,7 +22,7 @@ class Core_Controller
 	 * Instance of the view.
 	 *
 	 * @access public
-	 * @var Core_View
+	 * @var    View
 	 */
 	public $view;
 
@@ -28,18 +30,18 @@ class Core_Controller
 	 * Whether we need to render this controller.
 	 *
 	 * @access private
-	 * @var bool
+	 * @var    bool
 	 */
 	private $_void = false;
 
 	/**
-	 * The constructor for the core controller.
+	 * The constructor for the controller.
 	 *
 	 * @access public
 	 */
 	public function __construct() {
 		// Get the view instance
-		$this->view = new Core_View();
+		$this->view = new View();
 	}
 
 	/**
@@ -48,17 +50,42 @@ class Core_Controller
 	 * @access public
 	 */
 	public function cache() {
-		// Does the child allow caching?
-		if (isset($this->child->enableCache) && $this->child->enableCache) {
+		// Does the controller support entry level caching?
+		if (isset($this->child->enableCacheEntry) && $this->child->enableCacheEntry) {
 			// Create a new cache instance
-			$cache = new Core_Cache($this->view->controller . DIRECTORY_SEPARATOR . $this->view->action . '.phtml', PATH_VIEW);
+			$cache = new Cache(
+				trim($_SERVER['REQUEST_URI'], '/') == ''
+					? '_entry_ ' . $_GET['controller'] . '/' . $_GET['action'] . '.phtml'
+					: '_entry_ ' . trim($_SERVER['REQUEST_URI'], '/') . '.phtml',
+				Config::get('path', 'view_script'),
+				false
+			);
 
 			// Set the cache settings
-			$cache->setCache(true)
-			      ->setCacheLife($this->child->cacheLife);
+			$cache->setCache(true)->setCacheLife(Config::get('cache', 'life'));
 
-			// Is there a cache available?
-			$this->view->cache = $cache;
+			// Inform the view there is a cache and the settings
+			$this->view->cacheEntry = $cache;
+		}		
+
+		// Does the child allow caching?
+		if (isset($this->child->enableCacheAction) && $this->child->enableCacheAction) {
+			// Create a new cache instance
+			$cache = new Cache(
+				$this->view->controller . DS . $this->view->action . '.phtml',
+				Config::get('path', 'view_script')
+			);
+
+			// Set the cache settings
+			$cache->setCache(true)->setCacheLife($this->child->cacheActionLife);
+
+			// Inform the view there is a cache and the settings
+			$this->view->cacheAction = $cache;
+
+			// Can we render now?
+			if ($cache->cachedFileAvailable()) {
+				$this->view->render();
+			}
 		}
 	}
 
@@ -66,14 +93,14 @@ class Core_Controller
 	 * Change the layout from the default.
 	 *
 	 * @access public
-	 * @param $layout string
+	 * @param  string $layout Which layout we wish to use.
 	 * @return string
-	 * @throws Exception
+	 * @throws Exception      If the layout does not exist.
 	 */
 	public function setLayout($layout) {
 		// Does this layout exist?
-		if (! file_exists(PATH_LAYOUT . $layout)) {
-			throw new Exception('Layout does not exist.');
+		if (! file_exists(Config::get('path', 'layout') . $layout . '.phtml')) {
+			throw new \Exception('Layout does not exist.');
 		}
 
 		// The layout exists, so set it
@@ -86,33 +113,41 @@ class Core_Controller
 	 * Since we no longer want to render this controller we set it as void. Then, when
 	 * the rendering is called it will be ignored.
 	 *
+	 * This function will keep the same URL, that will not be changed between forwards.
+	 *
 	 * @access public
-	 * @param $controller string
-	 * @param $action string
-	 * @throws Exception
+	 * @param  string $action     The action we wish to forward to.
+	 * @param  string $controller The controller we wish to forward to.
+	 * @throws Exception          From the Router if the controller/action does not exist.
 	 */
 	public function forward($action = 'index', $controller = '') {
 		// Is this an controller forward or an action forward?
 		// Controller forward = A new controller
 		// Action redirect    = Same controller, different action
-		if ($controller == '' || $controller == str_replace('Controller_', '', get_called_class())) {
-			// Action redirect
-			// Does the method actually exist?
-			if (! method_exists($this->child, $action . 'Action')) {
-				throw new Exception('The action ' . $action . ' does not exist.');
-			}
-
-			// Yes, it exists
-			$this->view->action = $action;
-			$this->child->{$action . 'Action'}();
+		if ($controller == '' || $controller == str_replace(Config::get('settings', 'project') . '\\Controller\\', '', get_called_class())) {
+			Router::loadAction($this->child, $action);
+			$this->child->render();
 		} else {
 			// Controller redirect
 			// No longer render this controller, thank you
 			$this->_void = true;
 
 			// And start a new router to the desired controller/action
-			Core_Router::loadController($controller, $action);
+			Router::loadController($controller, $action);
 		}
+	}
+
+	/**
+	 * Redirect the user to a new page.
+	 *
+	 * This will perform a header redirect, so we will change the URL, and we can also
+	 * pass variables.
+	 * 
+	 * @access public
+	 * @param  array $param Parameters for the URL View Helper.
+	 */
+	public function redirect($param) {
+		header('Location: ' . $this->view->url($param)); exit();
 	}
 
 	/**

@@ -9,51 +9,63 @@
 <h3>Directory structure</h3>
 
 <pre>
-web
-|-- cache
-|-- libs
-|   |-- Controller
-|   |   `-- IndexController.php
+MVC
+|-- Library
 |   |
 |   |-- Core
+|   |   |-- Bootstrap.class.php
 |   |   |-- Cache.class.php
+|   |   |-- Config.class.php
 |   |   |-- Controller.class.php
 |   |   |-- Format.class.php
+|   |   |-- Front.class.php
+|   |   |-- Request.class.php
 |   |   |-- Router.class.php
 |   |   |-- Snippet.class.php
-|   |   |-- Url.class.php
+|   |   |-- Store.class.php
 |   |   |-- View.class.php
 |   |   `-- ViewHelper.class.php
 |   |
-|   |-- Layout
-|   |   `-- default.phtml
-|   |
-|   |-- Model
-|   |
-|   |-- View
-|   |   |-- Index
-|   |   |   |-- index.phtml
-|   |   |   `-- error.phmtl
+|   |-- MyProject
+|   |   |-- Cache
 |   |   |
-|   |   `-- Snippet
+|   |   |-- Controller
+|   |   |   `Index.class.php
+|   |   |
+|   |   |-- Layout
+|   |   |   `default.phtml
+|   |   |
+|   |   |-- Model
+|   |   |
+|   |   |-- View
+|   |   |   |-- Helper
+|   |   |   |
+|   |   |   |-- Script
+|   |   |   |   `-- Index
+|   |   |   |       |-- index.phtml
+|   |   |   |       `-- error.phmtl
+|   |   |   |
+|   |   |   `-- Snippet
+|   |   |
+|   |   `-- config.ini
 |   |
 |   |-- autoloader.php
-|   |-- config.php
 |   `-- global.php
 |
-|-- .htaccess
-`-- index.php</pre>
+`-- Web
+    |-- assets
+    |   |-- css
+    |   |-- img
+    |   `-- js
+    |
+    |-- .htaccess
+    `-- index.php</pre>
 
 <hr />
 
 <h3>Setup</h3>
 
-<p>The only configurations you will need to make are:</p>
-
-<ol>
-	<li><code>index.php</code>: change location to the <code>/libs/global.php</code> if not in the root.</li>
-	<li>All of the directory paths are stored in <code>/libs/config.php</code>, should only need to change <code>PATH_WEB</code> & <code>PATH_BASE</code>.</li>
-</ol>
+<p>Your project configuration files are in /Library/MyProject/config.ini</p>
 
 <hr />
 
@@ -75,7 +87,7 @@ web
 
 <h3>Controllers</h3>
 
-<p>Controllers are created in <code>/libs/Controller</code>, the file name begins with an uppercase letter and ends in a <code>.class.php</code> extension, so <code>index</code> would be called <code>Index.class.php</code>.</p>
+<p>Controllers are created in <code>/Library/MyProject/Controller</code>, the file name begins with an uppercase letter and ends in a <code>.class.php</code> extension, so <code>index</code> would be called <code>Index.class.php</code>.</p>
 
 <h4>Actions</h4>
 
@@ -91,7 +103,7 @@ web
 
 <h4>Layouts</h4>
 
-<p>You can change the layout (layouts are stored in <code>/libs/Layout</code>, are lowercase, and end with a <code>.phtml</code> extension) that will wrap the View by calling the <code>$this->setLayout('layout')</code> method in a controllers action.</p>
+<p>You can change the layout (layouts are stored in <code>/Library/MyProject/Layout</code>, are lowercase, and end with a <code>.phtml</code> extension) that will wrap the View by calling the <code>$this->setLayout('layout')</code> method in a controllers action.</p>
 
 <h4>Example</h4>
 
@@ -115,7 +127,7 @@ class IndexController extends Core_Controller
 
 <h3>Views</h3>
 
-<p>Views are stored in the <code>/libs/View</code> directory, and each controller has their own directory. So the <code>Index</code> controller's views will be stored in <code>/libs/Views/Index</code>. Each of the controllers actions have a separate view, so the <code>Index</code> controller's <code>hello</code> action will be stored in <code>/libs/Views/Index/hello.phtml</code>.</p>
+<p>Views are stored in the <code>/Library/MyProject/View</code> directory, and each controller has their own directory. So the <code>Index</code> controller's views will be stored in <code>/libs/Views/Index</code>. Each of the controllers actions have a separate view, so the <code>Index</code> controller's <code>hello</code> action will be stored in <code>/Library/MyProject/View/Index/hello.phtml</code>.</p>
 
 <h4>URL generation</h4>
 
