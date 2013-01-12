@@ -95,7 +95,11 @@ MVC
 
 <h4>Caching</h4>
 
-<p>You can enable the caching on a per controller basis, by setting a public <code>$enableCache</code> variable and specifying a time in seconds through the <code>$cacheLife</code> public variable. You can disable/enable the cache on a per action basis by calling the <code>$this->view->cache->setCache(true)</code> method. You can also specify the life of the cached file by calling the <code>$this->view->cache->setCacheLife(30)</code> method. All cached files are stored in <code>/cache</code>.</p>
+<p>Caching can be turned on or off from your projects configuration file (<code>/Library/MyProject/config.ini</code>), and you can set how long you want before the cache is invalidated.</p>
+
+<pre>[cache]
+enable = true
+life   = 60</pre>
 
 <h4>Forwarding</h4>
 

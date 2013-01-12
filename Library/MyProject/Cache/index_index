@@ -1,3 +1,9 @@
+<h2>Hello from the Index/Hello View!</h2>
+
+<p>The variable that was set in the controller was: Hello world!</p>
+
+<hr />
+
 <h2>How to use this MVC</h2>
 
 <h3>Directory structure</h3>
@@ -142,4 +148,4 @@ class IndexController extends Core_Controller
 
 <h4>Safe HTML</h4>
 
-<p>You can output HTML to the browser safely by using the <code>$this->safe('evil string')</code> method.</p>
+<p>You can output HTML to the browser safely by using the <code>$this->safe('evil string')</code> method.</p> <!-- Cached: Sat, 12 Jan 2013 15:25:01 +0000 //-->
