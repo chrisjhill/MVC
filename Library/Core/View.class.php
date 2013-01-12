@@ -23,26 +23,6 @@ class View extends ViewHelper
 	public $layout = 'default';
 
 	/**
-	 * Information on whether to cache the view or not.
-	 * 
-	 * @access public
-	 * @var    Cache
-	 */
-	public $cacheAction;
-
-	/**
-	 * Information on whether to cache the the whole page including layout.
-	 *
-	 * If we have a cached entry point then we exit as soon as possible - in the
-	 * Bootstrap initRequest() method which is called as soon as we know the
-	 * controller and action.
-	 * 
-	 * @access public
-	 * @var    Cache
-	 */
-	public $cacheEntry;
-
-	/**
 	 * The variables that we want to pass to this view.
 	 *
 	 * @access public
@@ -87,66 +67,83 @@ class View extends ViewHelper
 		// Can we use a cache to speed things up?
 		// If the cache object exists then it means the controller wants to use caching
 		// However, the action might have disabled it
-		if ($this->cacheAction && $this->cacheAction->cachedFileAvailable()) {
+		if (Cache::has(Request::getUrl(null, '_'))) {
 			// The cache is enabled and there is an instance of the file in cache
-			$viewContent = $this->cacheAction->getCachedFile();
+			$this->_variables['viewContent'] = Cache::get(Request::getUrl(null, '_'));
 		}
 
 		// Nope, there is no cache
 		else {
 			// Set the action location we need to run
-			$urlAction = Config::get('path', 'base') . Config::get('path', 'view_script')
+			$templateUrlAction = Config::get('path', 'base') . Config::get('path', 'view_script')
 				. $this->controller . '/' . $this->action . '.phtml';
 
 			// Does the view file exist?
-			if (! file_exists($urlAction)) {
+			if (! file_exists($templateUrlAction)) {
 				throw new \Exception('The view ' . $this->action . ' does not exist in ' . $this->controller);
 			}
 
-			// The view exists
-			// Extract the variables that have been set
-			if ($this->_variables) {
-				extract($this->_variables);
-			}
-
-			// Enable object buffering
-			ob_start();
-
-			// And include the file for parsing
-			include $urlAction;
-
-			// Get the content of the view after parsing, and dispose of the buffer
-			$viewContent = ob_get_contents();
-			ob_end_clean();
-
-			// If we are using the cache then save it
-			if ($this->cacheAction && $this->cacheAction->getCacheEnabled()) {
-				$this->cacheAction->saveFileToCache($viewContent . ' <!-- Cache generated: ' .  date('r'). ' //-->');
-			}
+			// And parse the action's script
+			$this->_variables['viewContent'] = $this->parse(
+				$templateUrlAction,
+				$this->_variables,
+				Request::getUrl(null, '_')
+			);
 		}
 
 		// Now start to wrap the view content in the layout
-		// Enable object buffering
-		ob_start();
-
-		// Include the layout
-		include Config::get('path', 'base') . Config::get('path', 'layout')
+		// Set the action location we need to run
+		$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'layout')
 			. $this->layout . '.phtml';
 
-		// Get the content of the view after parsing, and dispose of the buffer
-		$fullContent = ob_get_contents();
-		ob_end_clean();
-
-		// If we are using the cache then save it
-		if ($this->cacheEntry && $this->cacheEntry->getCacheEnabled()) {
-			$this->cacheEntry->saveFileToCache($fullContent . ' <!-- Cache generated: ' .  date('r'). ' //-->');
-		}
+		// And parse the action's script
+		$template = $this->parse(
+			$templateUrlLayout,
+			$this->_variables
+		);
 
 		// Inform the bootstrap that we are about to shutdown
 		Bootstrap::initShutdown($this->controller, $this->action);
 
 		// And now, the journey ends
 		// We die so that we do not call other action's render()
-		die($fullContent);
+		die($template);
+	}
+
+	/**
+	 * Parse a template, also caching if desired.
+	 * 
+	 * @param  string $template  The full path of the template file.
+	 * @param  array  $variables The variables we wish to replace.
+	 * @param  string $cacheName What to call the cached file.
+	 * @return string
+	 */
+	public function parse($template, $variables, $cacheName = null) {
+		// The view exists
+		// Extract the variables that have been set
+		if ($this->_variables) {
+			extract($this->_variables);
+		}
+
+		// Enable object buffering
+		ob_start();
+
+		// And include the file for parsing
+		include $template;
+
+		// Get the content of the view after parsing, and dispose of the buffer
+		$content = ob_get_contents();
+		ob_end_clean();
+
+		// If we are using the cache then save it
+		if (Config::get('cache', 'enable') && $cacheName) {
+			Cache::put(
+				$cacheName,
+				$content . ' <!-- Cached: ' .  date('r'). ' //-->'
+			);
+		}
+
+		// And return the result of this parse
+		return $content;
 	}
 }

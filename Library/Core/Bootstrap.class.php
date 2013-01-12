@@ -23,22 +23,7 @@ class Bootstrap
 	 * @static
 	 */
 	public static function initRequest($controllerName, $actionName) {
-		// Create a new cache instance
-		$cache = new Cache(
-			trim(Request::server('REQUEST_URI'), '/') == ''
-				? '_entry_ ' . Request::get('controller') . '/' . Request::get('action') . '.phtml'
-				: '_entry_ ' . trim(Request::server('REQUEST_URI'), '/') . '.phtml',
-			Config::get('path', 'view_script'),
-			false
-		);
-
-		// Set the cache settings
-		$cache->setCache(true)->setCacheLife(Config::get('cache', 'life'));
-
-		// Can we render now?
-		if ($cache->cachedFileAvailable()) {
-			die($cache->getCachedFile() . ' <!-- Fetched from Bootstrap cache //-->');
-		}
+		/* Do nothing */
 	}
 
 	/**

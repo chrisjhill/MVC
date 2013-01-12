@@ -4,15 +4,6 @@ use Core;
 
 class Index extends Core\Controller
 {
-	// Yes, we want to enable the cache for this file
-	public $enableCacheAction = false;
-
-	// Set the life of the cached file to 10 minutes
-	public $cacheActionLife = 600;
-
-	// Set cache for the entry point
-	public $enableCacheEntry = false;
-
 	/**
 	 * The index action
 	 *

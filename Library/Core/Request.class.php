@@ -11,6 +11,14 @@ namespace Core;
 class Request
 {
 	/**
+	 * The URL that the user has visited.
+	 *
+	 * @access private
+	 * @var    string
+	 */
+	private static $_url;
+
+	/**
 	 * A single entry point to the $_GET superglobal
 	 * 
 	 * @access private
@@ -46,9 +54,9 @@ class Request
 	 */
 	public static function getUrlBreakdown() {
 		// Set the URL
+		self::$_url = trim($_SERVER['REQUEST_URI'], '/');
 		// We do not want the start and the end slash, explode on separators, and filter
-		$urlBreakdown = trim($_SERVER['REQUEST_URI'], '/');
-		$urlBreakdown = explode('/', $urlBreakdown);
+		$urlBreakdown = explode('/', self::$_url);
 		$urlBreakdown = array_filter($urlBreakdown);
 
 		// Start to piece back together and create a nice, usable, array
@@ -81,6 +89,23 @@ class Request
 		self::$_post   = $_POST;
 		self::$_server = $_SERVER;
 		unset($_GET, $_POST, $_SERVER);
+	}
+
+	/**
+	 * Return the URL that the user has visited.
+	 *
+	 * @access public
+	 * @param  string $section        A specific part of the URL.
+	 * @param  string $replaceSlashes What to replace '/' with.
+	 * @return string
+	 * @static
+	 *
+	 * @todo   Add the parse_str() function here.
+	 */
+	public static function getUrl($section = null, $replaceSlashes = null) {
+		return ! empty(self::$_url)
+			? str_replace('/', $replaceSlashes, self::$_url)
+			: 'index';
 	}
 
 	/**
