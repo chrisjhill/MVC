@@ -99,13 +99,19 @@ class Request
 	 * @param  string $replaceSlashes What to replace '/' with.
 	 * @return string
 	 * @static
-	 *
-	 * @todo   Add the parse_str() function here.
 	 */
-	public static function getUrl($section = null, $replaceSlashes = null) {
-		return ! empty(self::$_url)
-			? str_replace('/', $replaceSlashes, self::$_url)
-			: 'index';
+	public static function getUrl($replaceSlashes = null) {
+		// Do we need to replace forward slashes with something?
+		if ($replaceSlashes && self::$_url) {
+			return str_replace('/', $replaceSlashes, self::$_url);
+		}
+
+		// Is the URL empty?
+		else if (empty(self::$_url)) {
+			return 'index';
+		}
+
+		return self::$_url;
 	}
 
 	/**

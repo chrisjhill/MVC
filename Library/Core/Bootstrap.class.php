@@ -14,38 +14,27 @@ namespace Core;
  */
 class Bootstrap
 {
-	/**
-	 * A request has come in, we know the controller name and the action name.
-	 * 
-	 * @access public
-	 * @param string $controllerName The controller we have loaded.
-	 * @param string $actionName     The action we have loaded.
-	 * @static
-	 */
-	public static function initRequest($controllerName, $actionName) {
-		/* Do nothing */
-	}
+	static function trigger($state, $params) {
+		// Create a reference to the users bootstrap
+		$bootstrap = Config::get('settings', 'project') . '\\Bootstrap';
 
-	/**
-	 * A controller has been initialised.
-	 * 
-	 * @access public
-	 * @param  Core\Controller $controller The controller that has been initiated.
-	 * @static
-	 */
-	public static function initController($controller) {
-		/* Do nothing */
-	}
+		// Call the projects own bootstrap so they can handle these events
+		switch ($state) {
+			case 'initRequest' :
+				$bootstrap::initRequest($params);
+				return;
 
-	/**
-	 * We have finished rendering a page and are about to shut down.
-	 * 
-	 * @access public
-	 * @param  string $controllerName The controller that we ended up rendering.
-	 * @param  string $actionName     The action that we ended up rendering.
-	 * @static
-	 */
-	public static function initShutdown($controllerName, $actionName) {
-		/* Do nothing */
+			case 'initController' :
+				$bootstrap::initController($params);
+				return;
+
+			case 'initAction' :
+				$bootstrap::initAction($params);
+				return;
+
+			case 'initShutdown' :
+				$bootstrap::initShutdown($params);
+				return;
+		}
 	}
 }

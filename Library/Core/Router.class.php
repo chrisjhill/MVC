@@ -21,7 +21,13 @@ class Router
 		Request::getUrlBreakdown();
 
 		// Inform the bootstrap a request has been initialised
-		Bootstrap::initRequest(Request::get('controller'), Request::get('action'));
+		Bootstrap::trigger(
+			'initRequest',
+			array(
+				'controller' => Request::get('controller'),
+				'action'     => Request::get('action')
+			)
+		);
 
 		// Try and instantiate the controller
 		$this->loadController(Request::get('controller'));
@@ -49,7 +55,12 @@ class Router
 			$controller->child = $controller;
 
 			// Inform the bootstrap a controller has been initialised
-			Bootstrap::initController($controller);
+			Bootstrap::trigger(
+				'initController',
+				array(
+					'controller' => $controller
+				)
+			);
 
 			// Call the init method, if it exists
 			if (method_exists($controller, 'init')) {
@@ -95,6 +106,15 @@ class Router
 		}
 
 		// Yes, it exists
+		// Let the bootstrap know
+		Bootstrap::trigger(
+			'initAction',
+			array(
+				'controller' => $controller,
+				'action'     => $action
+			)
+		);
+
 		// Set the controller and action that we are heading to
 		$controller->view->controller = str_replace(
 			Config::get('settings', 'project') . '\\Controller\\',

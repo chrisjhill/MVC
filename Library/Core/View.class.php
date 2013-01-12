@@ -67,9 +67,9 @@ class View extends ViewHelper
 		// Can we use a cache to speed things up?
 		// If the cache object exists then it means the controller wants to use caching
 		// However, the action might have disabled it
-		if (Cache::has(Request::getUrl(null, '_'))) {
+		if (Cache::has(Request::getUrl('_'))) {
 			// The cache is enabled and there is an instance of the file in cache
-			$this->_variables['viewContent'] = Cache::get(Request::getUrl(null, '_'));
+			$this->_variables['viewContent'] = Cache::get(Request::getUrl('_'));
 		}
 
 		// Nope, there is no cache
@@ -87,7 +87,7 @@ class View extends ViewHelper
 			$this->_variables['viewContent'] = $this->parse(
 				$templateUrlAction,
 				$this->_variables,
-				Request::getUrl(null, '_')
+				Request::getUrl('_')
 			);
 		}
 
@@ -103,7 +103,13 @@ class View extends ViewHelper
 		);
 
 		// Inform the bootstrap that we are about to shutdown
-		Bootstrap::initShutdown($this->controller, $this->action);
+		Bootstrap::trigger(
+			'initShutdown',
+			array(
+				'controller' => $this->controller,
+				'action'     => $this->action
+			)
+		);
 
 		// And now, the journey ends
 		// We die so that we do not call other action's render()
