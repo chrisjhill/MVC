@@ -148,4 +148,4 @@ class IndexController extends Core_Controller
 
 <h4>Safe HTML</h4>
 
-<p>You can output HTML to the browser safely by using the <code>$this->safe('evil string')</code> method.</p> <!-- Cached: Sat, 12 Jan 2013 15:52:09 +0000 //-->
+<p>You can output HTML to the browser safely by using the <code>$this->safe('evil string')</code> method.</p> <!-- Cached: Sun, 13 Jan 2013 19:25:22 +0000 //-->
