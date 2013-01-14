@@ -1,7 +1,5 @@
 <?php
-// The autoloaders
 include dirname(__FILE__) . '/../Library/autoloader.php';
-include 'PHPUnit/Autoload.php';
 
 // Start tests
 class ConfigTest extends PHPUnit_Framework_TestCase
