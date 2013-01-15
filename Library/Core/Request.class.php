@@ -52,9 +52,9 @@ class Request
 	 * @return array
      * @static
 	 */
-	public static function getUrlBreakdown() {
+	public static function getUrlBreakdown($url = null) {
 		// Set the URL
-		self::$_url = trim($_SERVER['REQUEST_URI'], '/');
+		self::$_url = trim($url ? $url : $_SERVER['REQUEST_URI'], '/');
 		// We do not want the start and the end slash, explode on separators, and filter
 		$urlBreakdown = explode('/', self::$_url);
 		$urlBreakdown = array_filter($urlBreakdown);
@@ -140,7 +140,7 @@ class Request
 	 */
 	public static function post($variable, $default = null) {
 		return isset(self::$_post[$variable])
-			? self::$_get[$variable]
+			? self::$_post[$variable]
 			: $default;
 	}
 
