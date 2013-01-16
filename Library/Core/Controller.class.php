@@ -45,51 +45,6 @@ class Controller
 	}
 
 	/**
-	 * Do we want to use the cache for this file?
-	 *
-	 * @access public
-	 */
-	public function cache() {
-		// Does the controller support entry level caching?
-		if (isset($this->child->enableCacheEntry) && $this->child->enableCacheEntry) {
-			// Create a new cache instance
-			$cache = new Cache(
-				trim($_SERVER['REQUEST_URI'], '/') == ''
-					? '_entry_ ' . $_GET['controller'] . '/' . $_GET['action'] . '.phtml'
-					: '_entry_ ' . trim($_SERVER['REQUEST_URI'], '/') . '.phtml',
-				Config::get('path', 'view_script'),
-				false
-			);
-
-			// Set the cache settings
-			$cache->setCache(true)->setCacheLife(Config::get('cache', 'life'));
-
-			// Inform the view there is a cache and the settings
-			$this->view->cacheEntry = $cache;
-		}		
-
-		// Does the child allow caching?
-		if (isset($this->child->enableCacheAction) && $this->child->enableCacheAction) {
-			// Create a new cache instance
-			$cache = new Cache(
-				$this->view->controller . DS . $this->view->action . '.phtml',
-				Config::get('path', 'view_script')
-			);
-
-			// Set the cache settings
-			$cache->setCache(true)->setCacheLife($this->child->cacheActionLife);
-
-			// Inform the view there is a cache and the settings
-			$this->view->cacheAction = $cache;
-
-			// Can we render now?
-			if ($cache->cachedFileAvailable()) {
-				$this->view->render();
-			}
-		}
-	}
-
-	/**
 	 * Change the layout from the default.
 	 *
 	 * @access public

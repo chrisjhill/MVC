@@ -120,10 +120,7 @@ class Router
 			'',
 			get_class($controller)
 		);
-		$controller->view->action     = $action;
-
-		// Start the cache, if required
-		$controller->cache();
+		$controller->view->action = $action;
 
 		// And call the action
 		if ($actionExists) {
