@@ -68,7 +68,6 @@ class Router
 			}
 		} catch (\Exception $e) {
 			// Forward to the utilities 404
-			var_dump($e);
 			die('Sorry, we were unable to load the page your requested.');
 		}
 
