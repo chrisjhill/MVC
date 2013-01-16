@@ -128,6 +128,6 @@ class Router
 		}
 
 		// And now render the view
-		$controller->render();
+		$controller->view->render();
 	}
 }

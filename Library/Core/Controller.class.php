@@ -27,14 +27,6 @@ class Controller
 	public $view;
 
 	/**
-	 * Whether we need to render this controller.
-	 *
-	 * @access private
-	 * @var    bool
-	 */
-	private $_void = false;
-
-	/**
 	 * The constructor for the controller.
 	 *
 	 * @access public
@@ -83,10 +75,6 @@ class Controller
 			Router::loadAction($this->child, $action);
 			$this->child->render();
 		} else {
-			// Controller redirect
-			// No longer render this controller, thank you
-			$this->_void = true;
-
 			// And start a new router to the desired controller/action
 			Router::loadController($controller, $action);
 		}
@@ -103,17 +91,5 @@ class Controller
 	 */
 	public function redirect($param) {
 		header('Location: ' . $this->view->url($param)); exit();
-	}
-
-	/**
-	 * The time has come to render the page.
-	 *
-	 * @access public
-	 */
-	public function render() {
-		// Do we still wish to render this controller?
-		if (! $this->_void) {
-			$this->view->render();
-		}
 	}
 }
