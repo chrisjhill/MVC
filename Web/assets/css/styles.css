@@ -17,5 +17,8 @@ abbr{border-bottom:1px dotted #BBB;cursor:help}
 hr{margin:30px 0;padding:0;background:#FFF;color:#FFF;border:0;border-bottom:1px dotted #BBB}
 code,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:4px 5px;border-radius:3px}
 
+/* Success message */
+.success{background:#080;color:#FFF;padding:10px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px}
+
 /* Clear floated divs */
 .clear{clear:both}

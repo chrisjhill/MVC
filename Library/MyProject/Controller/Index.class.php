@@ -14,23 +14,12 @@ class Index extends Core\Controller
 	public function indexAction() {
 		// Add variables to the view
 		$this->view->addVariable('urlRoot', Core\Config::get('path', 'root'));
-		$this->view->addVariable('statement', 'Hello world!');
-
-		// And forward onto the next action
-		$this->forward('hello');
 	}
 
 	/**
-	 * The hello action
+	 * The error action.
 	 *
-	 * @access public
-	 */
-	public function helloAction() {
-		// Do nothing
-	}
-
-	/**
-	 * The error action
+	 * This action is run if you try and call an action that does not exist.
 	 *
 	 * @access public
 	 */
