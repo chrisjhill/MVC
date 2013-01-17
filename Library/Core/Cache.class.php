@@ -55,7 +55,7 @@ class Cache
 	 * Save the file to the cache.
 	 * 
 	 * @access public
-	 * @param  string $name What the cached object is called..
+	 * @param  string $name What the cached object is called.
 	 * @param  string $content The string that we wish to cache.
 	 */
 	public function put($name, $content) {
@@ -63,5 +63,19 @@ class Cache
 			Config::get('path', 'base') . Config::get('path', 'cache') . $name,
 			$content
 		);
+	}
+
+	/**
+	 * Removing a cached object.
+	 * 
+	 * @param  string $name What the cached object is called.
+	 * @return boolean      Whether the cached object was successfully removed.
+	 */
+	public function remove($name) {
+		if (Cache::has($name)) {
+			return unlink(Config::get('path', 'base') . Config::get('path', 'cache') . $name);
+		}
+
+		return false;
 	}
 }
