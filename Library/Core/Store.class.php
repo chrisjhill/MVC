@@ -23,7 +23,7 @@ class Store
 	 * Note: These variable will only be available for the single page load unless
 	 * you specify $persistence as 'session'.
 	 *
-	 * @access public
+	 * @access private
 	 * @var    array
 	 * @static
 	 */
