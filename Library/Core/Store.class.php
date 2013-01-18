@@ -1,4 +1,6 @@
 <?php
+namespace Core;
+
 /**
  * Handles the storing of data for the application, for both page loads
  * and session based data.

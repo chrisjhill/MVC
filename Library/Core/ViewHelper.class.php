@@ -11,39 +11,38 @@ namespace Core;
 class ViewHelper
 {
 	/**
-	 * The controller that we need to render.
+	 * The View, so all View Helpers can interact with it.
 	 *
 	 * @access public
-	 * @var    string
+	 * @var    View
 	 */
-	public $controller = 'index';
+	public static $_view;
 
 	/**
-	 * The action that we need to render.
+	 * Parses a template file and returns the converted HTML.
 	 *
-	 * @access public
-	 * @var string
+	 * @access protected
+	 * @param  string    $template  The name of the partial to render.
+	 * @param  array     $variables An array of variables to replace.
+	 * @param  mixed     $cacheName null to not cache, otherwise string.
+	 * @return string               Converted template file into HTML.
 	 */
-	public $action = 'index';
+	protected function parse($template, $variables, $cacheName = null) {
+		return self::$_view->parse(
+			Config::get('path', 'base') . Config::get('path', 'view_partial') . $template . '.phtml',
+			$variables,
+			$cacheName
+		);
+	}
 
 	/**
-	 * Provides a nice interface to call view helpers.
-	 *
-	 * This is a magic function, so any calls to the view/view helper which do not
-	 * exist will end up here. We only pass through the first parameter to make for
-	 * a nicer implementation in each view helper. This is why it needs to be an array.
+	 * A function to return the View in a nice way.
 	 *
 	 * @access public
-	 * @param  string $helperName The View Helper that we wish to use.
-	 * @param  array  $param      The parameters that need to be passed to the View Helper.
-	 * @return string
+	 * @param  string $variableName The name of the variable to return.
+	 * @return View
 	 */
-	public function __call($helperName, $param) {
-		// Try and instantiate the helper
-		$viewHelperClassName = Config::get('settings', 'project') . '\\View\\Helper\\' . $helperName;
-		$viewHelper = new $viewHelperClassName();
-
-		// Render and return
-		return $viewHelper->render($param[0]);
+	public function __get($variableName) {
+		return self::$_view;
 	}
 }

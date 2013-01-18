@@ -26,6 +26,10 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 		$this->assertNotNull(Core\Config::get('path', 'layout'));
 		$this->assertNotNull(Core\Config::get('path', 'model'));
 		$this->assertNotNull(Core\Config::get('path', 'view'));
+
+		$this->assertNotNull(Core\Config::get('path', 'view_helper'));
+		$this->assertNotNull(Core\Config::get('path', 'view_partial'));
+		$this->assertNotNull(Core\Config::get('path', 'view_script'));
 		
 		// Cache
 		$this->assertNotNull(Core\Config::get('cache', 'enable'));
