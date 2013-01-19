@@ -1,7 +1,4 @@
 <?php
-// Namespace configuration
-use Core;
-
 // Global configurations
 include dirname(__FILE__) . '/../Library/global.php';
 

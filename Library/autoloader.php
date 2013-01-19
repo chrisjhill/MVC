@@ -6,7 +6,7 @@ function autoloader($class) {
 
 	// Could we find the class?
 	if (! file_exists($file)) {
-		return false;
+		throw new Exception($file . ' could not be found.');
 	}
 
 	// The class exists, include it

@@ -12,8 +12,7 @@ class Index extends Core\Controller
 	 * @access public
 	 */
 	public function indexAction() {
-		// Add variables to the view
-		$this->view->addVariable('urlRoot', Core\Config::get('path', 'root'));
+		// Do nothing
 	}
 
 	/**

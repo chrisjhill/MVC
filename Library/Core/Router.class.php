@@ -66,13 +66,13 @@ class Router
 			if (method_exists($controller, 'init')) {
 				$controller->init();
 			}
-		} catch (\Exception $e) {
-			// Forward to the utilities 404
-			die('Sorry, we were unable to load the page your requested.');
-		}
 
-		// Which action shall we run?
-		$action = $action ? $action : Request::get('action');
+			// Which action shall we run?
+			$action = $action ? $action : Request::get('action');
+		} catch (\Exception $e) {
+			// Forward to the Error's 404
+			Router::loadController('Error', 'notFound');
+		}
 
 		// Load the action
 		Router::loadAction($controller, $action);
