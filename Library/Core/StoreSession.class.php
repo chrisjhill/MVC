@@ -11,7 +11,7 @@ namespace Core;
 class StoreSession implements StoreInterface
 {
 	/**
-	 * Check wjether the variable exists in the store.
+	 * Check whether the variable exists in the store.
 	 *
 	 * @access public
 	 * @param  string  $variable The name of the variable to check existence of.

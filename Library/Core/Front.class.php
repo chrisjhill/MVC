@@ -52,7 +52,7 @@ class Front
 	}
 
 	/**
-	 * Begin the routing and dispataching to the Controller/Action.
+	 * Begin the routing and dispatching to the Controller/Action.
 	 *
 	 * @access private
 	 */

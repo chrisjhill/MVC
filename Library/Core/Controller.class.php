@@ -45,8 +45,12 @@ class Controller
 	 * @throws Exception      If the layout does not exist.
 	 */
 	public function setLayout($layout) {
+		// The location of the layout
+		$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'project')
+			. 'layout/' . $this->layout . '.phtml';
+
 		// Does this layout exist?
-		if (! file_exists(Config::get('path', 'layout') . $layout . '.phtml')) {
+		if (! file_exists($templateUrlLayout)) {
 			throw new \Exception('Layout does not exist.');
 		}
 

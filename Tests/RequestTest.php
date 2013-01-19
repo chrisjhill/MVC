@@ -1,4 +1,5 @@
 <?php
+session_start();
 include dirname(__FILE__) . '/../Library/autoloader.php';
 
 // Start tests

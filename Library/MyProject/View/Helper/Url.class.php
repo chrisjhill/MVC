@@ -2,10 +2,17 @@
 namespace MyProject\View\Helper;
 use Core;
 
+/**
+ * Make a URL that links to a controller/action/variables.
+ *
+ * @copyright   2012 Christopher Hill <cjhill@gmail.com>
+ * @author      Christopher Hill <cjhill@gmail.com>
+ * @since       18/01/2012
+ */
 class Url
 {
 	/**
-	 * Make a URL.
+	 * Make a URL that links to a controller/action/variables.
 	 *
 	 * By default we do not use the URL variables, but you can chose to do so.
 	 *

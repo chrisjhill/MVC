@@ -15,7 +15,7 @@ class Bootstrap
 	 * </ul>
 	 *
 	 * @access public
-	 * @param  array $params Paramaters passed into this state update.
+	 * @param  array $params Parameters passed into this state update.
 	 * @static
 	 */
 	public static function initRequest($params) {
@@ -33,7 +33,7 @@ class Bootstrap
 	 * </ul>
 	 *
 	 * @access public
-	 * @param  array $params Paramaters passed into this state update.
+	 * @param  array $params Parameters passed into this state update.
 	 * @static
 	 */
 	public static function initController($params) {
@@ -52,7 +52,7 @@ class Bootstrap
 	 * </ul>
 	 *
 	 * @access public
-	 * @param  array $params Paramaters passed into this state update.
+	 * @param  array $params Parameters passed into this state update.
 	 * @static
 	 */
 	public static function initAction($params) {
@@ -68,7 +68,7 @@ class Bootstrap
 	 * </ul>
 	 *
 	 * @access public
-	 * @param  array $params Paramaters passed into this state update.
+	 * @param  array $params Parameters passed into this state update.
 	 * @static
 	 */
 	public static function initShutdown($params) {

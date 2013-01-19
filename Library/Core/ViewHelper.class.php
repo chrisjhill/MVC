@@ -29,7 +29,8 @@ class ViewHelper
 	 */
 	protected function parse($template, $variables, $cacheName = null) {
 		return self::$_view->parse(
-			Config::get('path', 'base') . Config::get('path', 'view_partial') . $template . '.phtml',
+			Config::get('path', 'base') . Config::get('path', 'project')
+				. 'View/Partial/' . $template . '.phtml',
 			$variables,
 			$cacheName
 		);

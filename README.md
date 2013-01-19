@@ -1,3 +1,7 @@
+<h2>PHPUnit testing</h2>
+
+<p>OK (25 tests, 44 assertions)</p>
+
 <h2>How to use this MVC</h2>
 
 <h3>Directory structure</h3>
@@ -7,40 +11,18 @@ MVC
 |-- Library
 |   |
 |   |-- Core
-|   |   |-- Bootstrap.class.php
-|   |   |-- Cache.class.php
-|   |   |-- Config.class.php
-|   |   |-- Controller.class.php
-|   |   |-- Format.class.php
-|   |   |-- Front.class.php
-|   |   |-- Request.class.php
-|   |   |-- Router.class.php
-|   |   |-- Snippet.class.php
-|   |   |-- Store.class.php
-|   |   |-- View.class.php
-|   |   `-- ViewHelper.class.php
 |   |
 |   |-- MyProject
 |   |   |-- Cache
-|   |   |
 |   |   |-- Controller
-|   |   |   `Index.class.php
-|   |   |
 |   |   |-- Layout
-|   |   |   `default.phtml
-|   |   |
 |   |   |-- Model
-|   |   |
 |   |   |-- View
 |   |   |   |-- Helper
-|   |   |   |
-|   |   |   |-- Script
-|   |   |   |   `-- Index
-|   |   |   |       |-- index.phtml
-|   |   |   |       `-- error.phmtl
-|   |   |   |
-|   |   |   `-- Snippet
+|   |   |   |-- Partial
+|   |   |   `-- Script
 |   |   |
+|   |   |-- Bootstrap.class.php
 |   |   `-- config.ini
 |   |
 |   |-- autoloader.php
@@ -92,12 +74,12 @@ MVC
 <p>Caching can be turned on or off from your projects configuration file (<code>/Library/MyProject/config.ini</code>), and you can set how long you want before the cache is invalidated.</p>
 
 <pre>[cache]
-enable = true
-life   = 60</pre>
+    enable = true
+    life   = 60</pre>
 
 <h4>Forwarding</h4>
 
-<p>You can forward to another action (or controller) via the <code>$this->forward('action', 'controller')</code> command in a controller's action.</p>
+<p>You can forward to another action (or controller) via the <code>$this->forward('action', 'controller')</code> command in a controller.</p>
 
 <h4>Layouts</h4>
 
@@ -108,9 +90,6 @@ life   = 60</pre>
 <pre>&lt;?php
 class IndexController extends Core_Controller
 {
-	public $enableCache = true;
-	public $cacheLife   = 30;
-
 	public function indexAction() {
 		$this->setLayout('new-layout');
 		$this->forward('hello');
@@ -125,7 +104,7 @@ class IndexController extends Core_Controller
 
 <h3>Views</h3>
 
-<p>Views are stored in the <code>/Library/MyProject/View</code> directory, and each controller has their own directory. So the <code>Index</code> controller's views will be stored in <code>/libs/Views/Index</code>. Each of the controllers actions have a separate view, so the <code>Index</code> controller's <code>hello</code> action will be stored in <code>/Library/MyProject/View/Index/hello.phtml</code>.</p>
+<p>Views are stored in the <code>/Library/MyProject/View</code> directory, and each controller has their own directory. So the <code>Index</code> controller's views will be stored in <code>/Library/MyProject/View/Index</code>. Each of the controllers actions have a separate view, so the <code>Index</code> controller's <code>hello</code> action will be stored in <code>/Library/MyProject/View/Index/hello.phtml</code>.</p>
 
 <h4>URL generation</h4>
 
@@ -142,4 +121,12 @@ class IndexController extends Core_Controller
 
 <h4>Safe HTML</h4>
 
-<p>You can output HTML to the browser safely by using the <code>$this->safe('evil string')</code> method.</p>
+<p>You can output HTML to the browser safely by using the <code>$this->safe(array('string' => 'Evil string'))</code> method.</p>
+
+<h3>View Helpers and View Partials</h3>
+
+<p>Your View Scripts can easily direct logic away from themselves into View Helpers. View helpers can have their own template files, called Partials. For example, the <code>Test</code> View Helper:</p>
+
+<pre>return $this->parse('test', array(
+	'testVar' => $params['testVar']
+));</pre>

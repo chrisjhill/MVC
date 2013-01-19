@@ -1,3 +1,7 @@
+# Either "Development" or "Production" 
+SetEnv APP_ENVIRONMENT "Development"
+
+# Redirect all requests to our index.php file
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]

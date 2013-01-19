@@ -99,8 +99,8 @@ class View
 		// Nope, there is no cache
 		else {
 			// Set the action location we need to run
-			$templateUrlAction = Config::get('path', 'base') . Config::get('path', 'view_script')
-				. $this->controller . '/' . $this->action . '.phtml';
+			$templateUrlAction = Config::get('path', 'base') . Config::get('path', 'project')
+				. 'View/Script/' . $this->controller . '/' . $this->action . '.phtml';
 
 			// Does the view file exist?
 			if (! file_exists($templateUrlAction)) {
@@ -117,8 +117,8 @@ class View
 
 		// Now start to wrap the view content in the layout
 		// Set the action location we need to run
-		$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'layout')
-			. $this->layout . '.phtml';
+		$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'project')
+			. 'layout/' . $this->layout . '.phtml';
 
 		// And parse the action's script
 		$template = $this->parse(
