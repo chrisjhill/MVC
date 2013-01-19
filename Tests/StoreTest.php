@@ -11,7 +11,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testStoreCanPutVariable() {
 		// Set two variables, one in the request and one in the session
-		Core\Store::put('foo', 'bar', 'request');
+		Core\StoreRequest::put('foo', 'bar');
 	}
 
 	/**
@@ -21,23 +21,24 @@ class StoreTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testStoreHasVariables() {
 		// Variables we have set
-		$this->assertTrue(Core\Store::has('foo', 'request'));
+		$this->assertTrue(Core\StoreRequest::has('foo'));
 
 		// Variables we have not set
-		$this->assertFalse(Core\Store::has('bar', 'request'));
+		$this->assertFalse(Core\StoreRequest::has('bar'));
 	}
 
 	/**
 	 * Test the Store can get a variable.
 	 *
 	 * @access public
+	 * @expectedException Exception
 	 */
 	public function testStoreCanGetVariables() {
 		// Variables we have set
-		$this->assertEquals(Core\Store::get('foo', 'request'), 'bar');
+		$this->assertEquals(Core\StoreRequest::get('foo'), 'bar');
 
 		// Variables we have not set
-		$this->assertFalse(Core\Store::get('bar', 'request'));
+		$this->assertFalse(Core\StoreRequest::get('bar'));
 	}
 
 
@@ -48,10 +49,10 @@ class StoreTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testStoreCanUpdateVariables() {
 		// Update variables
-		Core\Store::put('foo', 'foo', 'request');
+		Core\StoreRequest::put('foo', 'foo', true);
 
 		// Have they updated?
-		$this->assertEquals(Core\Store::get('foo', 'request'), 'foo');
+		$this->assertEquals(Core\StoreRequest::get('foo'), 'foo');
 	}
 
 	/**
@@ -61,9 +62,9 @@ class StoreTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testStoreCanRemoveVariables() {
 		// Update variables
-		Core\Store::remove('foo', 'request');
+		Core\StoreRequest::remove('foo');
 
 		// Have they updated?
-		$this->assertFalse(Core\Store::has('foo', 'request'));
+		$this->assertFalse(Core\StoreRequest::has('foo'));
 	}
 }

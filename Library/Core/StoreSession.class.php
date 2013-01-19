@@ -39,6 +39,7 @@ class StoreSession implements StoreInterface
 		}
 
 		$_SESSION[$variable] = $value;
+		return self::has($variable);
 	}
 
 	/**

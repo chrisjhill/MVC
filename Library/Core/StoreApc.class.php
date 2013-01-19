@@ -41,6 +41,7 @@ class StoreApc implements StoreInterface
 		// use apc_store() instead of apc_add()
 		// apc_add() does not overwrite data, we get around this by checking above
 		apc_store($variable, $value);
+		return self::has($variable);
 	}
 
 	/**

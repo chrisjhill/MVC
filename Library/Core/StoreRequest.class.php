@@ -48,6 +48,7 @@ class StoreRequest implements StoreInterface
 		}
 
 		self::$store[$variable] = $value;
+		return self::has($variable);
 	}
 
 	/**
