@@ -88,7 +88,7 @@ MVC
 <h4>Example</h4>
 
 <pre>&lt;?php
-class IndexController extends Core_Controller
+class Index extends Core\Controller
 {
 	public function indexAction() {
 		$this->setLayout('new-layout');
