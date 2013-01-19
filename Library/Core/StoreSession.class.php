@@ -16,6 +16,7 @@ class StoreSession implements StoreInterface
 	 * @access public
 	 * @param  string  $variable The name of the variable to check existence of.
 	 * @return boolean           If the variable exists or not.
+	 * @static
 	 */
 	public static function has($variable) {
 		return isset($_SESSION[$variable]);
@@ -28,7 +29,8 @@ class StoreSession implements StoreInterface
 	 * @param  string  $variable The name of the variable to store.
 	 * @param  mixed   $value    The data we wish to store.
 	 * @return boolean           If we managed to store the variable.
-	 * @throws 
+	 * @throws Exception         If the variable already exists when we try not to overwrite it.
+	 * @static
 	 */
 	public static function put($variable, $value, $overwrite = false) {
 		// If it exists, and we do not want to overwrite, then throw exception
@@ -45,6 +47,8 @@ class StoreSession implements StoreInterface
 	 * @access public
 	 * @param  string $variable The name of the variable in the store.
 	 * @return mixed
+	 * @throws Exception        If the variable does not exist.
+	 * @static
 	 */
 	public static function get($variable) {
 		// If it exists, and we do not want to overwrite, then throw exception
@@ -61,6 +65,8 @@ class StoreSession implements StoreInterface
 	 * @access public
 	 * @param  string $variable The name of the variable to remove.
 	 * @return boolean          If the variable was removed successfully.
+	 * @throws Exception        If the variable does not exist.
+	 * @static
 	 */
 	public static function remove($variable) {
 		// If it exists, and we do not want to overwrite, then throw exception
