@@ -116,15 +116,20 @@ class View
 		}
 
 		// Now start to wrap the view content in the layout
-		// Set the action location we need to run
-		$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'project')
-			. 'layout/' . $this->layout . '.phtml';
+		if (! $this->layout) {
+			// No template, thanks
+			$template = $this->_variables['viewContent'];
+		} else {
+			// Set the action location we need to run
+			$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'project')
+				. 'layout/' . $this->layout . '.phtml';
 
-		// And parse the action's script
-		$template = $this->parse(
-			$templateUrlLayout,
-			$this->_variables
-		);
+			// And parse the action's script
+			$template = $this->parse(
+				$templateUrlLayout,
+				$this->_variables
+			);
+		}
 
 		// Inform the bootstrap that we are about to shutdown
 		Bootstrap::trigger(
@@ -142,7 +147,7 @@ class View
 
 	/**
 	 * Parse a template, also caching if desired.
-	 * 
+	 *
 	 * @param  string $template  The full path of the template file.
 	 * @param  array  $variables The variables we wish to replace.
 	 * @param  string $cacheName What to call the cached file.
@@ -195,6 +200,6 @@ class View
 		$viewHelper = new $viewHelperClassName();
 
 		// Render and return
-		return $viewHelper->render($param[0]);
+		return $viewHelper->render(isset($param[0]) ? $param[0] : array());
 	}
 }
