@@ -55,7 +55,7 @@ class Controller
 
 		// The location of the layout
 		$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'project')
-			. 'layout/' . $this->layout . '.phtml';
+			. 'layout/' . $layout . '.phtml';
 
 		// Does this layout exist?
 		if (! file_exists($templateUrlLayout)) {
