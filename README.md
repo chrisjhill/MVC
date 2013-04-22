@@ -102,9 +102,9 @@ class Index extends Core\Controller
 
 <hr />
 
-<h3>Views</h3>
+<h3>View Scripts</h3>
 
-<p>Views are stored in the <code>/Library/MyProject/View</code> directory, and each controller has their own directory. So the <code>Index</code> controller's views will be stored in <code>/Library/MyProject/View/Index</code>. Each of the controllers actions have a separate view, so the <code>Index</code> controller's <code>hello</code> action will be stored in <code>/Library/MyProject/View/Index/hello.phtml</code>.</p>
+<p>Views are stored in the <code>/Library/MyProject/View/Script</code> directory, and each controller has their own directory. So the <code>Index</code> controller's views will be stored in <code>/Library/MyProject/View/Script/Index</code>. Each of the controllers actions have a separate view, so the <code>Index</code> controller's <code>hello</code> action will be stored in <code>/Library/MyProject/View/Script/Index/hello.phtml</code>.</p>
 
 <h4>URL generation</h4>
 
