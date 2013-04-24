@@ -154,6 +154,9 @@ class View
 	 * @return string
 	 */
 	public function parse($template, $variables, $cacheName = null) {
+		// Start profiling
+		Profiler::register('parse', $template);
+
 		// The view exists
 		// Extract the variables that have been set
 		if ($variables) {
@@ -179,6 +182,7 @@ class View
 		}
 
 		// And return the result of this parse
+		Profiler::deregister('parse', $template);
 		return $content;
 	}
 
@@ -200,6 +204,8 @@ class View
 		$viewHelper = new $viewHelperClassName();
 
 		// Render and return
-		return $viewHelper->render(isset($param[0]) ? $param[0] : array());
+		Profiler::register('helper', $helperName);
+		$content = $viewHelper->render(isset($param[0]) ? $param[0] : array());
+		Profiler::deregister('helper', $helperName);
 	}
 }

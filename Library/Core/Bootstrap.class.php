@@ -21,20 +21,26 @@ class Bootstrap
 		// Call the projects own bootstrap so they can handle these events
 		switch ($state) {
 			case 'initRequest' :
+				Profiler::register('request', 'startup');
 				$bootstrap::initRequest($params);
-				return;
+				break;
 
 			case 'initController' :
+				Profiler::register('controller', get_class($params['controller']));
 				$bootstrap::initController($params);
-				return;
+				break;
 
 			case 'initAction' :
+				Profiler::register('action', $params['controller']->view->action);
 				$bootstrap::initAction($params);
-				return;
+				break;
 
 			case 'initShutdown' :
 				$bootstrap::initShutdown($params);
-				return;
+				Profiler::deregister('action',     $params['action']);
+				Profiler::deregister('controller', $params['controller']);
+				Profiler::deregister('request',    'shutdown');
+				break;
 		}
 	}
 }
