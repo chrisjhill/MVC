@@ -122,7 +122,7 @@ class View
 		} else {
 			// Set the action location we need to run
 			$templateUrlLayout = Config::get('path', 'base') . Config::get('path', 'project')
-				. 'layout/' . $this->layout . '.phtml';
+				. 'Layout/' . $this->layout . '.phtml';
 
 			// And parse the action's script
 			$template = $this->parse(
@@ -132,6 +132,9 @@ class View
 		}
 
 		// Inform the bootstrap that we are about to shutdown
+		Profiler::deregister('action',     $this->action);
+		Profiler::deregister('controller', $this->controller);
+		Profiler::deregister('request',    'Shutdown');
 		Bootstrap::trigger(
 			'initShutdown',
 			array(
@@ -155,7 +158,12 @@ class View
 	 */
 	public function parse($template, $variables, $cacheName = null) {
 		// Start profiling
-		Profiler::register('parse', $template);
+		$templateName = str_replace(
+			Config::get('path', 'base') . Config::get('path', 'project'),
+			'',
+			$template
+		);
+		Profiler::register('parse', $templateName);
 
 		// The view exists
 		// Extract the variables that have been set
@@ -182,7 +190,7 @@ class View
 		}
 
 		// And return the result of this parse
-		Profiler::deregister('parse', $template);
+		Profiler::deregister('parse', $templateName);
 		return $content;
 	}
 

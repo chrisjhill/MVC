@@ -80,6 +80,9 @@ class Controller
 	 * @throws Exception          From the Router if the controller/action does not exist.
 	 */
 	public function forward($action = 'index', $controller = '') {
+		// Reregister the action in the profile
+		Profiler::deregister('action', $this->view->action);
+
 		// Is this an controller forward or an action forward?
 		// Controller forward = A new controller
 		// Action redirect    = Same controller, different action
@@ -88,6 +91,7 @@ class Controller
 			$this->child->render();
 		} else {
 			// And start a new router to the desired controller/action
+			Profiler::deregister('controller', $this->view->controller);
 			Router::loadController($controller, $action);
 		}
 	}

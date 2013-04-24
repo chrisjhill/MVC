@@ -17,6 +17,9 @@ class Router
 	 * @access public
 	 */
 	public function route() {
+		// A request has come in, start the profilter
+		Profiler::register('request', 'Startup');
+
 		// Get the address the user navigated to
 		Request::getUrlBreakdown();
 
@@ -49,6 +52,7 @@ class Router
 		// Can we load the controller?
 		try {
 			// Instantiate
+			Profiler::register('controller', explode('\\', $controller)[2]);
 			$controller = new $controller();
 
 			// We need to set the child to the parent so we can forward
@@ -106,6 +110,7 @@ class Router
 
 		// Yes, it exists
 		// Let the bootstrap know
+		Profiler::register('action', $action);
 		Bootstrap::trigger(
 			'initAction',
 			array(
