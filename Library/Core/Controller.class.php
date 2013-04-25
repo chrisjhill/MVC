@@ -81,7 +81,7 @@ class Controller
 	 */
 	public function forward($action = 'index', $controller = '') {
 		// Reregister the action in the profile
-		Profiler::deregister('action', $this->view->action);
+		Profiler::deregister('Action', $this->view->action);
 
 		// Is this an controller forward or an action forward?
 		// Controller forward = A new controller
@@ -91,7 +91,7 @@ class Controller
 			$this->child->render();
 		} else {
 			// And start a new router to the desired controller/action
-			Profiler::deregister('controller', $this->view->controller);
+			Profiler::deregister('Controller', $this->view->controller);
 			Router::loadController($controller, $action);
 		}
 	}

@@ -132,9 +132,10 @@ class View
 		}
 
 		// Inform the bootstrap that we are about to shutdown
+		Profiler::stop();
 		Profiler::deregister('action',     $this->action);
 		Profiler::deregister('controller', $this->controller);
-		Profiler::deregister('request',    'Shutdown');
+		$template .= $this->profiler(Profiler::getProfilerData());
 		Bootstrap::trigger(
 			'initShutdown',
 			array(
@@ -163,7 +164,7 @@ class View
 			'',
 			$template
 		);
-		Profiler::register('parse', $templateName);
+		Profiler::register('Parse', $templateName);
 
 		// The view exists
 		// Extract the variables that have been set
@@ -190,7 +191,7 @@ class View
 		}
 
 		// And return the result of this parse
-		Profiler::deregister('parse', $templateName);
+		Profiler::deregister('Parse', $templateName);
 		return $content;
 	}
 
@@ -212,8 +213,9 @@ class View
 		$viewHelper = new $viewHelperClassName();
 
 		// Render and return
-		Profiler::register('helper', $helperName);
+		Profiler::register('Helper', $helperName);
 		$content = $viewHelper->render(isset($param[0]) ? $param[0] : array());
-		Profiler::deregister('helper', $helperName);
+		Profiler::deregister('Helper', $helperName);
+		return $content;
 	}
 }

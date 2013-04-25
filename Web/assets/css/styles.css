@@ -22,3 +22,10 @@ code,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-heig
 
 /* Clear floated divs */
 .clear{clear:both}
+
+/* Profiler */
+#profiler{margin:20px auto;padding:20px 0;width:960px;background:#FFF;border-bottom:2px solid #CCC;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
+	#profiler h2{padding-left:80px}
+	#profiler-items{padding:5px 160px 5px 80px}
+		#profiler .item{display:block;position:relative;margin-top:25px;min-width:2px;height:10px;background:#F00;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px}
+			#profiler .item span{position:absolute;top:-18px;left:0;font-size:11px}

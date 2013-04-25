@@ -17,9 +17,6 @@ class Router
 	 * @access public
 	 */
 	public function route() {
-		// A request has come in, start the profilter
-		Profiler::register('request', 'Startup');
-
 		// Get the address the user navigated to
 		Request::getUrlBreakdown();
 
@@ -45,14 +42,14 @@ class Router
 	 * @throws Exception             If we cannot load the controller.
      * @static
 	 */
-	public static function loadController($controller, $action = '') {
+	public static function loadController($controllerName, $action = '') {
 		// Format the controller name correctly
-		$controller = Config::get('settings', 'project') . '\\Controller\\' . $controller;
+		$controller = Config::get('settings', 'project') . '\\Controller\\' . $controllerName;
 
 		// Can we load the controller?
 		try {
 			// Instantiate
-			Profiler::register('controller', explode('\\', $controller)[2]);
+			Profiler::register('Controller', $controllerName);
 			$controller = new $controller();
 
 			// We need to set the child to the parent so we can forward
@@ -75,6 +72,7 @@ class Router
 			$action = $action ? $action : Request::get('action');
 		} catch (\Exception $e) {
 			// Forward to the Error's 404
+			Profiler::deregister('Controller', $controllerName);
 			Router::loadController('Error', 'notFound');
 		}
 
@@ -110,7 +108,7 @@ class Router
 
 		// Yes, it exists
 		// Let the bootstrap know
-		Profiler::register('action', $action);
+		Profiler::register('Action', $action);
 		Bootstrap::trigger(
 			'initAction',
 			array(

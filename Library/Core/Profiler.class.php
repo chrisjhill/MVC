@@ -28,7 +28,7 @@ class Profiler
 	 * @var    array
 	 * @static
 	 */
-	private static $_stack;
+	private static $_stack = array();
 
 	/**
 	 * When the requested came in.
@@ -49,14 +49,43 @@ class Profiler
 	private static $_requestEnd;
 
 	/**
+	 * Set when the request has started.
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function start() {
+		self::$_requestStart = microtime(true);
+	}
+
+	/**
+	 * Set when the request has finished.
+	 *
+	 * @access public
+	 * @static
+	 */
+	public static function stop() {
+		self::$_requestEnd = microtime(true);
+	}
+
+	/**
 	 * The start of a trace.
+	 *
+	 * We add new traces to the start of the array so that when we deregister
+	 * them we shouldn't, hopefully, have to go through as many iterations.
 	 *
 	 * @access public
 	 * @param  string $type The type of code that is running.
 	 * @param  string $name How we will reference the trace in the stack.
 	 * @static
 	 */
-	public static function register($type, $name) {}
+	public static function register($type, $name) {
+		array_unshift(self::$_stack, array(
+			'type'  => $type,
+			'name'  => $name,
+			'start' => microtime(true)
+		));
+	}
 
 	/**
 	 * The end of a trace.
@@ -66,5 +95,27 @@ class Profiler
 	 * @param  string $name How we will reference the trace in the stack.
 	 * @static
 	 */
-	public static function deregister($type, $name) {}
+	public static function deregister($type, $name) {
+		foreach (self::$_stack as $traceId => $trace) {
+			if ($trace['name'] == $name) {
+				self::$_stack[$traceId]['end'] = microtime(true);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Return the stats for the request.
+	 *
+	 * @access public
+	 * @return array
+	 * @static
+	 */
+	public static function getProfilerData() {
+		return array(
+			'requestStart' => self::$_requestStart,
+			'requestEnd'   => self::$_requestEnd,
+			'stack'        => array_reverse(self::$_stack)
+		);
+	}
 }
