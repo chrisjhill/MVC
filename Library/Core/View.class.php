@@ -115,6 +115,10 @@ class View
 			);
 		}
 
+		// This is the end of the controller's work
+		Profiler::deregister('action',     $this->action);
+		Profiler::deregister('controller', $this->controller);
+
 		// Now start to wrap the view content in the layout
 		if (! $this->layout) {
 			// No template, thanks
@@ -133,8 +137,6 @@ class View
 
 		// Inform the bootstrap that we are about to shutdown
 		Profiler::stop();
-		Profiler::deregister('action',     $this->action);
-		Profiler::deregister('controller', $this->controller);
 		$template .= $this->profiler(Profiler::getProfilerData());
 		Bootstrap::trigger(
 			'initShutdown',
