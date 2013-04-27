@@ -1,6 +1,22 @@
 <div id="profiler">
 	<h2>You request lasted <?=$profilerRuntime?> seconds</h2>
 
+	<div id="profiler-legend">
+		<p>
+			<span class="legend-item item-core">&nbsp;</span>
+			<span class="legend-title">Core</span>
+
+			<span class="legend-item item-controller">&nbsp;&nbsp;</span>
+			<span class="legend-title">Controller</span>
+
+			<span class="legend-item item-action">&nbsp;</span>
+			<span class="legend-title">Action</span>
+
+			<span class="legend-item item-parse">&nbsp;</span>
+			<span class="legend-title">Template parsing</span>
+		</p>
+	</div>
+
 	<div id="profiler-items">
 		<?=$profilerTraceHtml?>
 	</div>

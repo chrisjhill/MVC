@@ -136,8 +136,6 @@ class View
 		}
 
 		// Inform the bootstrap that we are about to shutdown
-		Profiler::stop();
-		$template .= $this->profiler(Profiler::getProfilerData());
 		Bootstrap::trigger(
 			'initShutdown',
 			array(
@@ -145,6 +143,14 @@ class View
 				'action'     => $this->action
 			)
 		);
+
+		// Stop the profiling, we're done
+		Profiler::stop();
+
+		// Add the profile to the page output?
+		if (Config::get('profiler', 'enable', true)) {
+			$template .= $this->profiler(Profiler::getProfilerData());
+		}
 
 		// And now, the journey ends
 		// We die so that we do not call other action's render()

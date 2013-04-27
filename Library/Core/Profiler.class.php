@@ -80,10 +80,16 @@ class Profiler
 	 * @static
 	 */
 	public static function register($type, $name) {
+		// Profile this request?
+		if (! Config::get('profiler', 'enable', true)) {
+			return false;
+		}
+
 		array_unshift(self::$_stack, array(
 			'type'  => $type,
 			'name'  => $name,
-			'start' => microtime(true)
+			'start' => microtime(true),
+			'mem'   => memory_get_usage()
 		));
 	}
 
@@ -96,9 +102,20 @@ class Profiler
 	 * @static
 	 */
 	public static function deregister($type, $name) {
+		// Profile this request?
+		if (! Config::get('profiler', 'enable', true)) {
+			return false;
+		}
+
+		// Get the time here to get a more accurate trace
+		$microtime = microtime(true);
+
+		// And begin the loop
 		foreach (self::$_stack as $traceId => $trace) {
 			if ($trace['name'] == $name) {
-				self::$_stack[$traceId]['end'] = microtime(true);
+				self::$_stack[$traceId]['end'] = $microtime;
+				self::$_stack[$traceId]['mem'] =
+					memory_get_usage() - self::$_stack[$traceId]['mem'];
 				break;
 			}
 		}

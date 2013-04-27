@@ -14,6 +14,3 @@ session_start();
 
 // Include the autoloader
 include dirname(__FILE__) . '/autoloader.php';
-
-// Start the profiler
-Core\Profiler::start();

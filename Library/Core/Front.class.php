@@ -40,12 +40,21 @@ class Front
 	 * @param  Core\Router $router      The routes the users application requires.
 	 */
 	public function __construct($projectName, $router = null) {
+		// Start the profiler
+		Profiler::start();
+		Profiler::register('Core', 'Front');
+
 		// Load the configuration for this project
+		Profiler::register('Core', 'Config');
 		Config::load($projectName);
+		Profiler::deregister('Core', 'Config');
 
 		// Set the project information
 		$this->_projectName = $projectName;
 		$this->_router      = $router ? $router : new Router();
+
+		// Stop the profiler before we begin the routing
+		Profiler::deregister('Core', 'Front');
 
 		// And route
 		$this->route();

@@ -39,9 +39,12 @@ class Profiler extends Core\ViewHelper
 
 			// Get the trace HTML
 			$profilerTraceHtml .= $this->parse('ProfilerItem', array(
+				'traceType'  => strtolower($trace['type']),
+				'traceTitle' => $trace['name'],
 				'traceStart' => $traceStart,
 				'traceEnd'   => $traceEnd - $traceStart,
-				'traceTitle' => $trace['type'] . '.' . $trace['name']
+				'traceTime'  => number_format($trace['end'] - $trace['start'], 3),
+				'traceMem'   => number_format($trace['mem'] / 1024 / 1024, 3)
 			));
 		}
 

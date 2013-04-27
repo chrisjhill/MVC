@@ -15,6 +15,9 @@ namespace Core;
 class Bootstrap
 {
 	static function trigger($state, $params) {
+		// Start the profiler
+		Profiler::register('Core', 'Bootstrap.' . $state);
+
 		// Create a reference to the users bootstrap
 		$bootstrap = Config::get('settings', 'project') . '\\Bootstrap';
 
@@ -25,5 +28,8 @@ class Bootstrap
 			case 'initAction'     : $bootstrap::initAction($params);     break;
 			case 'initShutdown'   : $bootstrap::initShutdown($params);   break;
 		}
+
+		// Stop the profiler
+		Profiler::deregister('Core', 'Bootstrap.' . $state);
 	}
 }
