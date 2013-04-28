@@ -27,15 +27,16 @@ code,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-heig
 #profiler{margin:20px auto;padding:20px 0;width:960px;background:#FFF;border-bottom:2px solid #CCC;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px}
 	#profiler h2{padding-left:80px}
 
-	#profiler-legend{margin:-36px 85px 0 0;font-size:11px;text-align:right}
+	#profiler-legend{margin:-38px 85px 0 0;font-size:11px;text-align:right}
 		.legend-item{padding:0 4px}
-		.legend-title{padding-right:20px}
+		.legend-title{padding-right:10px}
 
 	#profiler-items{margin:40px 80px 20px;padding-right:120px;background:url(../img/profiler-bg.png?v2) repeat 5px 0}
 		#profiler .item{display:block;position:relative;margin-top:25px;min-width:2px;height:10px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px}
 			.item-core{background:#BDC3C6}
 			.item-controller{background:#006594}
 			.item-action{background:#4AB2D6}
+			.item-helper{background:#F60}
 			.item-parse{background:#7BC342}
 			#profiler .item > span{position:absolute;top:-18px;left:0;font-size:11px;white-space:nowrap}
 				#profiler .item span span{visibility:hidden}
