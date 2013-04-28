@@ -18,7 +18,21 @@ class Format
 	 * @return string
 	 * @static
 	 */
-	public static function safeHtml($string) {	
+	public static function safeHtml($string) {
 		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8', false);
+	}
+
+	/**
+	 * Strips all invalid characters out of the string and returns.
+	 *
+	 * @access public
+	 * @param  string $url The URL we need to parse.
+	 * @return string
+	 * @static
+	 */
+	public static function parseUrl($url) {
+		return preg_replace('/[^a-z0-9-]/', '',
+			strtolower(str_replace(' ', '-', $url))
+		);
 	}
 }

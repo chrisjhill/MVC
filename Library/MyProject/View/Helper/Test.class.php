@@ -23,7 +23,7 @@ class Test extends Core\ViewHelper
 	 * @return string         A rendered View Helper Partial template file.
 	 */
 	public function render($params = array()) {
-		return $this->parse('test', array(
+		return $this->renderPartial('test', array(
 			'testVar' => $params['testVar']
 		));
 	}

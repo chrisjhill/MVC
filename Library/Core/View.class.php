@@ -217,7 +217,10 @@ class View
 	 */
 	public function __call($helperName, $param) {
 		// Try and instantiate the helper
-		$viewHelperClassName = Config::get('settings', 'project') . '\\View\\Helper\\' . $helperName;
+		// Note: Calling section_Author will translate to Section\Author
+		$viewHelperClassName = Config::get('settings', 'project')
+			. '\View\Helper\\'
+			. str_replace('_', '\\', $helperName);
 		$viewHelper = new $viewHelperClassName();
 
 		// Render and return

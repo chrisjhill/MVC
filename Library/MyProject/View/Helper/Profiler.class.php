@@ -38,7 +38,7 @@ class Profiler extends Core\ViewHelper
 			$traceEnd   = (($trace['end']   - $params['requestStart']) / $profilerRuntime) * 100;
 
 			// Get the trace HTML
-			$profilerTraceHtml .= $this->parse('ProfilerItem', array(
+			$profilerTraceHtml .= $this->renderPartial('ProfilerItem', array(
 				'traceType'  => strtolower($trace['type']),
 				'traceTitle' => $trace['name'],
 				'traceStart' => $traceStart,
@@ -49,7 +49,7 @@ class Profiler extends Core\ViewHelper
 		}
 
 		// And place the trace items into the profiler container
-		return $this->parse('Profiler', array(
+		return $this->renderPartial('Profiler', array(
 			'profilerRuntime'   => number_format($profilerRuntime, 3),
 			'profilerTraceHtml' => $profilerTraceHtml
 		));

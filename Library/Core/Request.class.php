@@ -20,7 +20,7 @@ class Request
 
 	/**
 	 * A single entry point to the $_GET superglobal
-	 * 
+	 *
 	 * @access private
 	 * @var    array
 	 * @static
@@ -29,7 +29,7 @@ class Request
 
 	/**
 	 * A single entry point to the $_POST superglobal
-	 * 
+	 *
 	 * @access private
 	 * @var    array
 	 * @static
@@ -61,8 +61,8 @@ class Request
 
 		// Start to piece back together and create a nice, usable, array
 		$url = array(
-			'controller' => isset($urlBreakdown[0]) ? $urlBreakdown[0] : 'Index',
-			'action'     => isset($urlBreakdown[1]) ? $urlBreakdown[1] : 'index'
+			'controller' => isset($urlBreakdown[0]) ? ucfirst($urlBreakdown[0]) : 'Index',
+			'action'     => isset($urlBreakdown[1]) ? $urlBreakdown[1]          : 'index'
 		);
 
 		// Chunk them into variable->value
@@ -157,5 +157,16 @@ class Request
 		return isset(self::$_server[$variable])
 			? self::$_server[$variable]
 			: $default;
+	}
+
+	/**
+	 * Check whether the users request was a standard request, or via Ajax.
+	 *
+	 * @access public
+	 * @return boolean
+	 */
+	public static function isAjax() {
+		return isset(self::$_server['HTTP_X_REQUESTED_WITH'])
+			&& strtolower(self::$_server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 	}
 }
