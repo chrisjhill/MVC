@@ -127,6 +127,6 @@ class Index extends Core\Controller
 
 <p>Your View Scripts can easily direct logic away from themselves into View Helpers. View helpers can have their own template files, called Partials. For example, the <code>Test</code> View Helper:</p>
 
-<pre>return $this->parse('test', array(
+<pre>return $this->renderPartial('test', array(
 	'testVar' => $params['testVar']
 ));</pre>
