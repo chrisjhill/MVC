@@ -130,3 +130,11 @@ class Index extends Core\Controller
 <pre>return $this->renderPartial('test', array(
 	'testVar' => $params['testVar']
 ));</pre>
+
+<hr />
+
+<h4>Profiling</h4>
+
+<p>A powerful in-built profiler will let you know exactly where your application is expending time and additional memory. Its waterfall display allows you to see which functions have been called by whom.</p>
+
+<img src="https://raw.github.com/chrisjhill/MVC/master/Web/assets/img/profiler.png" />
