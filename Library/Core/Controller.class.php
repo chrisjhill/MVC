@@ -99,13 +99,12 @@ class Controller
 	/**
 	 * Redirect the user to a new page.
 	 *
-	 * This will perform a header redirect, so we will change the URL, and we can also
-	 * pass variables.
+	 * This will perform a header redirect, so it will change the URL.
 	 *
 	 * @access public
-	 * @param  array $param Parameters for the URL View Helper.
+	 * @param  string $url The URL that we wish to redirect to.
 	 */
-	public function redirect($param) {
-		header('Location: ' . $this->view->url($param)); exit();
+	public function redirect($url) {
+		header('Location: ' . $url); exit();
 	}
 }
