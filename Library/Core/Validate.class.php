@@ -55,8 +55,6 @@ namespace Core;
  * @since       21/04/2013
  *
  * @todo        Integrate with a Core\Notice class.
- * @todo        Import data from a request and "bolt" on tests.
- * @todo        Regex testing.
  */
 class Validate
 {
@@ -79,6 +77,7 @@ class Validate
 	 *     <li>'is'      => 'boolean|email|float|int|ip|url'</li>
 	 *     <li>'exactly' => array('foobar', 'acme')/li>
 	 *     <li>'between' => array('min' => 10, 'max' => 100)</li>
+	 *     <li>'regex'   => '/[a-z0-9]/gi'
 	 * </ul>
 	 *
 	 * @access private
@@ -284,8 +283,8 @@ class Validate
 	 * Note: We check the datatype of the input first to make sure it is an int.
 	 *
 	 * @access public
-	 * @param  string     $inputValue The value of the input.
-	 * @param  array      $testParams The parameters for this test.
+	 * @param  string  $inputValue The value of the input.
+	 * @param  array   $testParams The parameters for this test.
 	 * @return boolean
 	 * @static
 	 * @thorws \Exception If the user has supplied no min and max boundary.
@@ -307,6 +306,19 @@ class Validate
 		}
 
 		return true;
+	}
+
+	/**
+	 * Whether the input matches a regular expression.
+	 *
+	 * @access public
+	 * @param  string  $inputValue The value of the input.
+	 * @param  array   $testParams The parameters for this test.
+	 * @return boolean
+	 * @static
+	 */
+	public static function regex($inputValue, $testParams) {
+		return preg_match($inputValue, $testParams);
 	}
 
 	/**
