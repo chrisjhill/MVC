@@ -16,11 +16,11 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$_SERVER['foobar'] = 'barfoo';
 
 		// Load the config file
-		Core\Request::getUrlBreakdown('/index/foo/bar/foobar');
+		Core\Request::setUrlFragments('/index/foo/bar/foobar');
 
 		// Controller okay?
 		$this->assertEquals(Core\Request::get('controller'), 'index');
-		
+
 		// Action okay?
 		$this->assertEquals(Core\Request::get('action'), 'foo');
 	}
@@ -46,10 +46,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
 	public function testGetVariables() {
 		// A variable that exists
 		$this->assertEquals(Core\Request::get('bar'), 'foobar');
-		
+
 		// A variable that does not exist
 		$this->assertNull(Core\Request::get('doesNotExist'));
-		
+
 		// A variable that does not exist with a default return value
 		$this->assertEquals(Core\Request::get('doesNotExist', 'foo'), 'foo');
 	}
@@ -62,10 +62,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
 	public function testPostVariables() {
 		// A variable that exists
 		$this->assertEquals(Core\Request::post('bar'), 'foo');
-		
+
 		// A variable that does not exist
 		$this->assertNull(Core\Request::post('doesNotExist'));
-		
+
 		// A variable that does not exist with a default return value
 		$this->assertEquals(Core\Request::post('doesNotExist', 'foo'), 'foo');
 	}
@@ -78,10 +78,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
 	public function testServerVariables() {
 		// A variable that exists
 		$this->assertEquals(Core\Request::server('foobar'), 'barfoo');
-		
+
 		// A variable that does not exist
 		$this->assertNull(Core\Request::server('doesNotExist'));
-		
+
 		// A variable that does not exist with a default return value
 		$this->assertEquals(Core\Request::server('doesNotExist', 'foo'), 'foo');
 	}
