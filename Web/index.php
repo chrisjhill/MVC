@@ -2,5 +2,5 @@
 // Global configurations
 include dirname(__FILE__) . '/../Library/global.php';
 
-// Start the router
+// Start the application
 new Core\Front('MyProject');

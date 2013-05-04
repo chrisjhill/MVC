@@ -2,24 +2,121 @@
 namespace Core;
 
 /**
- * Dispatches requests to a controller and an action. Can be called by the
- * controller live to forward to another controller.
+ * Determines which of the supplied routes will be used for the dispatcher.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
+ * If no route is valid then we assume that you are using the default MVC pattern
+ * of /controller/action/my/variables/go/here/foobar. This router matches from
+ * first to last, so if potentially more than one route matches then we will
+ * route to the first declared. This is due to exiting as soon as we locate a
+ * valid route to save processing and save time.
+ *
+ * All routes use the following pattern modifiers:
+ *
+ * <ul>
+ *     <li>i: PCRE_CASELESS: matching both uppercase and lowercase.</li>
+ *     <li>u: PCRE_UTF8: Make strings UTF-8.</li>
+ * </ul>
+ *
+ * An example of how to use this class in the index.php is as follows:
+ *
+ * <code>
+ * <?php
+ * // Global configurations
+ * include dirname(__FILE__) . '/../Library/global.php';
+ *
+ * // Creae new Router instance
+ * $router = new Core\Router();
+ * $router
+ *     ->addRoute('Foo')
+ *     ->setRoute('/foo/:bar/:acme')
+ *     ->setFormat(array(
+ *         'bar'  => '\d+',
+ *         'acme' => '[a-z0-9]+')
+ *     )
+ *     ->setEndpoint(array(
+ *         'controller' => 'Foo',
+ *         'action'     => 'bar')
+ *     );
+ *
+ * // Start the application
+ * new Core\Front('MyProject', $router);
+ * </code>
+ *
+ * Note: If no regex formats are supplied then we use the default of \w+ (any
+ * alpha numeric character (a-z, 0-9, dashes, underscores, periods, and spaces))
+ * for the variable (:var) matching.
+ *
+ * @copyright   2013 Christopher Hill <cjhill@gmail.com>
  * @author      Christopher Hill <cjhill@gmail.com>
- * @since       15/09/2012
+ * @since       04/05/2013
  */
 class Router
 {
 	/**
-	 * Router constructor, try and load a controller and action.
+	 * A collection of routes that have been declared.
+	 *
+	 * @access private
+	 * @var    array
+	 */
+	private $_routes = array();
+
+	/**
+	 * The portion of the request URL that the route has matched.
+	 *
+	 * @access private
+	 * @var    string
+	 */
+	private $_routePath;
+
+	/**
+	 * Add a route to the router.
+	 *
+	 * @access public
+	 * @param  strint $routeName         The name of the route.
+	 * @return Core\Route                The new Route, for chainability.
+	 * @throws \InvalidArgumentException If the route name has already been declared.
+	 */
+	public function addRoute($routeName) {
+		// Have we already used this route name?
+		if (isset($this->_routes[$routeName])) {
+			throw new \InvalidArgumentException("The route {$routeName} has already been declared.");
+		}
+
+		$this->_routes[$routeName] = new Route($routeName);
+		return $this->_routes[$routeName];
+	}
+
+	/**
+	 * Start the routing procedure and find a valid route, if any.
 	 *
 	 * @access public
 	 */
 	public function route() {
-		// Get the address the user navigated to
+		// Start the profiler
+		Profiler::register('Core', 'Router');
+
+		// First, let's look at the URL the user supplied
+		$requestUrl   = array_filter(explode('/', Request::getUrl()));
+		$requestRoute = null;
+
+		// Loop over each of the routes declared
+		foreach ($this->_routes as $route) {
+			if ($this->routeTest($requestUrl, $route)) {
+				$requestRoute = $route;
+				break;
+			}
+		}
+
+		// We have completed the route matching
+		// Finish the setup of the request object
 		Profiler::register('Core', 'Request');
-		Request::getUrlBreakdown();
+		if ($requestRoute) {
+			$_GET['controller'] = $route->endpoint['controller'];
+			$_GET['action']     = $route->endpoint['action'];
+			Request::setUrlFragments(str_replace($this->_routePath, '', Request::getUrl()));
+		} else {
+			Request::setUrlFragments(Request::getUrl(), true);
+		}
 		Profiler::deregister('Core', 'Request');
 
 		// Inform the bootstrap a request has been initialised
@@ -31,118 +128,68 @@ class Router
 			)
 		);
 
-		// Try and instantiate the controller
-		$this->loadController(Request::get('controller'));
+		// And stop the profiler
+		Profiler::deregister('Core', 'Router');
+		Profiler::deregister('Core', 'Front');
+
+		// And dispatch
+		Dispatcher::loadController(
+			Request::get('controller'),
+			Request::get('action')
+		);
 	}
 
 	/**
-	 * Try and load the controller.
+	 * Test to see if this route is valid according to the request URL.
 	 *
-	 * @access public
-	 * @param  string    $controller The controller we wish to load.
-	 * @param  string    $action     The action we wish to load.
-	 * @throws Exception             If we cannot load the controller.
-     * @static
+	 * @access private
+	 * @param  array      $requestUrl The URL to test the route against.
+	 * @param  Core\Route $route      A Route declared by the application.
+	 * @return boolean
 	 */
-	public static function loadController($controllerName, $action = '') {
-		// Format the controller name correctly
-		$controller = Config::get('settings', 'project') . '\\Controller\\' . $controllerName;
+	private function routeTest($requestUrl, $route) {
+		// Break apart the route URL
+		$routeUrl  = array_filter(explode('/', $route->route)) ?: '\w';
+		$routePath = '';
 
-		// Can we load the controller?
-		try {
-			// Instantiate
-			Profiler::register('Controller', $controllerName);
-			Profiler::register('Core', 'Router');
-			$controller = new $controller();
-
-			// We need to set the child to the parent so we can forward
-			$controller->child = $controller;
-
-			// Inform the bootstrap a controller has been initialised
-			Bootstrap::trigger(
-				'initController',
-				array(
-					'controller' => $controller
-				)
-			);
-
-			// Call the init method, if it exists
-			Profiler::deregister('Core', 'Router');
-			if (method_exists($controller, 'init')) {
-				Profiler::register('Controller', 'Init');
-				$controller->init();
-				Profiler::deregister('Controller', 'Init');
+		// Loop over each part of the route
+		foreach ($routeUrl as $routeFragmentId => $routeFragment) {
+			// Does this fragment actually exist in the request?
+			if (! isset($requestUrl[$routeFragmentId])) {
+				return false;
 			}
 
-			// Which action shall we run?
-			$action = $action ?: Request::get('action');
-		} catch (\Exception $e) {
-			// Forward to the Error's 404
-			Profiler::deregister('Core', 'Router');
-			Profiler::deregister('Controller', $controllerName);
-			Router::loadController('Error', 'notFound');
+			// Request has this fragment
+			// If it is a variable, does the format match?
+			else if (strpos($routeFragment, ':') === 0) {
+				// Get the name of this fragment
+				$routeFragmentName = substr($routeFragment, 1);
+
+				// Get the format regex test
+				$regexTest = isset($route->paramFormats[$routeFragmentName])
+					? $route->paramFormats[$routeFragmentName]
+					: '\w+';
+
+				// And test
+				if (! preg_match("/^{$regexTest}$/iu", $requestUrl[$routeFragmentId])) {
+					return false;
+				}
+
+				// Add this route declared variable to the GET request
+				$_GET[$routeFragmentName] = $requestUrl[$routeFragmentId];
+			}
+
+			// This is not a regex test, so just check the strings are the same
+			else if ($routeFragment != $requestUrl[$routeFragmentId]) {
+				return false;
+			}
+
+			// Build up the path
+			$routePath .= '/' . $requestUrl[$routeFragmentId];
 		}
 
-		// Load the action
-		Router::loadAction($controller, $action);
-	}
-
-	/**
-	 * Try and run the action.
-	 *
-	 * @access public
-	 * @param  string $controller The controller we wish to load.
-	 * @param  string $action     The action we wish to load.
-     * @return boolean
-     * @static
-	 */
-	public static function loadAction($controller, $action) {
-		// Start the profiler
-		Profiler::register('Core', 'Router');
-
-		// We want pretty URL's, there might be dashes
-		$action = str_replace('-', '', $action);
-
-		// Does the method exist?
-		$actionExists = method_exists($controller, $action . 'Action');
-
-		// If the method does not exist then we need to run the error action
-		if (! $actionExists && $action != 'error') {
-			// There was an error with the action, and we were not running the 404 action
-			// Try and run the 404 action
-			Profiler::deregister('Core', 'Router');
-			Router::loadAction($controller, 'error');
-
-			// No need to go any further
-			return false;
-		}
-
-		// Yes, it exists
-		// Let the bootstrap know
-		Bootstrap::trigger(
-			'initAction',
-			array(
-				'controller' => $controller,
-				'action'     => $action
-			)
-		);
-		Profiler::deregister('Core', 'Router');
-		Profiler::register('Action', $action);
-
-		// Set the controller and action that we are heading to
-		$controller->view->controller = str_replace(
-			Config::get('settings', 'project') . '\\Controller\\',
-			'',
-			get_class($controller)
-		);
-		$controller->view->action = $action;
-
-		// And call the action
-		if ($actionExists) {
-			$controller->{$action . 'Action'}();
-		}
-
-		// And now render the view
-		$controller->view->render();
+		// This route has passed all of the fragment tests
+		$this->_routePath = $routePath;
+		return true;
 	}
 }

@@ -48,13 +48,13 @@ class Front
 		Profiler::register('Core', 'Config');
 		Config::load($projectName);
 		Profiler::deregister('Core', 'Config');
+		Profiler::register('Core', 'Request');
+		Request::setUrl();
+		Profiler::deregister('Core', 'Request');
 
 		// Set the project information
 		$this->_projectName = $projectName;
-		$this->_router      = $router ? $router : new Router();
-
-		// Stop the profiler before we begin the routing
-		Profiler::deregister('Core', 'Front');
+		$this->_router      = $router ?: new Router();
 
 		// And route
 		$this->route();

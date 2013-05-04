@@ -52,25 +52,43 @@ class Request
 	 * @return array
      * @static
 	 */
-	public static function getUrlBreakdown($url = null) {
+	public static function setUrl($url = null) {
 		// Set the URL
-		self::$_url = trim($url ? $url : $_SERVER['REQUEST_URI'], '/');
-		// We do not want the start and the end slash, explode on separators, and filter
-		$urlBreakdown = explode('/', self::$_url);
-		$urlBreakdown = array_filter($urlBreakdown);
+		self::$_url = $url ?: $_SERVER['REQUEST_URI'];
 
-		// Start to piece back together and create a nice, usable, array
-		$url = array(
-			'controller' => isset($urlBreakdown[0]) ? ucfirst($urlBreakdown[0]) : 'Index',
-			'action'     => isset($urlBreakdown[1]) ? $urlBreakdown[1]          : 'index'
-		);
+		// We want to remove the path root from the front request URL
+		if (strpos(self::$_url, Config::get('path', 'root')) === 0) {
+			self::$_url = '/' . substr(self::$_url, strlen(Config::get('path', 'root')));
+		}
+	}
+
+	/**
+	 * Build up the internal GET array from the URL.
+	 *
+	 * @access public
+	 * @param  string  $url                 The URL to parse.
+	 * @param  boolean $setControllerAction Whether we need a controller/action from the URL.
+	 */
+	public static function setUrlFragments($url = null, $setControllerAction = false) {
+		// And breakdown the request the user made
+		$urlBreakdown = array_filter(explode('/', $url ?: self::$_url));
 
 		// Chunk them into variable->value
+		$url          = array();
 		$urlBreakdown = array_chunk($urlBreakdown, 2);
 
-		// The first index will be the controller/action
-		// We have already set this so just ignore
-		unset($urlBreakdown[0]);
+		// Do we need a controller/action for this URL?
+		if ($setControllerAction) {
+			// Start to piece back together and create a nice, usable, array
+			$url = array(
+				'controller' => isset($urlBreakdown[0][0]) ? ucfirst($urlBreakdown[0][0]) : 'Index',
+				'action'     => isset($urlBreakdown[0][1]) ? $urlBreakdown[0][1]          : 'index'
+			);
+
+			// The first index will be the controller/action
+			// We have already set this so just ignore
+			unset($urlBreakdown[0]);
+		}
 
 		// Loop over the remaining array, these are GET variables
 		foreach ($urlBreakdown as $urlSegment) {

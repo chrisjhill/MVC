@@ -87,12 +87,12 @@ class Controller
 		// Controller forward = A new controller
 		// Action redirect    = Same controller, different action
 		if ($controller == '' || $controller == str_replace(Config::get('settings', 'project') . '\\Controller\\', '', get_called_class())) {
-			Router::loadAction($this->child, $action);
+			Dispatcher::loadAction($this->child, $action);
 			$this->child->render();
 		} else {
 			// And start a new router to the desired controller/action
 			Profiler::deregister('Controller', $this->view->controller);
-			Router::loadController($controller, $action);
+			Dispatcher::loadController($controller, $action);
 		}
 	}
 
