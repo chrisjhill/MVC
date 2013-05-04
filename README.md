@@ -59,6 +59,38 @@ MVC
 
 <p>This will forward the request onto the <code>index</code> controller and into the <code>hello</code> action.</p>
 
+<h3>Advanced routing</h3>
+
+<p>If you want to customise your URL's as such that the basic <code>/controller/action/my/variables/go/here</code> will not suffice, then you can use the built in <code>Router</code>.</p>
+
+<h4>Example</h4>
+
+<pre>&lt;?php
+// Global configurations
+include dirname(__FILE__) . '/../Library/global.php';
+
+// Creae new Router instance
+$router = new Core\Router();
+$router
+    ->addRoute('Foo')
+    ->setRoute('/foo/:bar/:acme')
+    ->setFormat(array(
+        'bar'  => '\d+',
+        'acme' => '[a-z0-9]+')
+    )
+    ->setEndpoint(array(
+        'controller' => 'Foo',
+        'action'     => 'bar')
+    );
+
+// Start the application
+new Core\Front('MyProject', $router);
+</pre>
+
+<p>You can add as many routes as you like. Any variables that you do not specify in the <code>setFormat</code> method (which is optional) will use the regex of <code>\w+</code>. The <code>setEndpoint</code> method does not require an <code>action</code> parameter, but if none is declared then it will use the default <code>index</code> action of that controller.</p>
+
+<p>This advanced routing system will use the first declared route that it finds matching the request URL.</p>
+
 <hr />
 
 <h3>Controllers</h3>
