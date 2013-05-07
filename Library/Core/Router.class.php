@@ -192,4 +192,33 @@ class Router
 		$this->_routePath = $routePath;
 		return true;
 	}
+
+	/**
+	 * Reverse the router.
+	 *
+	 * Make a URL out of a route name and parameters, rather than parsing one.
+	 * Note that this function does not care about URL paths!
+	 *
+	 * @access public
+	 * @param  string    $routeName The name of the route we wish to generate a URL for.
+	 * @param  array     $params    The parameters that the route requires.
+	 * @return string
+	 * @throws \Exception           If the route does not exist.
+	 */
+	public function reverse($routeName, $params = array()) {
+		// Does the route actually exist?
+		if (! isset($this->_routes[$routeName])) {
+			throw new Exception('The route ' . $routeName . ' does not exist.');
+		}
+
+		// Create a container for the URL
+		$url = $this->_routes[$routeName]->route;
+
+		// And replace the variables in the
+		foreach ($params as $variable => $value) {
+			$url = str_replace(":{$variable}", $value, $url);
+		}
+
+		return $url;
+	}
 }
