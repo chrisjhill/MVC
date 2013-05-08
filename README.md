@@ -91,6 +91,10 @@ new Core\Front('MyProject', $router);
 
 <p>This advanced routing system will use the first declared route that it finds matching the request URL.</p>
 
+<h4>Reverse routing</h4>
+
+<p>URL's will often change. Defining them in a single place (the router) will save you having to rewrite them in your View Helpers/Partials. It is also safer because URL encoding will be taken care for you.</p>
+
 <hr />
 
 <h3>Controllers</h3>

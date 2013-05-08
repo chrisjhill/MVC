@@ -46,6 +46,12 @@ namespace Core;
  * alpha numeric character (a-z, 0-9, dashes, underscores, periods, and spaces))
  * for the variable (:var) matching.
  *
+ * Reverse routing
+ * ---------------
+ * URL's will often change. Defining them in a single place (the router) will
+ * save you having to rewrite them in your View Helpers/Partials. It is also
+ * safer because URL encoding will be taken care for you.
+ *
  * @copyright   2013 Christopher Hill <cjhill@gmail.com>
  * @author      Christopher Hill <cjhill@gmail.com>
  * @since       04/05/2013
@@ -57,8 +63,9 @@ class Router
 	 *
 	 * @access private
 	 * @var    array
+	 * @static
 	 */
-	private $_routes = array();
+	private static $_routes = array();
 
 	/**
 	 * The portion of the request URL that the route has matched.
@@ -78,12 +85,12 @@ class Router
 	 */
 	public function addRoute($routeName) {
 		// Have we already used this route name?
-		if (isset($this->_routes[$routeName])) {
+		if (isset(self::$_routes[$routeName])) {
 			throw new \InvalidArgumentException("The route {$routeName} has already been declared.");
 		}
 
-		$this->_routes[$routeName] = new Route($routeName);
-		return $this->_routes[$routeName];
+		self::$_routes[$routeName] = new Route($routeName);
+		return self::$_routes[$routeName];
 	}
 
 	/**
@@ -100,7 +107,7 @@ class Router
 		$requestRoute = null;
 
 		// Loop over each of the routes declared
-		foreach ($this->_routes as $route) {
+		foreach (self::$_routes as $route) {
 			if ($this->routeTest($requestUrl, $route)) {
 				$requestRoute = $route;
 				break;
@@ -204,19 +211,20 @@ class Router
 	 * @param  array     $params    The parameters that the route requires.
 	 * @return string
 	 * @throws \Exception           If the route does not exist.
+	 * @static
 	 */
-	public function reverse($routeName, $params = array()) {
+	public static function reverse($routeName, $params = array()) {
 		// Does the route actually exist?
-		if (! isset($this->_routes[$routeName])) {
+		if (! isset(self::$_routes[$routeName])) {
 			throw new Exception('The route ' . $routeName . ' does not exist.');
 		}
 
 		// Create a container for the URL
-		$url = $this->_routes[$routeName]->route;
+		$url = self::$_routes[$routeName]->route;
 
 		// And replace the variables in the
 		foreach ($params as $variable => $value) {
-			$url = str_replace(":{$variable}", $value, $url);
+			$url = str_replace(":{$variable}", urlencode($value), $url);
 		}
 
 		return $url;
