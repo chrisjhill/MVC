@@ -69,7 +69,7 @@ MVC
 // Global configurations
 include dirname(__FILE__) . '/../Library/global.php';
 
-// Creae new Router instance
+// Create new Router instance
 $router = new Core\Router();
 $router
     ->addRoute('Foo')
