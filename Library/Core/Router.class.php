@@ -103,7 +103,7 @@ class Router
 		Profiler::register('Core', 'Router');
 
 		// First, let's look at the URL the user supplied
-		$requestUrl   = array_filter(explode('/', Request::getUrl()));
+		$requestUrl   = array_values(array_filter(explode('/', Request::getUrl())));
 		$requestRoute = null;
 
 		// Loop over each of the routes declared
@@ -156,7 +156,7 @@ class Router
 	 */
 	private function routeTest($requestUrl, $route) {
 		// Break apart the route URL
-		$routeUrl  = array_filter(explode('/', $route->route)) ?: '\w';
+		$routeUrl  = array_filter(explode('/', $route->route));
 		$routePath = '';
 
 		// Loop over each part of the route
