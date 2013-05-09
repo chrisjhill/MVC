@@ -28,7 +28,7 @@ namespace Core;
  * $router = new Core\Router();
  * $router
  *     ->addRoute('Foo')
- *     ->setRoute('/foo/:bar/:acme')
+ *     ->setRoute('foo/:bar/:acme')
  *     ->setFormat(array(
  *         'bar'  => '\d+',
  *         'acme' => '[a-z0-9]+')

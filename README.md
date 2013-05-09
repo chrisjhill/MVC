@@ -73,7 +73,7 @@ include dirname(__FILE__) . '/../Library/global.php';
 $router = new Core\Router();
 $router
     ->addRoute('Foo')
-    ->setRoute('/foo/:bar/:acme')
+    ->setRoute('foo/:bar/:acme')
     ->setFormat(array(
         'bar'  => '\d+',
         'acme' => '[a-z0-9]+')
@@ -93,7 +93,15 @@ new Core\Front('MyProject', $router);
 
 <h4>Reverse routing</h4>
 
-<p>URL's will often change. Defining them in a single place (the router) will save you having to rewrite them in your View Helpers/Partials. It is also safer because URL encoding will be taken care for you.</p>
+<p>URL's will often change. Defining them in a single place (the router) will save you having to rewrite them in your View Helpers/Partials. It is also safer because URL encoding will be taken care for you. You can call the <code>Route</code> View Helper via:</p>
+
+<pre>$this->view->route(array(
+	'route'  => 'Foo',
+	'params' => array(
+		'bar'  => 1234,
+		'acme' => 'foobar'
+	)
+);</pre>
 
 <hr />
 

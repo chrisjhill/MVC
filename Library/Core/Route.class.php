@@ -7,11 +7,11 @@ namespace Core;
  * Paths match the basics of the request URL. Anything after the route path will
  * be parsed as a GET variable. E.g., The route path of:
  *
- * <code>/foo/:bar</code>
+ * <code>foo/:bar</code>
  *
  * Will turn the request URL of:
  *
- * <code>/foo/hello/my/variables/go/here/foobar</code>
+ * <code>foo/hello/my/variables/go/here/foobar</code>
  *
  * Into the following GET variables (minus controller/action indexes):
  *
@@ -91,10 +91,10 @@ class Route
 	 * following are all examples of valid paths.
 	 *
 	 * <ul>
-	 *     <li>/foo</li>
-	 *     <li>/foo/bar/:acme</li>
-	 *     <li>/:foo/:bar/:acme</li>
-	 *     <li>/:foo/bar/:acme</li>
+	 *     <li>foo</li>
+	 *     <li>foo/bar/:acme</li>
+	 *     <li>:foo/:bar/:acme</li>
+	 *     <li>:foo/bar/:acme</li>
 	 * </ul>
 	 *
 	 * To set the regex for these variables, use the setParamFormats method.
@@ -117,7 +117,7 @@ class Route
 	 * include the pattern modifiers i and u. So, if you were to pass in the
 	 * regex pattern on \d+ then it would be evaluated as /^\d+$/iu
 	 *
-	 * If your path is <pre>/foo/:bar/:acme</pre> then your $formats parameter
+	 * If your path is <pre>foo/:bar/:acme</pre> then your $formats parameter
 	 * will look like:
 	 *
 	 * <code>
