@@ -42,8 +42,8 @@ namespace Core;
  * new Core\Front('MyProject', $router);
  * </code>
  *
- * Note: If no regex formats are supplied then we use the default of \w+ (any
- * alpha numeric character (a-z, 0-9, dashes, underscores, periods, and spaces))
+ * Note: If no regex formats are supplied then we use the default of [\w\-]+ (any
+ * alpha numeric character (a-z, 0-9, underscores) and dashes)
  * for the variable (:var) matching.
  *
  * Reverse routing
@@ -175,7 +175,7 @@ class Router
 				// Get the format regex test
 				$regexTest = isset($route->paramFormats[$routeFragmentName])
 					? $route->paramFormats[$routeFragmentName]
-					: '\w+';
+					: '[\w\-]+';
 
 				// And test
 				if (! preg_match("/^{$regexTest}$/iu", $requestUrl[$routeFragmentId])) {

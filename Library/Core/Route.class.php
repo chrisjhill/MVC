@@ -49,7 +49,7 @@ class Route
 	/**
 	 * The regex tests for each variable in the URL.
 	 *
-	 * Note: If no regex test is added for a variable then we use \w+
+	 * Note: If no regex test is added for a variable then we use [\w\-]+
 	 *
 	 * @access public
 	 * @var    array
@@ -111,7 +111,7 @@ class Route
 	/**
 	 * Set the regex patterns for each variable in the route.
 	 *
-	 * If no regex pattern is passed in for a variable then we use \w+
+	 * If no regex pattern is passed in for a variable then we use [\w\-]+
 	 *
 	 * All of your patterns will automatically start with ^, end with $, and will
 	 * include the pattern modifiers i and u. So, if you were to pass in the

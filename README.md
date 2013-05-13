@@ -1,6 +1,6 @@
 <h2>PHPUnit testing</h2>
 
-<p>OK (34 tests, 82 assertions)</p>
+<p>OK (36 tests, 135 assertions)</p>
 
 <h2>How to use this MVC</h2>
 
@@ -87,7 +87,7 @@ $router
 new Core\Front('MyProject', $router);
 </pre>
 
-<p>You can add as many routes as you like. Any variables that you do not specify in the <code>setFormat</code> method (which is optional) will use the regex of <code>\w+</code>. The <code>setEndpoint</code> method does not require an <code>action</code> parameter, but if none is declared then it will use the default <code>index</code> action of that controller.</p>
+<p>You can add as many routes as you like. Any variables that you do not specify in the <code>setFormat</code> method (which is optional) will use the regex of <code>[\w\-]+</code>. The <code>setEndpoint</code> method does not require an <code>action</code> parameter, but if none is declared then it will use the default <code>index</code> action of that controller.</p>
 
 <p>This advanced routing system will use the first declared route that it finds matching the request URL.</p>
 
