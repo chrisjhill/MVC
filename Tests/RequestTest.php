@@ -1,7 +1,4 @@
 <?php
-session_start();
-include dirname(__FILE__) . '/../Library/autoloader.php';
-
 // Start tests
 class RequestTest extends PHPUnit_Framework_TestCase
 {
@@ -16,10 +13,10 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$_SERVER['foobar'] = 'barfoo';
 
 		// Load the config file
-		Core\Request::setUrlFragments('/index/foo/bar/foobar');
+		Core\Request::setUrlFragments('/index/foo/bar/foobar', true);
 
 		// Controller okay?
-		$this->assertEquals(Core\Request::get('controller'), 'index');
+		$this->assertEquals(Core\Request::get('controller'), 'Index');
 
 		// Action okay?
 		$this->assertEquals(Core\Request::get('action'), 'foo');
@@ -32,10 +29,11 @@ class RequestTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetUrl() {
 		// Get the standard URL with no replacements
-		$this->assertEquals(Core\Request::getUrl(), 'index/foo/bar/foobar');
+		Core\Request::setUrl('/index/foo/bar/foobar');
+		$this->assertEquals(Core\Request::getUrl(), '/index/foo/bar/foobar');
 
 		// And try replacing slashes with underscores
-		$this->assertEquals(Core\Request::getUrl('_'), 'index_foo_bar_foobar');
+		$this->assertEquals(Core\Request::getUrl('_'), '_index_foo_bar_foobar');
 	}
 
 	/**

@@ -1,6 +1,4 @@
 <?php
-include dirname(__FILE__) . '/../Library/autoloader.php';
-
 // Start tests
 class RouterTest extends PHPUnit_Framework_TestCase
 {
@@ -111,5 +109,35 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($reflection->invoke(new Core\Router(), array('foo', '1', 'hello', 'wo+rld'),       $route));
 		$this->assertFalse($reflection->invoke(new Core\Router(), array('foo', '1', 'hello', 'wo.rld'),       $route));
 		$this->assertFalse($reflection->invoke(new Core\Router(), array('foo', '1', 'hello', 'wo rld'),       $route));
+	}
+
+	/**
+	 * Add a new route.
+	 *
+	 * @access public
+	 */
+	public function testAddingNewRoutes() {
+		// Create router
+		$router = new Core\Router();
+
+		// Add a couple of uniquely titled routes
+		$this->assertTrue(get_class($router->addRoute('Foo')) == 'Core\Route');
+		$this->assertTrue(get_class($router->addRoute('Bar')) == 'Core\Route');
+		$this->assertTrue(get_class($router->addRoute('Acme')) == 'Core\Route');
+	}
+
+	/**
+	 * Adding a route that has already been defined.
+	 *
+	 * @access public
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testAddingExistingRoute() {
+		// Create router
+		$router = new Core\Router();
+
+		// Create two routes called the same
+		$router->addRoute('Foo');
+		$router->addRoute('Foo');
 	}
 }

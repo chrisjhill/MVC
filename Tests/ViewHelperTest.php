@@ -1,6 +1,4 @@
 <?php
-include dirname(__FILE__) . '/../Library/autoloader.php';
-
 // Start tests
 class ViewHelperTest extends PHPUnit_Framework_TestCase
 {

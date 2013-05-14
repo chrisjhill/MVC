@@ -1,6 +1,4 @@
 <?php
-include dirname(__FILE__) . '/../Library/autoloader.php';
-
 // Start tests
 class ConfigTest extends PHPUnit_Framework_TestCase
 {
@@ -21,7 +19,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 		$this->assertNotNull(Core\Config::get('path', 'root'));
 		$this->assertNotNull(Core\Config::get('path', 'project'));
 		$this->assertNotNull(Core\Config::get('path', 'cache'));
-		
+
 		// Cache
 		$this->assertNotNull(Core\Config::get('cache', 'enable'));
 		$this->assertNotNull(Core\Config::get('cache', 'life'));

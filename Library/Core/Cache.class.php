@@ -16,6 +16,7 @@ class Cache
 	 * @access public
 	 * @param  string  $name What the cached object is called.
 	 * @return boolean
+	 * @static
 	 */
 	public static function has($name) {
 		// Has the user POSTed the form?
@@ -42,10 +43,11 @@ class Cache
 	 * Get the cached file.
 	 *
 	 * Note: You should call has() before this method to ensure it exists.
-	 * 
+	 *
 	 * @access public
 	 * @param  string  $name What the cached object is called.
 	 * @return string
+	 * @static
 	 */
 	public static function get($name) {
 		return file_get_contents(Config::get('path', 'base') . Config::get('path', 'cache') . $name);
@@ -53,12 +55,13 @@ class Cache
 
 	/**
 	 * Save the file to the cache.
-	 * 
+	 *
 	 * @access public
 	 * @param  string $name What the cached object is called.
 	 * @param  string $content The string that we wish to cache.
+	 * @static
 	 */
-	public function put($name, $content) {
+	public static function put($name, $content) {
 		file_put_contents(
 			Config::get('path', 'base') . Config::get('path', 'cache') . $name,
 			$content
@@ -67,11 +70,12 @@ class Cache
 
 	/**
 	 * Removing a cached object.
-	 * 
+	 *
 	 * @param  string $name What the cached object is called.
 	 * @return boolean      Whether the cached object was successfully removed.
+	 * @static
 	 */
-	public function remove($name) {
+	public static function remove($name) {
 		if (Cache::has($name)) {
 			return unlink(Config::get('path', 'base') . Config::get('path', 'cache') . $name);
 		}

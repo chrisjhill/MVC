@@ -1,4 +1,5 @@
 <?php
+session_start();
 include dirname(__FILE__) . '/../Library/autoloader.php';
 
 // Start tests
@@ -39,7 +40,7 @@ class CacheTest extends PHPUnit_Framework_TestCase
 
 	/**
 	 * Can we delete an object that does not exist?
-	 * 
+	 *
 	 * @access public
 	 */
 	public function testRemoveNonExistentObjectFromCache() {
