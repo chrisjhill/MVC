@@ -4,9 +4,10 @@ namespace Core;
 /**
  * Handles caching of files.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       15/09/2012
+ * @package   MVC
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
  */
 class Cache
 {
@@ -19,7 +20,7 @@ class Cache
 	 * @static
 	 */
 	public static function has($name) {
-		// Has the user POSTed the form?
+		// Has the user POST'ed the form?
 		if (Request::server('REQUEST_METHOD') == 'POST') {
 			return false;
 		}
