@@ -2,51 +2,63 @@
 namespace Core;
 
 /**
- * Handles caching of files.
+ * Interface for creating, getting, and removing items from the cache.
  *
- * @package   MVC
+ * Sample usage:
+ *
+ * <code>
+ * if (Core\Cache::has('foo')) {
+ *     echo Core\Cache::get('foo');
+ * } else {
+ *     $var = 'Hello World!';
+ *     Core\Cache::put('foo', $var);
+ *     echo Core\Cache::get('foo');
+ * }
+ * </code>
+ *
  * @copyright Copyright (c) 2012-2013 Christopher Hill
  * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
  * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class Cache
 {
 	/**
-	 * Is there a cached version of this file?
+	 * Determines if the item is already cached, and that it is valid.
 	 *
 	 * @access public
-	 * @param  string  $name What the cached object is called.
+	 * @param  string  $name The name of the cached item.
 	 * @return boolean
 	 * @static
 	 */
 	public static function has($name) {
-		// Has the user POST'ed the form?
+		// Do not cache POST'ed requests as it may effect the output
 		if (Request::server('REQUEST_METHOD') == 'POST') {
 			return false;
 		}
 
-		// Have we said we want to use the cache?
+		// If the cache is disabled then do not cache
 		else if (! Config::get('cache', 'enable')) {
 			return false;
 		}
 
-		// Does the file already exist?
+		// If the file does not exist then it has not been cached
 		if (! file_exists(Config::get('path', 'base') . Config::get('path', 'cache') . $name)) {
 			return false;
 		}
 
-		// The file exists, but is it stale?
+		// Check the time the item was created to see if it is stale
 		return Request::server('REQUEST_TIME') - filemtime(Config::get('path', 'base') . Config::get('path', 'cache') . $name)
 			<= Config::get('cache', 'life');
 	}
 
 	/**
-	 * Get the cached file.
+	 * Get a cached item.
 	 *
-	 * Note: You should call has() before this method to ensure it exists.
+	 * Note: You should call has() before get()'ing and item to ensure it exists.
 	 *
 	 * @access public
-	 * @param  string  $name What the cached object is called.
+	 * @param  string $name The name of the cached item.
 	 * @return string
 	 * @static
 	 */
@@ -55,11 +67,11 @@ class Cache
 	}
 
 	/**
-	 * Save the file to the cache.
+	 * Save an item to the cache.
 	 *
 	 * @access public
-	 * @param  string $name What the cached object is called.
-	 * @param  string $content The string that we wish to cache.
+	 * @param  string $name    The name of the cached item.
+	 * @param  string $content The content that we wish to cache.
 	 * @static
 	 */
 	public static function put($name, $content) {
@@ -70,9 +82,9 @@ class Cache
 	}
 
 	/**
-	 * Removing a cached object.
+	 * Remove an item from the cache.
 	 *
-	 * @param  string $name What the cached object is called.
+	 * @param  string $name The name of the cached item.
 	 * @return boolean      Whether the cached object was successfully removed.
 	 * @static
 	 */
