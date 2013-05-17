@@ -2,18 +2,27 @@
 namespace Core;
 
 /**
- * All of the configurations the application has set.
+ * All of the configurations the application has set via its config file.
  *
- * You can set, get, and remove any config variable via this class.
+ * Each application will have its own config file located in the project root
+ * directory. You can set, get, and remove any config variable via this class.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       16/12/2012
+ * Sample usage:
+ *
+ * <code>
+ * Core\Config::set('foo', 'Hello World!');
+ * echo Core\Config::get('foo');
+ * </code>
+ *
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class Config
 {
 	/**
-	 * The holder for all the config variables.
+	 * The holder for all of the config variables.
 	 *
 	 * @access private
 	 * @var    array
@@ -22,10 +31,7 @@ class Config
 	private static $_store = array();
 
 	/**
-	 * Load the users config file.
-	 *
-	 * This contains all of the project information as well as Core config.
-	 * As such, this is an important file.
+	 * Load the applications config file.
 	 *
 	 * @access public
 	 * @param  string $projectName The project that we are working with.
@@ -68,7 +74,7 @@ class Config
 	 * Get a config variable.
 	 *
 	 * If the config variable does not exist then the $default is returned.
-	 * 
+	 *
 	 * @param  string $section  The section to search in.
 	 * @param  string $variable The config to return.
 	 * @param  mixed  $default  Return this if the config variable is not found.
