@@ -2,11 +2,12 @@
 namespace Core;
 
 /**
- * Handles all of the formatting onto pages, such as safe strings.
+ * Handles all of the formatting for pages.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       15/09/2012
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class Format
 {
@@ -23,7 +24,7 @@ class Format
 	}
 
 	/**
-	 * Strips all invalid characters out of the string and returns.
+	 * Strips all invalid characters out of a URL.
 	 *
 	 * @access public
 	 * @param  string $url The URL we need to parse.
