@@ -2,58 +2,63 @@
 namespace Core;
 
 /**
- * Dispatches requests to a controller and an action. Can be called by the
- * controller live to forward to another controller or action.
+ * Runs a specified controller and action.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       15/09/2012
+ * This is initially called by the Router once it finds a valid route, but it
+ * can also be called by a controller to forward to another controller/action.
+ *
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class Dispatcher
 {
 	/**
-	 * Try and load the controller.
+	 * Load a controller and it's respective action.
+	 *
+	 * If no action is passed in then we use the action as defined by the URL. If
+	 * no action is specified in the URL then we use the default og 'index'.
 	 *
 	 * @access public
-	 * @param  string    $controller The controller we wish to load.
-	 * @param  string    $action     The action we wish to load.
-	 * @throws Exception             If we cannot load the controller.
+	 * @param  string $controllerName Name of the controller we wish to load.
+	 * @param  string $action         Name of the action we wish to load.
      * @static
 	 */
 	public static function loadController($controllerName, $action = '') {
-		// Format the controller name correctly
+		// Work out the full namespace path for this controller
 		$controller = Config::get('settings', 'project') . '\\Controller\\' . $controllerName;
 
-		// Can we load the controller?
+		// If the controller does not exist the autoloader will throw an Exception
 		try {
-			// Instantiate
+			// Try and create a new instance of the controller
 			Profiler::register('Core', 'Dispatcher');
 			Profiler::register('Controller', $controllerName);
 			$controller = new $controller();
 
-			// We need to set the child to the parent so we can forward
+			// Let the Core controller be aware of its child
 			$controller->child = $controller;
 
 			// Inform the bootstrap a controller has been initialised
-			Bootstrap::trigger(
-				'initController',
-				array(
-					'controller' => $controller
-				)
-			);
-
-			// Call the init method, if it exists
+			Bootstrap::trigger('initController', array('controller' => $controller));
 			Profiler::deregister('Core', 'Dispatcher');
-			if (method_exists($controller, 'init')) {
-				Profiler::register('Controller', 'Init');
+
+			// If the controller has an init function then call it first
+			if (is_callable(array($controller, 'init'))) {
+				Profiler::register('Controller', 'init');
 				$controller->init();
-				Profiler::deregister('Controller', 'Init');
+				Profiler::deregister('Controller', 'init');
 			}
 
-			// Which action shall we run?
+			// Controller fully initialised, now run its action
 			$action = $action ?: Request::get('action');
 		} catch (\Exception $e) {
-			// Forward to the Error's 404
+			// If this is the error controller then there is no hope
+			if ($controllerName == 'Error') {
+				die('Sorry, an error occurred whilst processing your request.');
+			}
+
+			// Controller does not exist, forward to the error controller
 			Profiler::deregister('Core', 'Dispatcher');
 			Profiler::deregister('Controller', $controllerName);
 			Dispatcher::loadController('Error', 'notFound');
@@ -64,61 +69,63 @@ class Dispatcher
 	}
 
 	/**
-	 * Try and run the action.
+	 * Load a controllers action, and ask the View to render it.
 	 *
 	 * @access public
-	 * @param  string $controller The controller we wish to load.
-	 * @param  string $action     The action we wish to load.
-     * @return boolean
+	 * @param  object  $controller Controller object that we want to load the action for.
+	 * @param  string  $action     Name of the action we wish to load.
      * @static
 	 */
 	public static function loadAction($controller, $action) {
 		// Start the profiler
 		Profiler::register('Core', 'Dispatcher');
 
-		// We want pretty URL's, there might be dashes
-		$action = str_replace('-', '', $action);
-
-		// Does the method exist?
-		$actionExists = method_exists($controller, $action . 'Action');
-
-		// If the method does not exist then we need to run the error action
-		if (! $actionExists && $action != 'error') {
-			// There was an error with the action, and we were not running the 404 action
-			// Try and run the 404 action
-			Profiler::deregister('Core', 'Dispatcher');
-			Dispatcher::loadAction($controller, 'error');
-
-			// No need to go any further
-			return false;
-		}
-
-		// Yes, it exists
-		// Let the bootstrap know
-		Bootstrap::trigger(
-			'initAction',
-			array(
-				'controller' => $controller,
-				'action'     => $action
-			)
-		);
-		Profiler::deregister('Core', 'Dispatcher');
-		Profiler::register('Action', $action);
-
-		// Set the controller and action that we are heading to
-		$controller->view->controller = str_replace(
+		// In order to have pretty URL's we allow the basic routing to contain
+		// .. dashes in their action names which will be removed here. It allows
+		// .. /index/hello-world to be routed to /index/helloworld.
+		$action         = str_replace('-', '', $action);
+		$actionExists   = is_callable(array($controller, $action . 'Action'));
+		$controllerName = str_replace(
 			Config::get('settings', 'project') . '\\Controller\\',
 			'',
 			get_class($controller)
 		);
-		$controller->view->action = $action;
 
-		// And call the action
-		if ($actionExists) {
-			$controller->{$action . 'Action'}();
+		// Make sure that the controller has the action
+		if (! $actionExists) {
+			// If this is the error controller then there is no hope
+			if ($controllerName == 'Error') {
+				die('Sorry, an error occurred whilst processing your request.');
+			}
+
+			// Controllers can have their own error function for finer grain control
+			else if ($action != 'error') {
+				Profiler::deregister('Core', 'Dispatcher');
+				Dispatcher::loadAction($controller, 'error');
+			}
+
+			// Controller does not have an error function, run Error controller
+			else {
+				Profiler::deregister('Core', 'Dispatcher');
+				Profiler::deregister('Controller', $controllerName);
+				Dispatcher::loadController('Error', 'notFound');
+			}
 		}
 
-		// And now render the view
+		// We are able to call the controllers action
+		Bootstrap::trigger('initAction', array(
+			'controller' => $controller,
+			'action'     => $action
+		));
+		Profiler::deregister('Core', 'Dispatcher');
+		Profiler::register('Action', $action);
+
+		// Set the controller and action that we are heading to
+		$controller->view->controller = $controllerName;
+		$controller->view->action     = $action;
+
+		// Call and render this action
+		$controller->{$action . 'Action'}();
 		$controller->view->render();
 	}
 }
