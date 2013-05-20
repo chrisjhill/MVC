@@ -4,18 +4,18 @@ namespace Core;
 /**
  * The front controller.
  *
- * This handles all internal processes and interacts with the users custom
- * application. It provides the bridge.
+ * This class provides the bridge between all internal processes and the application.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       16/12/2012
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class Front
 {
 	/**
 	 * The name of the project that we are now going to run. This is also the
-	 * name of the directory that we need to run.
+	 * name of the directory that contains the application.
 	 *
 	 * @access private
 	 * @var    string
@@ -25,18 +25,18 @@ class Front
 	/**
 	 * Provides information on routes that the application accepts and understands.
 	 *
-	 * If no router is defined then we simply fall back to controller/action URL's.
+	 * If no router is defined then we simply fall back to /controller/action URL.
 	 *
 	 * @access private
-	 * @var    Router
+	 * @var    Core\Router
 	 */
 	private $_router;
 
 	/**
-	 * Initialises the configuration and the router.
+	 * Initialises the application configuration and runs the router.
 	 *
 	 * @access public
-	 * @param  string      $projectName The name of the project the user wishes to use.
+	 * @param  string      $projectName The name of the project the user wishes to run.
 	 * @param  Core\Router $router      The routes the users application requires.
 	 */
 	public function __construct($projectName, $router = null) {
@@ -61,7 +61,7 @@ class Front
 	}
 
 	/**
-	 * Begin the routing and dispatching to the Controller/Action.
+	 * Route, and pass to the Dispatcher to run our controller/action.
 	 *
 	 * @access private
 	 */
