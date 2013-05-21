@@ -4,9 +4,17 @@ namespace Core;
 /**
  * Profiles the flow of the application as code executes.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       24/04/2013
+ * Allows the creation of a waterfall diagram documenting execution time and
+ * memory management, allowing easy identification of slow code and which areas
+ * are using large amounts of data. The profile nests items, so you can see how
+ * a certain item got to be called.
+ *
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
+ *
+ * @see       /Library/MyProject/View/Helper/Profiler.class.php
  */
 class Profiler
 {
@@ -16,10 +24,18 @@ class Profiler
 	 * <code>
 	 * array(
 	 *     array(
-	 *         'type'  => 'request|controller|action|helper|parse',
-	 *         'name'  => 'Controller.Action',
-	 *         'start' => 123,
-	 *         'end'   => 456
+	 *         'type'  => 'Core',
+	 *         'name'  => 'Request',
+	 *         'start' => 123.1,
+	 *         'end'   => 123.2,
+	 *         'mem'   => 1.0
+	 *     ),
+	 *     array(
+	 *         'type'  => 'Controller',
+	 *         'name'  => 'Index',
+	 *         'start' => 321.5,
+	 *         'end'   => 321.8,
+	 *         'mem'   => 2.5
 	 *     )
 	 * )
 	 * </code>
@@ -31,7 +47,7 @@ class Profiler
 	private static $_stack = array();
 
 	/**
-	 * When the requested came in.
+	 * The time we started profiling the application.
 	 *
 	 * @access private
 	 * @var    float
@@ -40,7 +56,7 @@ class Profiler
 	private static $_requestStart;
 
 	/**
-	 * When the requested finished.
+	 * The time we finished profiling the application.
 	 *
 	 * @access private
 	 * @var    float
@@ -49,7 +65,7 @@ class Profiler
 	private static $_requestEnd;
 
 	/**
-	 * Set when the request has started.
+	 * Start the profiler.
 	 *
 	 * @access public
 	 * @static
@@ -59,7 +75,7 @@ class Profiler
 	}
 
 	/**
-	 * Set when the request has finished.
+	 * Stop the profiling.
 	 *
 	 * @access public
 	 * @static
@@ -122,7 +138,7 @@ class Profiler
 	}
 
 	/**
-	 * Return the stats for the request.
+	 * Return the stack of traces we recorded for this request.
 	 *
 	 * @access public
 	 * @return array
