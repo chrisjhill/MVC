@@ -4,9 +4,10 @@ namespace Core;
 /**
  * Handles all of the request based aspects of the system.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       15/09/2012
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class Request
 {
@@ -56,53 +57,58 @@ class Request
 		// Set the URL
 		self::$_url = $url ?: $_SERVER['REQUEST_URI'];
 
-		// We want to remove the path root from the front request URL
+		// We want to remove the path root from the front request URL, stripping
+		// .. out all of the information this class does not care about.
 		if (strpos(self::$_url, Config::get('path', 'root')) === 0) {
 			self::$_url = '/' . substr(self::$_url, strlen(Config::get('path', 'root')));
 		}
 	}
 
 	/**
-	 * Build up the internal GET array from the URL.
+	 * Break a URL down into its relevant parts.
+	 *
+	 * This class will break it down into controller and index, and then all of
+	 * the GET parameters. If we are using a custom route then there will be no
+	 * controller/action in the URL.
 	 *
 	 * @access public
 	 * @param  string  $url                 The URL to parse.
 	 * @param  boolean $setControllerAction Whether we need a controller/action from the URL.
+	 * @static
 	 */
 	public static function setUrlFragments($url = null, $setControllerAction = false) {
-		// And breakdown the request the user made
-		$urlBreakdown = array_filter(explode('/', $url ?: self::$_url));
+		// Breakdown the request the user made into manageable fragments
+		$urlFragments = array_filter(explode('/', $url ?: self::$_url));
 
-		// Chunk them into variable->value
+		// Chunk them into variable => value
 		$url          = array();
-		$urlBreakdown = array_chunk($urlBreakdown, 2);
+		$urlFragments = array_chunk($urlFragments, 2);
 
-		// Do we need a controller/action for this URL?
+		// If this is a basic route (not custom) then grab the controller/action
 		if ($setControllerAction) {
-			// Start to piece back together and create a nice, usable, array
 			$url = array(
-				'controller' => isset($urlBreakdown[0][0]) ? ucfirst($urlBreakdown[0][0]) : 'Index',
-				'action'     => isset($urlBreakdown[0][1]) ? $urlBreakdown[0][1]          : 'index'
+				'controller' => isset($urlFragments[0][0]) ? ucfirst($urlFragments[0][0]) : 'Index',
+				'action'     => isset($urlFragments[0][1]) ? $urlFragments[0][1]          : 'index'
 			);
 
-			// The first index will be the controller/action
-			// We have already set this so just ignore
-			unset($urlBreakdown[0]);
+			// And remove the first chunk so it is not set in the GET array
+			unset($urlFragments[0]);
 		}
 
-		// Loop over the remaining array, these are GET variables
-		foreach ($urlBreakdown as $urlSegment) {
-			// If there is no value, set it to true
-			$url[$urlSegment[0]] = isset($urlSegment[1])
-				? $urlSegment[1]
+		// The URL is now comprised of only GET variables, so set them
+		// If a variable has no specified value then it is set to boolean true
+		foreach ($urlFragments as $urlFragment) {
+			$url[$urlFragment[0]] = isset($urlFragment[1])
+				? $urlFragment[1]
 				: true;
 		}
 
-		// Put this into the GET string so we no never have to call this method again
+		// Merge the route GETs with the explicitly stated GETs (?var=val)
+		// We give priority to GET variables set via /var/value
 		$_GET = array_merge($_GET, $url);
 
-		// We want all requests to the GET and POST to be through this class, so we need
-		// .. unset the superglobals (after storing a copy).
+		// We want all requests to the GET and POST to be through this class to
+		// .. provide a common interface, so we unset the globals.
 		self::$_get    = $_GET;
 		self::$_post   = $_POST;
 		self::$_server = $_SERVER;
@@ -113,7 +119,6 @@ class Request
 	 * Return the URL that the user has visited.
 	 *
 	 * @access public
-	 * @param  string $section        A specific part of the URL.
 	 * @param  string $replaceSlashes What to replace '/' with.
 	 * @return string
 	 * @static
@@ -182,6 +187,7 @@ class Request
 	 *
 	 * @access public
 	 * @return boolean
+	 * @static
 	 */
 	public static function isAjax() {
 		return isset(self::$_server['HTTP_X_REQUESTED_WITH'])
