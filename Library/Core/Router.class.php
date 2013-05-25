@@ -2,19 +2,20 @@
 namespace Core;
 
 /**
- * Determines which of the supplied routes will be used for the dispatcher.
+ * Determines which of the supplied routes will be used for the Dispatcher.
  *
  * If no route is valid then we assume that you are using the default MVC pattern
  * of /controller/action/my/variables/go/here/foobar. This router matches from
  * first to last, so if potentially more than one route matches then we will
  * route to the first declared. This is due to exiting as soon as we locate a
- * valid route to save processing and save time.
+ * valid route to save processing time. Routes are greedy by default, so place
+ * your more specific routes first.
  *
  * All routes use the following pattern modifiers:
  *
  * <ul>
  *     <li>i: PCRE_CASELESS: matching both uppercase and lowercase.</li>
- *     <li>u: PCRE_UTF8: Make strings UTF-8.</li>
+ *     <li>u: PCRE_UTF8:     Make strings UTF-8.</li>
  * </ul>
  *
  * An example of how to use this class in the index.php is as follows:
@@ -52,14 +53,17 @@ namespace Core;
  * save you having to rewrite them in your View Helpers/Partials. It is also
  * safer because URL encoding will be taken care for you.
  *
- * @copyright   2013 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       04/05/2013
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
+ *
+ * @see       /Library/MyProject/View/Helper/Route.class.php
  */
 class Router
 {
 	/**
-	 * A collection of routes that have been declared.
+	 * A collection of Route's that have been declared.
 	 *
 	 * @access private
 	 * @var    array
@@ -76,15 +80,15 @@ class Router
 	private $_routePath;
 
 	/**
-	 * Add a route to the router.
+	 * Add a new route to the router.
 	 *
 	 * @access public
-	 * @param  strint $routeName         The name of the route.
-	 * @return Core\Route                The new Route, for chainability.
-	 * @throws \InvalidArgumentException If the route name has already been declared.
+	 * @param  string                    $routeName The name of the route.
+	 * @return Core\Route                           The new Route, for chainability.
+	 * @throws \InvalidArgumentException            If the route name has already been declared.
 	 */
 	public function addRoute($routeName) {
-		// Have we already used this route name?
+		// We cannot allow duplicate route names for reversing reasons
 		if (isset(self::$_routes[$routeName])) {
 			throw new \InvalidArgumentException("The route {$routeName} has already been declared.");
 		}
@@ -106,7 +110,7 @@ class Router
 		$requestUrl   = array_values(array_filter(explode('/', Request::getUrl())));
 		$requestRoute = null;
 
-		// Loop over each of the routes declared
+		// Loop over each route and test to see if they are valid
 		foreach (self::$_routes as $route) {
 			if ($this->routeTest($requestUrl, $route)) {
 				$requestRoute = $route;
@@ -147,7 +151,7 @@ class Router
 	}
 
 	/**
-	 * Test to see if this route is valid according to the request URL.
+	 * Test to see if this route is valid against the URL.
 	 *
 	 * @access private
 	 * @param  array      $requestUrl The URL to test the route against.
