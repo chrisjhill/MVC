@@ -2,11 +2,12 @@
 namespace Core;
 
 /**
- * Provides common helper functions to the View to save more complex logic.
+ * Provides common functionality to View Helpers.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       16/09/2012
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class ViewHelper
 {
@@ -24,7 +25,7 @@ class ViewHelper
 	 * @access protected
 	 * @param  string    $template  The name of the partial to render.
 	 * @param  array     $variables An array of variables to replace.
-	 * @param  mixed     $cacheName null to not cache, otherwise string.
+	 * @param  mixed     $cacheName null to not cache, string otherwise.
 	 * @return string               Converted template file into HTML.
 	 */
 	protected function renderPartial($template, $variables, $cacheName = null) {
@@ -37,7 +38,9 @@ class ViewHelper
 	}
 
 	/**
-	 * A function to return the View in a nice way.
+	 * Returns the view.
+	 *
+	 * This function exists to provide a common interface for accessing the View.
 	 *
 	 * @access public
 	 * @param  string $variableName The name of the variable to return.
