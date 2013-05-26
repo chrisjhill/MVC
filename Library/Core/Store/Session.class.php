@@ -1,14 +1,15 @@
 <?php
-namespace Core;
+namespace Core\Store;
 
 /**
- * Stores a variable in PHP APC.
+ * Stores data for a user session.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       19/01/2013
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
-class StoreApc implements StoreInterface
+class Session implements StorageInterface
 {
 	/**
 	 * Check whether the variable exists in the store.
@@ -19,7 +20,7 @@ class StoreApc implements StoreInterface
 	 * @static
 	 */
 	public static function has($variable) {
-		return apc_exists($variable);
+		return isset($_SESSION[$variable]);
 	}
 
 	/**
@@ -38,9 +39,7 @@ class StoreApc implements StoreInterface
 			throw new \Exception($variable . ' already exists in the store.');
 		}
 
-		// use apc_store() instead of apc_add()
-		// apc_add() does not overwrite data, we get around this by checking above
-		apc_store($variable, $value);
+		$_SESSION[$variable] = serialize($value);
 		return self::has($variable);
 	}
 
@@ -56,10 +55,10 @@ class StoreApc implements StoreInterface
 	public static function get($variable) {
 		// If it exists, and we do not want to overwrite, then throw exception
 		if (! self::has($variable)) {
-			throw new \Exception($variable . ' does not exist in the store.');
+			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		return apc_fetch($variable);
+		return unserialize($_SESSION[$variable]);
 	}
 
 	/**
@@ -74,11 +73,11 @@ class StoreApc implements StoreInterface
 	public static function remove($variable) {
 		// If it exists, and we do not want to overwrite, then throw exception
 		if (! self::has($variable)) {
-			throw new \Exception($variable . ' does not exist in the store.');
+			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
 		// Unset the variable
-		apc_delete($variable);
+		unset($_SESSION[$variable]);
 
 		// Was it removed
 		return ! self::has($variable);

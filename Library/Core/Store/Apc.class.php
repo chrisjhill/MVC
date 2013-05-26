@@ -1,24 +1,16 @@
 <?php
-namespace Core;
+namespace Core\Store;
 
 /**
- * Stores a variable for a single request. Data does not persist.
+ * Stores data within APC.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       19/01/2013
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
-class StoreRequest implements StoreInterface
+class Apc implements StorageInterface
 {
-	/**
-	 * A store for all the variables set.
-	 *
-	 * @access public
-	 * @var    array
-	 * @static
-	 */
-	public static $store;
-
 	/**
 	 * Check whether the variable exists in the store.
 	 *
@@ -28,7 +20,7 @@ class StoreRequest implements StoreInterface
 	 * @static
 	 */
 	public static function has($variable) {
-		return isset(self::$store[$variable]);
+		return apc_exists($variable);
 	}
 
 	/**
@@ -44,10 +36,11 @@ class StoreRequest implements StoreInterface
 	public static function put($variable, $value, $overwrite = false) {
 		// If it exists, and we do not want to overwrite, then throw exception
 		if (self::has($variable) && ! $overwrite) {
-			throw new \Exception($variable . ' already exists in the store.');
+			throw new \Exception("{$variable} already exists in the store.");
 		}
 
-		self::$store[$variable] = $value;
+		// use apc_store() instead of apc_add() as add does not overwrite data
+		apc_store($variable, $value);
 		return self::has($variable);
 	}
 
@@ -63,10 +56,10 @@ class StoreRequest implements StoreInterface
 	public static function get($variable) {
 		// If it exists, and we do not want to overwrite, then throw exception
 		if (! self::has($variable)) {
-			throw new \Exception($variable . ' does not exist in the store.');
+			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		return self::$store[$variable];
+		return apc_fetch($variable);
 	}
 
 	/**
@@ -81,13 +74,9 @@ class StoreRequest implements StoreInterface
 	public static function remove($variable) {
 		// If it exists, and we do not want to overwrite, then throw exception
 		if (! self::has($variable)) {
-			throw new \Exception($variable . ' does not exist in the store.');
+			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		// Unset the variable
-		unset(self::$store[$variable]);
-
-		// Was it removed
-		return ! self::has($variable);
+		return ! apc_delete($variable);
 	}
 }

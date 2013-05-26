@@ -1,14 +1,15 @@
 <?php
-namespace Core;
+namespace Core\Store;
 
 /**
  * Provides the required methods that each Store requires at a minimum.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       19/01/2013
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
-interface StoreInterface
+interface StorageInterface
 {
 	/**
 	 * Check whether the variable exists in the store.
