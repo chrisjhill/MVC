@@ -3,11 +3,12 @@ namespace Core;
 
 /**
  * Handles the main functionality of the view including the parsing,
- * caching, variable storage.
+ * caching, and variable storage.
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       15/09/2012
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  */
 class View
 {
@@ -36,7 +37,7 @@ class View
 	public $layout = 'default';
 
 	/**
-	 * The variables that we want to pass to this view.
+	 * The variables that we want to pass to the view.
 	 *
 	 * @access public
 	 * @var    array
@@ -57,8 +58,8 @@ class View
 	/**
 	 * Add a variable to the view.
 	 *
-	 * These variables will be made available to the view. Any variable that has already
-	 * been defined will be overwritten.
+	 * These variables will be made available to the view. Any variable that has
+	 * already been defined will be overwritten.
 	 *
 	 * @access public
 	 * @param  string $variable The variable we wish to add to the view.
@@ -191,10 +192,10 @@ class View
 		ob_end_clean();
 
 		// If we are using the cache then save it
-		if (Config::get('cache', 'enable') && $cacheName) {
+		if ($cacheName && Config::get('cache', 'enable')) {
 			Cache::put(
 				$cacheName,
-				$content . ' <!-- Cached: ' .  date('r'). ' //-->'
+				$content . '<!-- Cached: ' . date('r') . ' //-->'
 			);
 		}
 
@@ -214,6 +215,7 @@ class View
 	 * @param  string $helperName The View Helper that we wish to use.
 	 * @param  array  $param      The parameters that need to be passed to the View Helper.
 	 * @return string
+	 * @magic
 	 */
 	public function __call($helperName, $param) {
 		// Try and instantiate the helper

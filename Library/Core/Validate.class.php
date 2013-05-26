@@ -50,11 +50,12 @@ namespace Core;
  * }
  * </code>
  *
- * @copyright   2012 Christopher Hill <cjhill@gmail.com>
- * @author      Christopher Hill <cjhill@gmail.com>
- * @since       21/04/2013
+ * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @author    Christopher Hill <cjhill@gmail.com>
+ * @package   MVC
  *
- * @todo        Integrate with a Core\Notice class.
+ * @todo      Integrate with a Core\Notice class.
  */
 class Validate
 {
@@ -204,8 +205,8 @@ class Validate
 	 * @param  string|array $inputValue The value of the input.
 	 * @param  array        $testParams The parameters for this test.
 	 * @return boolean
+	 * @throws \Exception               If neither a min or max boundary is specified.
 	 * @static
-	 * @throws \Exception   If neither a min or max boundary is specified.
 	 */
 	public static function length($inputValue, $testParams) {
 		// We need to have at least one boundary
@@ -283,11 +284,11 @@ class Validate
 	 * Note: We check the datatype of the input first to make sure it is an int.
 	 *
 	 * @access public
-	 * @param  string  $inputValue The value of the input.
-	 * @param  array   $testParams The parameters for this test.
+	 * @param  string     $inputValue The value of the input.
+	 * @param  array      $testParams The parameters for this test.
 	 * @return boolean
+	 * @throws \Exception             If the user has supplied no min and max boundary.
 	 * @static
-	 * @thorws \Exception If the user has supplied no min and max boundary.
 	 */
 	public static function between($inputValue, $testParams) {
 		// User has supplied both boundaries?
@@ -382,8 +383,8 @@ class Validate
 	 * @access public
 	 * @param  string     $functionName The name of the method the user called.
 	 * @param  array      $params       The parameters that the user passed in.
+	 * @throws \Exception               If called then the user has entered an invalid test name.
 	 * @magic
-	 * @throws \Exception If called then the user has entered an invalid test name.
 	 */
 	public function __call($testName, $params) {
 		throw new \Exception($testName . ' is not a valid test.');
