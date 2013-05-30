@@ -15,7 +15,7 @@ class Memcache implements StorageInterface
 	 * The reference to the Memcache server.
 	 *
 	 * @access private
-	 * @var    \Memcache
+	 * @var    \Memcache or \Memcached
 	 */
 	private $_memcache;
 
@@ -23,11 +23,20 @@ class Memcache implements StorageInterface
 	 * Setup Memcache for storing data.
 	 *
 	 * @access public
-	 * @param  string $host The location of the Memcache server.
-	 * @param  string $port The port the Memcache server lives on.
+	 * @param  string     $server Whether we are using Memcache or Memcached.
+	 * @param  string     $host   The location of the Memcache server.
+	 * @param  string     $port   The port the Memcache server lives on.
+	 * @throws \Exception         If passed an incorrect server.
 	 */
-	public static function seup($host, $port) {
-		self::_memcache = new \Memcache();
+	public static function setup($server, $host, $port) {
+		// Sanity check: Make sure we have received a valid
+		switch ($server) {
+			case 'Memcache'  : self::_memcache = new \Memcache();  break;
+			case 'Memcached' : self::_memcache = new \Memcached(); break;
+			default          : throw new \Exception("Unknown server {$server}.");
+		}
+
+		// Memcache instance created, add the server
 		self::_memcache->addServer($host, $port);
 	}
 
