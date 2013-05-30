@@ -36,10 +36,11 @@ class Request implements StorageInterface
 	 * Store a variable for use.
 	 *
 	 * @access public
-	 * @param  string  $variable The name of the variable to store.
-	 * @param  mixed   $value    The data we wish to store.
-	 * @return boolean           If we managed to store the variable.
-	 * @throws Exception         If the variable already exists when we try not to overwrite it.
+	 * @param  string  $variable  The name of the variable to store.
+	 * @param  mixed   $value     The data we wish to store.
+	 * @param  boolean $overwrite Whether we are allowed to overwrite the variable.
+	 * @return boolean            If we managed to store the variable.
+	 * @throws Exception          If the variable already exists when we try not to overwrite it.
 	 * @static
 	 */
 	public static function put($variable, $value, $overwrite = false) {
