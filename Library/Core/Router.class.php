@@ -130,8 +130,8 @@ class Router
 		}
 		Profiler::deregister('Core', 'Request');
 
-		// Inform the bootstrap a request has been initialised
-		Bootstrap::trigger(
+		// Inform the event listener a request has been initialised
+		Event::trigger(
 			'initRequest',
 			array(
 				'controller' => Request::get('controller'),

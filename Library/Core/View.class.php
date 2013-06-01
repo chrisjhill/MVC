@@ -136,8 +136,8 @@ class View
 			);
 		}
 
-		// Inform the bootstrap that we are about to shutdown
-		Bootstrap::trigger(
+		// Inform the event listener that we are about to shutdown
+		Event::trigger(
 			'initShutdown',
 			array(
 				'controller' => $this->controller,

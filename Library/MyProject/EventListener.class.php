@@ -2,7 +2,7 @@
 namespace MyProject;
 use Core;
 
-class Bootstrap
+class EventListener
 {
 	/**
 	 * A request has been initiated.

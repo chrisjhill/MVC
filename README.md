@@ -22,7 +22,7 @@ MVC
 |   |   |   |-- Partial
 |   |   |   `-- Script
 |   |   |
-|   |   |-- Bootstrap.class.php
+|   |   |-- EventListener.class.php
 |   |   `-- config.ini
 |   |
 |   |-- autoloader.php

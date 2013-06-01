@@ -39,8 +39,8 @@ class Dispatcher
 			// Let the Core controller be aware of its child
 			$controller->child = $controller;
 
-			// Inform the bootstrap a controller has been initialised
-			Bootstrap::trigger('initController', array('controller' => $controller));
+			// Inform the event listener a controller has been initialised
+			Event::trigger('initController', array('controller' => $controller));
 			Profiler::deregister('Core', 'Dispatcher');
 
 			// If the controller has an init function then call it first
@@ -113,7 +113,7 @@ class Dispatcher
 		}
 
 		// We are able to call the controllers action
-		Bootstrap::trigger('initAction', array(
+		Event::trigger('initAction', array(
 			'controller' => $controller,
 			'action'     => $action
 		));
