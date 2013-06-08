@@ -301,10 +301,18 @@ class Model
 	 * @param  string       $field    The field we wish to test.
 	 * @param  string       $operator How we wish to test the field (=, >, etc.)
 	 * @param  string|array $value    The value to test the field against.
+	 * @param  string       $joiner   How to join the where clause to the next.
+	 * @param  int          $brace    How many braces to open or close.
 	 * @return Model                  For chainability.
 	 */
-	public function where($field, $operator, $value) {
-		$this->_where[] = array('field' => $field, 'operator' => $operator, 'value' => $value);
+	public function where($field, $operator, $value, $joiner = null, $brace = 0) {
+		$this->_where[] = array(
+			'field'    => $field,
+			'operator' => $operator,
+			'value'    => $value,
+			'joiner'   => $joiner,
+			'brace'    => $brace
+		);
 		return $this;
 	}
 
@@ -559,7 +567,8 @@ class Model
 		}
 
 		// Container for the where conditions
-		$conditions = array();
+		$sql = '';
+		$whereClause = '';
 
 		// Loop over each where condition and build its SQL
 		foreach ($this->_where as $whereIndex => $where) {
@@ -587,11 +596,21 @@ class Model
 				$this->_data[$variableName] = $where['value'];
 			}
 
-			// Add this where clause to the SQL
-			$conditions[] = $sql;
+			// Add the joiner to the SQL
+			$sql .= $where['joiner'];
+
+			// And add the open/close braces
+			if ($where['brace'] > 0) {
+				$sql = str_repeat('(', $where['brace']) . $sql;
+			} else if ($where['brace'] < 0) {
+				$sql .= str_repeat('(', abs($where['brace']));
+			}
+
+			// And add to the where clause
+			$whereClause .= $sql;
 		}
 
-		return 'WHERE ' . implode(', AND', $conditions);
+		return 'WHERE ' . $whereClause;
 	}
 
 	/**
