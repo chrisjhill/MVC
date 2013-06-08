@@ -24,29 +24,44 @@ namespace Core;
  * // 1. Select a single user very quickly:
  * $user = new Model\User(1);
  *
- * // 2. Finds the users with ID's 1, 2, 3:
- * $users = new Model\User(array(1, 2, 3));
- *
- * // 3. Advanced query selecting:
+ * // 2. Advanced query selecting:
  * $users = new Model\User();
  * $users->where('active', '=', 1)->where('name', '=', 'Dave')->limit(10)->find();
  *
- * // 4. How many users the query found:
+ * // 3. How many users the query found:
  * echo 'I found ' . $users->rowCount() . ' users.';
  *
- * // 5. Loop over the found users:
+ * // 4. Loop over the found users:
  * while ($user = $users->fetch()) {
- *     echo 'Hello, ' . $user['name'];
+ *     echo 'Hello, ' . $user->name;
  * }
  * </code>
  *
  * Updating
  * --------
- * TBC.
+ * <code>
+ * 1. Updating a user programatically:
+ * $user = new Model\User(1);
+ * $user->name = 'Dave';
+ * $user->save();
+ *
+ * 2. Passing in an array of data:
+ * $user = new Model\User(1);
+ * $user->save(array('name' => 'Dave'));
+ *
+ * 3. Advanced updating:
+ * $user = new Model\User();
+ * $user->where('id', '=', array(1, 2))->limit(2)->update(array('name' => 'Dave'));
+ * </code>
  *
  * Deleting
  * --------
  * <code>
+ * // 1. Simple deletion:
+ * $user = new Model\User();
+ * $user->delete(1);
+ *
+ * // 2. Advanced deletion:
  * $user = new Model\User();
  * $user->where('id', '=', 1)->limit(1)->delete();
  *
@@ -56,7 +71,7 @@ namespace Core;
  * // 1. In your User Model, for instance:
  * $this->run('SELECT * FROM `user` WHERE `name` = :name', array(':name' => 'Chris'));
  * $user = $this->fetch();
- * echo 'Hello, ' . $user['name'];
+ * echo 'Hello, ' . $user->name;
  * </code>
  *
  * @copyright Copyright (c) 2012-2013 Christopher Hill
@@ -151,6 +166,14 @@ class Model
 	private $_store = array();
 
 	/**
+	 * Data that will be passed to the query.
+	 *
+	 * @access private
+	 * @var    array
+	 */
+	private $_data;
+
+	/**
 	 * Setup the model.
 	 *
 	 * If you want to load a row automatically then you can pass an int to this
@@ -159,19 +182,17 @@ class Model
 	 * <code>
 	 * // Load a single user row
 	 * $user = new MyProject\Model\User(1);
-	 *
-	 * // Load x user rows
-	 * $user = new MyProject\Model\User(array(1, 2, 3, 4, 5));
 	 * </code>
 	 *
 	 * @access public
-	 * @param  mixed  $id The ID's to load automatically.
+	 * @param  mixed  $id The ID to load automatically.
 	 */
 	public function __construct($id = null) {
 		if ($id) {
 			$this->where($this->_primaryKey, '=', $id)
-				 ->limit(count($id))
+				 ->limit(1)
 				 ->find();
+			$this->_store = $this->fetch(\PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -195,9 +216,6 @@ class Model
 				$username,
 				$password
 			);
-
-			// Work with arrays, not objects
-			$this->_connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 		} catch(\PDOException $e) {
 			if (Core::get('settings', 'environment') == 'Dev') {
 				var_dump($e);
@@ -221,9 +239,11 @@ class Model
 			$this->connect();
 		}
 
-		// Prepare and execute the statement
+		// Prepare, execute, reset, and return the outcome
 		$this->_statement = $this->_connection->prepare($sql);
-		return $this->_statement->execute($data);
+		$result = $this->_statement->execute($data);
+		$this->reset();
+		return $result;
 	}
 
 	/**
@@ -319,7 +339,6 @@ class Model
 	 *
 	 * @access public
 	 * @param  array  $data The data to insert into the table.
-	 * @return Model        For chainability.
 	 */
 	public function insert($data = array()) {
 		// If we have been supplied from data then add it to the store.
@@ -329,7 +348,7 @@ class Model
 
 		// If the insert was successful then add the primary key to the store
 		if ($this->run($this->build('insert'), $this->_store)) {
-			$this->_store[$this->_primaryKey] = $this->_connection->lastInsertId();
+			$this->{$this->_primaryKey} = $this->_connection->lastInsertId();
 		}
 	}
 
@@ -339,18 +358,55 @@ class Model
 	 * @access public
 	 */
 	public function find() {
-		$this->run($this->build('select'), $this->_store);
+		$this->run($this->build('select'), $this->_data);
+	}
+
+	/**
+	 * Update a row in the table.
+	 *
+	 * @access public
+	 * @param  array  $data The data to update the table with.
+	 */
+	public function update($data = array()) {
+		// If we have been supplied from data then add it to the store.
+		foreach ($data as $field => $value) {
+			$this->$field = $value;
+		}
+
+		// If the where clause is empty then assume we are updating the user
+		if (! $this->_where) {
+			$this->where($this->_primaryKey, '=', $this->{$this->_primaryKey});
+		}
+
+		// If the insert was successful then add the primary key to the store
+		$this->run($this->build('update'), $this->_data);
 	}
 
 	/**
 	 * Shorthand for the insert and update functions.
 	 *
 	 * @access public
+	 * @param  array  $data The data to insert or update.
 	 */
-	public function save() {
+	public function save($data = array()) {
 		$this->{$this->_primaryKey}
-			? $this->update()
-			: $this->insert();
+			? $this->update($data)
+			: $this->insert($data);
+	}
+
+	/**
+	 * Delete rows from the table.
+	 *
+	 * @access public
+	 * @param  int    $id The ID of the row we wish to delete.
+	 */
+	public function delete($id = null) {
+		// Is there an ID that we need to delete?
+		if ($id) {
+			$this->where($this->_primaryKey, '=', $id);
+		}
+
+		$this->run($this->build('delete'), $this->_data);
 	}
 
 	/**
@@ -406,8 +462,10 @@ class Model
 	 * @return string
 	 */
 	private function buildUpdate() {
-		// @todo
-		return "";
+		return "UPDATE {$this->buildFragmentFrom()}
+		        SET    {$this->buildFragmentUpdate()}
+		               {$this->buildFragmentWhere()}
+		               {$this->buildFragmentLimit()}";
 	}
 
 	/**
@@ -457,8 +515,31 @@ class Model
 	 */
 	private function buildFragmentFrom() {
 		return empty($this->_from)
-			? $this->_table
+			? "`{$this->_table}`"
 			: '`' . implode('`, `', $this->_from) . '`';
+	}
+
+	/**
+	 * Build the SET portion of the statement.
+	 *
+	 * @access private
+	 * @return string
+	 */
+	private function buildFragmentUpdate() {
+		// Container for the fields that will be updated
+		$fields = array();
+
+		foreach ($this->_store as $field => $value) {
+			// We do not want to update the primary key
+			if ($field == $this->_primaryKey) {
+				continue;
+			}
+
+			$fields[] = "`{$this->_table}`.`{$field}` = :{$field}";
+			$this->_data[$field] = $value;
+		}
+
+		return implode(', ', $fields);
 	}
 
 	/**
@@ -492,8 +573,8 @@ class Model
 
 				// Loop over each value in the array
 				foreach ($where['value'] as $inIndex => $in) {
-					$ins[]      = "{$variableName}_{$inIndex}";
-					$this->_store["{$variableName}_{$inIndex}"] = $in;
+					$ins[]    = ":{$variableName}_{$inIndex}";
+					$this->_data["{$variableName}_{$inIndex}"] = $in;
 				}
 
 				// The SQL for this IN
@@ -502,8 +583,8 @@ class Model
 
 			// A simple where condition
 			else {
-				$sql = "`{$where['field']}` {$where['operator']} :{$variableName}}";
-				$this->_store[$variableName] = $where['value'];
+				$sql = "`{$where['field']}` {$where['operator']} :{$variableName}";
+				$this->_data[$variableName] = $where['value'];
 			}
 
 			// Add this where clause to the SQL
@@ -575,10 +656,26 @@ class Model
 	 * @access public
 	 * @return int|array Array if statement was successful, boolean false otherwise.
 	 */
-	public function fetch() {
+	public function fetch($method = \PDO::FETCH_OBJ) {
 		return $this->_statement
-			? $this->_statement->fetch()
+			? $this->_statement->fetch($method)
 			: false;
+	}
+
+	/**
+	 * Reset the query ready for the next one to avoid contamination.
+	 *
+	 * Note: This function is called everytime we have run a query automatically.
+	 *
+	 * @access public
+	 */
+	public function reset() {
+		$this->_select = array();
+		$this->_from   = array();
+		$this->_where  = array();
+		$this->_order  = array();
+		$this->_limit  = array();
+		$this->_data   = array();
 	}
 
 	/**
