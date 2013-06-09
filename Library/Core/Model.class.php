@@ -317,6 +317,17 @@ class Model
 	}
 
 	/**
+	 * Whether to open or close a brace.
+	 *
+	 * @access public
+	 * @param  string $status Either 'open' or 'close'.
+	 * @return Model                  For chainability.
+	 */
+	public function brace($status) {
+		$this->_where[] = $status;
+	}
+
+	/**
 	 * How to order the returned results.
 	 *
 	 * @access public
@@ -572,6 +583,12 @@ class Model
 
 		// Loop over each where condition and build its SQL
 		foreach ($this->_where as $whereIndex => $where) {
+			// Are we opening or closing a brace?
+			if (is_string($where)) {
+				$whereClause .= $where == 'open' ? '(' : ')';
+				continue;
+			}
+
 			// The basic perpared variable name
 			$variableName = "__where_{$whereIndex}";
 
