@@ -81,9 +81,8 @@ namespace Core;
  *
  * @todo      SUM, AVG, etc.
  * @todo      Table joins.
- * @todo      WHERE OR
- * @todo      HAVING
  * @todo      Some kind of config schema.
+ * @todo      GROUP BY
  */
 class Model
 {
@@ -140,6 +139,14 @@ class Model
 	 * @var    array
 	 */
 	private $_where = array();
+
+	/**
+	 * The having conditions to apply.
+	 *
+	 * @access private
+	 * @var    array
+	 */
+	private $_having = array();
 
 	/**
 	 * How we should order the returned rows.
@@ -250,7 +257,7 @@ class Model
 	 * Add a row to the SELECT section.
 	 *
 	 * Note: The table name will always be prefixed to the field name to try and
-	 * mitigate errors. If none is supplied then we assume you are using the
+	 * mitigate errors . If none is supplied then we assume you are using the
 	 * table name that is declared in the extending class.
 	 *
 	 * @access public
@@ -312,6 +319,25 @@ class Model
 			'value'    => $value,
 			'joiner'   => $joiner,
 			'brace'    => $brace
+		);
+		return $this;
+	}
+
+	/**
+	 * Add a having condition to the statement.
+	 *
+	 * @access public
+	 * @param  string       $clause   E.g., COUNT(`name`), SUM(`age`).
+	 * @param  string       $operator How we wish to test the clause (=, >, etc.)
+	 * @param  string|array $value    The value to test the field against.
+	 * @return Model                  For cgainability.
+	 */
+	public function having($clause, $operator, $value, $joiner = null) {
+		$this->_having = array(
+			'clause'   => $clause,
+			'operator' => $operator,
+			'value'    => $value,
+			'joiner'   => $joiner
 		);
 		return $this;
 	}
@@ -470,6 +496,7 @@ class Model
 		return "SELECT {$this->buildFragmentSelect()}
 			    FROM   {$this->buildFragmentFrom()}
 			           {$this->buildFragmentWhere()}
+			           {$this->buildFragmentHaving()}
 			           {$this->buildFragmentOrder()}
 			           {$this->buildFragmentLimit()}";
 	}
@@ -631,6 +658,31 @@ class Model
 	}
 
 	/**
+	 * Build the HAVING portion of the statement.
+	 *
+	 * @access private
+	 * @return string
+	 */
+	private function buildFragmentHaving() {
+		// If there are no having's then return nothing
+		if (empty($this->_having)) {
+			return '';
+		}
+
+		// Container for the havings
+		$havingClause = '';
+
+		// Loop over each having and build it's SQL
+		foreach ($this->_having as $havingIndex => $having) {
+			$variableName = "__having_{$havingIndex}";
+			$havingClause = "{$having['clause']} {$having['operator']} :{$variableName} {$having['joiner']}";
+			$this->_data[$variableName] = $having['value'];
+		}
+
+		return "HAVING {$havingClause}";
+	}
+
+	/**
 	 * Build the ORDER BY portion of the statement.
 	 *
 	 * @access private
@@ -709,6 +761,7 @@ class Model
 		$this->_select = array();
 		$this->_from   = array();
 		$this->_where  = array();
+		$this->_having = array();
 		$this->_order  = array();
 		$this->_limit  = array();
 		$this->_data   = array();
