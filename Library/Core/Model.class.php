@@ -262,12 +262,11 @@ class Model
 	 *
 	 * @access public
 	 * @param  string $field The field name.
-	 * @param  string $table The table this field lives.
 	 * @param  string $as    The name of the field that is supplied to you.
 	 * @return Model         For chainability.
 	 */
-	public function select($field, $table = null, $as = null) {
-		$this->_select[] = array('field' => $field, 'table' => $table ?: $this->_table, 'as' => $as);
+	public function select($field, $as = null) {
+		$this->_select[] = array('field' => $field, 'as' => $as);
 		return $this;
 	}
 
@@ -457,11 +456,11 @@ class Model
 	/**
 	 * Piece together all of the sections of the query.
 	 *
-	 * @access private
-	 * @param  string  $type What type of query we wish to build.
-	 * @return string        The SQL that has been generated.
+	 * @access public
+	 * @param  string $type What type of query we wish to build.
+	 * @return string       The SQL that has been generated.
 	 */
-	private function build($type) {
+	public function build($type) {
 		switch ($type) {
 			case 'insert' : $sql = $this->buildInsert(); break;
 			case 'select' : $sql = $this->buildSelect(); break;
@@ -547,7 +546,9 @@ class Model
 				? " AS '{$select['as']}'"
 				: '';
 
-			$fields[] = "`{$select['table']}`.`{$select['field']}` {$as}";
+
+
+			$fields[] = "{$select['field']} {$as}";
 		}
 
 		return implode(', ', $fields);
@@ -619,6 +620,9 @@ class Model
 			// The basic perpared variable name
 			$variableName = "__where_{$whereIndex}";
 
+			// Add the joiner to the SQL
+			$sql = $where['joiner'] ? " {$where['joiner']} " : '';
+
 			// We are dealing with an IN
 			if (is_array($where['value'])) {
 				// We need to create the condition as :a, :b, :c
@@ -631,17 +635,14 @@ class Model
 				}
 
 				// The SQL for this IN
-				$sql = "`{$where['field']}` IN (" . implode(', ', $ins) . ")";
+				$sql .= "`{$where['field']}` IN (" . implode(', ', $ins) . ")";
 			}
 
 			// A simple where condition
 			else {
-				$sql = "`{$where['field']}` {$where['operator']} :{$variableName}";
+				$sql .= "`{$where['field']}` {$where['operator']} :{$variableName}";
 				$this->_data[$variableName] = $where['value'];
 			}
-
-			// Add the joiner to the SQL
-			$sql .= $where['joiner'];
 
 			// And add the open/close braces
 			if ($where['brace'] > 0) {
