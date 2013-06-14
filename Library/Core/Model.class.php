@@ -606,22 +606,31 @@ class Model
 		}
 
 		// Container for the where conditions
-		$sql = '';
-		$whereClause = '';
+		$sql          = '';
+		$sqlAddToNext = '';
+		$whereClause  = '';
 
 		// Loop over each where condition and build its SQL
 		foreach ($this->_where as $whereIndex => $where) {
 			// Are we opening or closing a brace?
 			if (is_string($where)) {
-				$whereClause .= $where == 'open' ? '(' : ')';
+				if ($where == 'open') {
+					$sqlAddToNext .= '(';
+				} else {
+					$whereClause  .= ')';
+				}
 				continue;
 			}
 
 			// The basic perpared variable name
 			$variableName = "__where_{$whereIndex}";
 
-			// Add the joiner to the SQL
+			// Add the joiner and any opening braces to the SQL
 			$sql = $where['joiner'] ? " {$where['joiner']} " : '';
+			if ($sqlAddToNext) {
+				$sql .= $sqlAddToNext;
+				$sqlAddToNext = '';
+			}
 
 			// We are dealing with an IN
 			if (is_array($where['value'])) {

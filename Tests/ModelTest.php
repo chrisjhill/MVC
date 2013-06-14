@@ -10,12 +10,39 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testSelect() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`");
 		$user->select('`user_id`');
 		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id` FROM `user`");
 		$user->select('`name`');
 		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id`, `name` FROM `user`");
 		$user->select('DISTINCT(`email`)', 'email');
 		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id`, `name`, DISTINCT(`email`) AS 'email' FROM `user`");
+	}
+
+	/**
+	 * Testing SELECT AS.
+	 *
+	 * @access public
+	 */
+	public function testSelectAs() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->select('`user_id`', 'user');
+		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id` AS 'user' FROM `user`");
+	}
+
+	/**
+	 * Testing FROM.
+	 *
+	 * @access public
+	 */
+	public function testFrom() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->from('user');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`");
+		$user->from('foo');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`, `foo`");
 	}
 
 	/**
@@ -44,6 +71,33 @@ class ModelTest extends PHPUnit_Framework_TestCase
 			$user->where('user_id', '=', 1);
 		$user->brace('close');
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1)");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->brace('open');
+			$user->where('user_id', '=', 1);
+			$user->where('name',    '=', 'Chris', 'AND');
+		$user->brace('close');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1 AND `name` = :__where_2)");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->brace('open');
+			$user->where('user_id', '=', 1);
+		$user->brace('close');
+		$user->brace('open');
+			$user->where('name',    '=', 'Chris', 'AND');
+		$user->brace('close');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1) AND (`name` = :__where_4)");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->brace('open');
+			$user->brace('open');
+				$user->where('user_id', '=', 1);
+			$user->brace('close');
+		$user->brace('close');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE ((`user_id` = :__where_2))");
 	}
 
 	/**
