@@ -3,20 +3,28 @@
 class ModelTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * Testing SELECT.
+	 * Testing SELECTing all fields.
 	 *
 	 * @access public
 	 */
-	public function testSelect() {
+	public function testSelectAll() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`");
+	}
+
+	/**
+	 * Testing SELECTing certain fields.
+	 *
+	 * @access public
+	 */
+	public function testSelectFields() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
 		$user->select('`user_id`');
 		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id` FROM `user`");
 		$user->select('`name`');
 		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id`, `name` FROM `user`");
-		$user->select('DISTINCT(`email`)', 'email');
-		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id`, `name`, DISTINCT(`email`) AS 'email' FROM `user`");
 	}
 
 	/**
@@ -29,6 +37,30 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$user = new MyProject\Model\User();
 		$user->select('`user_id`', 'user');
 		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id` AS 'user' FROM `user`");
+	}
+
+	/**
+	 * Testing SELECTing fields using functions.
+	 *
+	 * @access public
+	 */
+	public function testSelectFieldsFunction() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->select('DISTINCT(`email`)');
+		$this->assertEquals($this->format($user->build('select')), "SELECT DISTINCT(`email`) FROM `user`");
+	}
+
+	/**
+	 * Testing SELECTing fields using functions and setting them to AS.
+	 *
+	 * @access public
+	 */
+	public function testSelectFieldsFunctionAs() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->select('DISTINCT(`email`)', 'email');
+		$this->assertEquals($this->format($user->build('select')), "SELECT DISTINCT(`email`) AS 'email' FROM `user`");
 	}
 
 	/**
