@@ -146,6 +146,29 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing ORDER BY.
+	 *
+	 * @access public
+	 */
+	public function testOrderBy() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->order('`user_id`');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` ORDER BY `user_id` ASC");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->order('`user_id`', 'DESC');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` ORDER BY `user_id` DESC");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->order('`user_id`');
+		$user->order('`name`');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` ORDER BY `user_id` ASC, `name` ASC");
+	}
+
+	/**
 	 * Strip all of the excess whitespace from the query
 	 * @param  [type] $sql [description]
 	 * @return [type]      [description]
