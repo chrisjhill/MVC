@@ -87,7 +87,11 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$user = new MyProject\Model\User();
 		$user->where('user_id', '=', 1);
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE `user_id` = :__where_0");
-		$user->where('name', '=', 'Chris', 'AND');
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->where('user_id', '=', 1, 'AND');
+		$user->where('name', '=', 'Chris');
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE `user_id` = :__where_0 AND `name` = :__where_1");
 	}
 
@@ -107,8 +111,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$user->brace('open');
-			$user->where('user_id', '=', 1);
-			$user->where('name',    '=', 'Chris', 'AND');
+			$user->where('user_id', '=', 1, 'AND');
+			$user->where('name',    '=', 'Chris');
 		$user->brace('close');
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1 AND `name` = :__where_2)");
 
@@ -116,9 +120,9 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$user = new MyProject\Model\User();
 		$user->brace('open');
 			$user->where('user_id', '=', 1);
-		$user->brace('close');
+		$user->brace('close', 'AND');
 		$user->brace('open');
-			$user->where('name',    '=', 'Chris', 'AND');
+			$user->where('name', '=', 'Chris');
 		$user->brace('close');
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1) AND (`name` = :__where_4)");
 
@@ -130,6 +134,15 @@ class ModelTest extends PHPUnit_Framework_TestCase
 			$user->brace('close');
 		$user->brace('close');
 		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE ((`user_id` = :__where_2))");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->where('user_id', '=', 1, 'AND');
+		$user->brace('open');
+			$user->where('name', '=', 'Chris', 'OR');
+			$user->where('name', '=', 'Christopher');
+		$user->brace('close');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE `user_id` = :__where_0 AND (`name` = :__where_2 OR `name` = :__where_3)");
 	}
 
 	/**

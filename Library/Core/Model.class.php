@@ -308,16 +308,14 @@ class Model
 	 * @param  string       $operator How we wish to test the field (=, >, etc.)
 	 * @param  string|array $value    The value to test the field against.
 	 * @param  string       $joiner   How to join the where clause to the next.
-	 * @param  int          $brace    How many braces to open or close.
 	 * @return Model                  For chainability.
 	 */
-	public function where($field, $operator, $value, $joiner = null, $brace = 0) {
+	public function where($field, $operator, $value, $joiner = null) {
 		$this->_where[] = array(
 			'field'    => $field,
 			'operator' => $operator,
 			'value'    => $value,
-			'joiner'   => $joiner,
-			'brace'    => $brace
+			'joiner'   => $joiner
 		);
 		return $this;
 	}
@@ -326,17 +324,20 @@ class Model
 	 * Add a having condition to the statement.
 	 *
 	 * @access public
-	 * @param  string       $clause   E.g., COUNT(`name`), SUM(`age`).
-	 * @param  string       $operator How we wish to test the clause (=, >, etc.)
+	 * @param  string       $field    The field we wish to test.
+	 * @param  string       $operator How we wish to test the field (=, >, etc.)
 	 * @param  string|array $value    The value to test the field against.
-	 * @return Model                  For cgainability.
+	 * @param  string       $joiner   How to join the where clause to the next.
+	 * @param  int          $brace    How many braces to open or close.
+	 * @return Model                  For chainability.
 	 */
-	public function having($clause, $operator, $value, $joiner = null) {
-		$this->_having = array(
-			'clause'   => $clause,
+	public function having($field, $operator, $value, $joiner = null, $brace = 0) {
+		$this->_having[] = array(
+			'field'    => $field,
 			'operator' => $operator,
 			'value'    => $value,
-			'joiner'   => $joiner
+			'joiner'   => $joiner,
+			'brace'    => $brace
 		);
 		return $this;
 	}
@@ -348,8 +349,9 @@ class Model
 	 * @param  string $status Either 'open' or 'close'.
 	 * @return Model                  For chainability.
 	 */
-	public function brace($status) {
-		$this->_where[] = $status;
+	public function brace($status, $joiner = null) {
+		$this->_where[] = ($status == 'open' ? '(' : ')')
+			. ($joiner ? " {$joiner} " : '');
 	}
 
 	/**
@@ -495,7 +497,7 @@ class Model
 		return "SELECT {$this->buildFragmentSelect()}
 			    FROM   {$this->buildFragmentFrom()}
 			           {$this->buildFragmentWhere()}
-			           {$this->buildFragmentHaving()}
+			           {$this->buildFragmentWhere('HAVING')}
 			           {$this->buildFragmentOrder()}
 			           {$this->buildFragmentLimit()}";
 	}
@@ -599,97 +601,63 @@ class Model
 	 * @return string
 	 * @todo   Allow for OR's.
 	 */
-	private function buildFragmentWhere() {
+	private function buildFragmentWhere($type = 'WHERE') {
 		// If there are no conditions then return nothing
-		if (empty($this->_where)) {
+		if ($type == 'HAVING' && empty($this->_having)) {
+			return '';
+		} else if (empty($this->_where)) {
 			return '';
 		}
 
 		// Container for the where conditions
-		$sql          = '';
-		$sqlAddToNext = '';
-		$whereClause  = '';
+		$sql        = '';
+		$sqlClauses = '';
+		$clauses    = $type == 'HAVING' ? $this->_having : $this->_where;
+		$clauseType = strtolower($type);
 
 		// Loop over each where condition and build its SQL
-		foreach ($this->_where as $whereIndex => $where) {
+		foreach ($clauses as $clauseIndex => $clause) {
 			// Are we opening or closing a brace?
-			if (is_string($where)) {
-				if ($where == 'open') {
-					$sqlAddToNext .= '(';
-				} else {
-					$whereClause  .= ')';
-				}
+			if (! is_array($clause)) {
+				$sqlClauses .= $clause;
 				continue;
 			}
 
 			// The basic perpared variable name
-			$variableName = "__where_{$whereIndex}";
+			$clauseVar = "__{$clauseType}_{$clauseIndex}";
 
-			// Add the joiner and any opening braces to the SQL
-			$sql = $where['joiner'] ? " {$where['joiner']} " : '';
-			if ($sqlAddToNext) {
-				$sql .= $sqlAddToNext;
-				$sqlAddToNext = '';
-			}
+			// Reset the SQL for this single clause
+			$sql = '';
 
 			// We are dealing with an IN
-			if (is_array($where['value'])) {
+			if (is_array($clause['value'])) {
 				// We need to create the condition as :a, :b, :c
-				$ins = array();
+				$clauseIn = array();
 
 				// Loop over each value in the array
-				foreach ($where['value'] as $inIndex => $in) {
-					$ins[]    = ":{$variableName}_{$inIndex}";
-					$this->_data["{$variableName}_{$inIndex}"] = $in;
+				foreach ($clause['value'] as $index => $value) {
+					$clauseIn[]    = ":{$clauseVar}_{$value}";
+					$this->_data["{$clauseVar}_{$index}"] = $in;
 				}
 
 				// The SQL for this IN
-				$sql .= "`{$where['field']}` IN (" . implode(', ', $ins) . ")";
+				$sql .= "`{$clause['field']}` IN (" . implode(', ', $clauseIn) . ")";
 			}
 
 			// A simple where condition
 			else {
-				$sql .= "`{$where['field']}` {$where['operator']} :{$variableName}";
-				$this->_data[$variableName] = $where['value'];
+				$sql .= "`{$clause['field']}` {$clause['operator']} :{$clauseVar}";
+				$this->_data[$clauseVar] = $clause['value'];
 			}
 
-			// And add the open/close braces
-			if ($where['brace'] > 0) {
-				$sql = str_repeat('(', $where['brace']) . $sql;
-			} else if ($where['brace'] < 0) {
-				$sql .= str_repeat('(', abs($where['brace']));
-			}
+			// Add any joiner (AND, OR< etc) that the user has added
+			$sql .= $clause['joiner'] ? " {$clause['joiner']} " : '';
 
 			// And add to the where clause
-			$whereClause .= $sql;
+			$sqlClauses .= $sql;
 		}
 
-		return 'WHERE ' . $whereClause;
-	}
-
-	/**
-	 * Build the HAVING portion of the statement.
-	 *
-	 * @access private
-	 * @return string
-	 */
-	private function buildFragmentHaving() {
-		// If there are no having's then return nothing
-		if (empty($this->_having)) {
-			return '';
-		}
-
-		// Container for the havings
-		$havingClause = '';
-
-		// Loop over each having and build it's SQL
-		foreach ($this->_having as $havingIndex => $having) {
-			$variableName = "__having_{$havingIndex}";
-			$havingClause = "{$having['clause']} {$having['operator']} :{$variableName} {$having['joiner']}";
-			$this->_data[$variableName] = $having['value'];
-		}
-
-		return "HAVING {$havingClause}";
+		return "{$type} {$sqlClauses}";
 	}
 
 	/**
