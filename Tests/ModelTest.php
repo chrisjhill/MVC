@@ -169,6 +169,23 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing LIMIT.
+	 *
+	 * @access public
+	 */
+	public function testLimit() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->limit('10');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` LIMIT 10");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->limit('10, 25');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` LIMIT 10, 25");
+	}
+
+	/**
 	 * Strip all of the excess whitespace from the query
 	 * @param  [type] $sql [description]
 	 * @return [type]      [description]

@@ -1,6 +1,6 @@
 <h2>PHPUnit testing</h2>
 
-<p>OK (47 tests, 157 assertions)</p>
+<p>OK (48 tests, 159 assertions)</p>
 
 <h2>How to use this MVC</h2>
 
