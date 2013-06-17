@@ -10,7 +10,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testSelectAll() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user");
 	}
 
 	/**
@@ -21,10 +21,10 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testSelectFields() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->select('`user_id`');
-		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id` FROM `user`");
-		$user->select('`name`');
-		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id`, `name` FROM `user`");
+		$user->select('user_id');
+		$this->assertEquals($this->format($user->build('select')), "SELECT user_id FROM user");
+		$user->select('name');
+		$this->assertEquals($this->format($user->build('select')), "SELECT user_id, name FROM user");
 	}
 
 	/**
@@ -35,8 +35,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testSelectAs() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->select('`user_id`', 'user');
-		$this->assertEquals($this->format($user->build('select')), "SELECT `user_id` AS 'user' FROM `user`");
+		$user->select('user_id', 'user');
+		$this->assertEquals($this->format($user->build('select')), "SELECT user_id AS 'user' FROM user");
 	}
 
 	/**
@@ -47,8 +47,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testSelectFieldsFunction() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->select('DISTINCT(`email`)');
-		$this->assertEquals($this->format($user->build('select')), "SELECT DISTINCT(`email`) FROM `user`");
+		$user->select('DISTINCT(email)');
+		$this->assertEquals($this->format($user->build('select')), "SELECT DISTINCT(email) FROM user");
 	}
 
 	/**
@@ -59,8 +59,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testSelectFieldsFunctionAs() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->select('DISTINCT(`email`)', 'email');
-		$this->assertEquals($this->format($user->build('select')), "SELECT DISTINCT(`email`) AS 'email' FROM `user`");
+		$user->select('DISTINCT(email)', 'email');
+		$this->assertEquals($this->format($user->build('select')), "SELECT DISTINCT(email) AS 'email' FROM user");
 	}
 
 	/**
@@ -72,9 +72,9 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$user->from('user');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user");
 		$user->from('foo');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user`, `foo`");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user, foo");
 	}
 
 	/**
@@ -86,13 +86,13 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$user->where('user_id', '=', 1);
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE `user_id` = :__where_0");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE user_id = :__where_0");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$user->where('user_id', '=', 1, 'AND');
 		$user->where('name', '=', 'Chris');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE `user_id` = :__where_0 AND `name` = :__where_1");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE user_id = :__where_0 AND name = :__where_1");
 	}
 
 	/**
@@ -106,7 +106,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$user->brace('open');
 			$user->where('user_id', '=', 1);
 		$user->brace('close');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1)");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE (user_id = :__where_1)");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
@@ -114,7 +114,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 			$user->where('user_id', '=', 1, 'AND');
 			$user->where('name',    '=', 'Chris');
 		$user->brace('close');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1 AND `name` = :__where_2)");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE (user_id = :__where_1 AND name = :__where_2)");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
@@ -124,7 +124,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$user->brace('open');
 			$user->where('name', '=', 'Chris');
 		$user->brace('close');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE (`user_id` = :__where_1) AND (`name` = :__where_4)");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE (user_id = :__where_1) AND (name = :__where_4)");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
@@ -133,7 +133,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 				$user->where('user_id', '=', 1);
 			$user->brace('close');
 		$user->brace('close');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE ((`user_id` = :__where_2))");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE ((user_id = :__where_2))");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
@@ -142,7 +142,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 			$user->where('name', '=', 'Chris', 'OR');
 			$user->where('name', '=', 'Christopher');
 		$user->brace('close');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` WHERE `user_id` = :__where_0 AND (`name` = :__where_2 OR `name` = :__where_3)");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user WHERE user_id = :__where_0 AND (name = :__where_2 OR name = :__where_3)");
 	}
 
 	/**
@@ -153,19 +153,19 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	public function testOrderBy() {
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->order('`user_id`');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` ORDER BY `user_id` ASC");
+		$user->order('user_id');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user ORDER BY user_id ASC");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->order('`user_id`', 'DESC');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` ORDER BY `user_id` DESC");
+		$user->order('user_id', 'DESC');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user ORDER BY user_id DESC");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
-		$user->order('`user_id`');
-		$user->order('`name`');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` ORDER BY `user_id` ASC, `name` ASC");
+		$user->order('user_id');
+		$user->order('name');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user ORDER BY user_id ASC, name ASC");
 	}
 
 	/**
@@ -177,12 +177,12 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$user->limit('10');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` LIMIT 10");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user LIMIT 10");
 
 		// Create our test model object
 		$user = new MyProject\Model\User();
 		$user->limit('10, 25');
-		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM `user` LIMIT 10, 25");
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user LIMIT 10, 25");
 	}
 
 	/**

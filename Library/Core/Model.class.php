@@ -69,7 +69,7 @@ namespace Core;
  * ------------------------
  * <code>
  * // 1. In your User Model, for instance:
- * $this->run('SELECT * FROM `user` WHERE `name` = :name', array(':name' => 'Chris'));
+ * $this->run('SELECT * FROM user WHERE name = :name', array(':name' => 'Chris'));
  * $user = $this->fetch();
  * echo 'Hello, ' . $user->name;
  * </code>
@@ -79,7 +79,6 @@ namespace Core;
  * @author    Christopher Hill <cjhill@gmail.com>
  * @package   MVC
  *
- * @todo      SUM, AVG, etc.
  * @todo      Table joins.
  * @todo      Some kind of config schema.
  * @todo      GROUP BY
@@ -133,12 +132,12 @@ class Model
 	private $_from = array();
 
 	/**
-	 * The where conditions to apply to the query.
+	 * The clause conditions for where and having to apply to the query.
 	 *
 	 * @access private
 	 * @var    array
 	 */
-	private $_where = array();
+	private $_clause = array();
 
 	/**
 	 * The having conditions to apply.
@@ -311,7 +310,7 @@ class Model
 	 * @return Model                  For chainability.
 	 */
 	public function where($field, $operator, $value, $joiner = null) {
-		$this->_where[] = array(
+		$this->_clause[] = array(
 			'field'    => $field,
 			'operator' => $operator,
 			'value'    => $value,
@@ -350,7 +349,7 @@ class Model
 	 * @return Model                  For chainability.
 	 */
 	public function brace($status, $joiner = null) {
-		$this->_where[] = ($status == 'open' ? '(' : ')')
+		$this->_clause[] = ($status == 'open' ? '(' : ')')
 			. ($joiner ? " {$joiner} " : '');
 	}
 
@@ -420,7 +419,7 @@ class Model
 		}
 
 		// If the where clause is empty then assume we are updating the user
-		if (! $this->_where) {
+		if (! $this->_clause) {
 			$this->where($this->_primaryKey, '=', $this->{$this->_primaryKey});
 		}
 
@@ -481,10 +480,10 @@ class Model
 	 */
 	private function buildInsert() {
 		$keys   = array_keys($this->_store);
-		$fields = implode('`, `', $keys);
+		$fields = implode(', ',   $keys);
 		$values = implode(', :',  $keys);
 
-		return "INSERT INTO `{$this->_table}` (`{$fields}`) VALUES (:{$values})";
+		return "INSERT INTO {$this->_table} ({$fields}) VALUES (:{$values})";
 	}
 
 	/**
@@ -564,8 +563,8 @@ class Model
 	 */
 	private function buildFragmentFrom() {
 		return empty($this->_from)
-			? "`{$this->_table}`"
-			: '`' . implode('`, `', $this->_from) . '`';
+			? "{$this->_table}"
+			: implode(', ', $this->_from);
 	}
 
 	/**
@@ -584,7 +583,7 @@ class Model
 				continue;
 			}
 
-			$fields[] = "`{$this->_table}`.`{$field}` = :{$field}";
+			$fields[] = "{$field} = :{$field}";
 			$this->_data[$field] = $value;
 		}
 
@@ -605,14 +604,14 @@ class Model
 		// If there are no conditions then return nothing
 		if ($type == 'HAVING' && empty($this->_having)) {
 			return '';
-		} else if (empty($this->_where)) {
+		} else if (empty($this->_clause)) {
 			return '';
 		}
 
 		// Container for the where conditions
 		$sql        = '';
 		$sqlClauses = '';
-		$clauses    = $type == 'HAVING' ? $this->_having : $this->_where;
+		$clauses    = $type == 'HAVING' ? $this->_having : $this->_clause;
 		$clauseType = strtolower($type);
 
 		// Loop over each where condition and build its SQL
@@ -641,12 +640,12 @@ class Model
 				}
 
 				// The SQL for this IN
-				$sql .= "`{$clause['field']}` IN (" . implode(', ', $clauseIn) . ")";
+				$sql .= "{$clause['field']} IN (" . implode(', ', $clauseIn) . ")";
 			}
 
 			// A simple where condition
 			else {
-				$sql .= "`{$clause['field']}` {$clause['operator']} :{$clauseVar}";
+				$sql .= "{$clause['field']} {$clause['operator']} :{$clauseVar}";
 				$this->_data[$clauseVar] = $clause['value'];
 			}
 
@@ -738,7 +737,7 @@ class Model
 	public function reset() {
 		$this->_select = array();
 		$this->_from   = array();
-		$this->_where  = array();
+		$this->_clause  = array();
 		$this->_having = array();
 		$this->_order  = array();
 		$this->_limit  = array();
