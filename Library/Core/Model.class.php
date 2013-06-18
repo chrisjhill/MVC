@@ -280,9 +280,10 @@ class Model
 	 * @param  string $table A table that is part of the statement.
 	 * @return Model         For chainability.
 	 */
-	public function from($table, $tableField = null, $joinField = null) {
+	public function from($table, $joinType = null, $tableField = null, $joinField = null) {
 		$this->_from[] = array(
 			'table'      => $table,
+			'joinType'   => $joinType,
 			'tableField' => $tableField,
 			'joinField'  => $joinField
 		);
@@ -577,7 +578,7 @@ class Model
 		// Loop over each table and build its SQL
 		foreach ($this->_from as $from) {
 			$tables[] = $from['tableField'] && $from['joinField']
-				? "{$from['table']} ON {$from['tableField']} = {$from['joinField']}"
+				? "{$from['joinType']} JOIN {$from['table']} ON {$from['tableField']} = {$from['joinField']}"
 				: $from['table'];
 		}
 

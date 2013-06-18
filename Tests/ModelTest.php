@@ -78,6 +78,31 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing FROM joins.
+	 *
+	 * @access public
+	 */
+	public function testFromJoin() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->from('user');
+		$user->from('foo', 'LEFT', 'email', 'email');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user, LEFT JOIN foo ON email = email");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->from('user');
+		$user->from('foo', 'RIGHT', 'email', 'email');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user, RIGHT JOIN foo ON email = email");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->from('user');
+		$user->from('foo', 'INNER', 'email', 'email');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user, INNER JOIN foo ON email = email");
+	}
+
+	/**
 	 * Testing WHERE.
 	 *
 	 * @access public
