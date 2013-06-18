@@ -280,8 +280,12 @@ class Model
 	 * @param  string $table A table that is part of the statement.
 	 * @return Model         For chainability.
 	 */
-	public function from($table) {
-		$this->_from[] = $table;
+	public function from($table, $tableField = null, $joinField = null) {
+		$this->_from[] = array(
+			'table'      => $table,
+			'tableField' => $tableField,
+			'joinField'  => $joinField
+		);
 		return $this;
 	}
 
@@ -541,7 +545,7 @@ class Model
 		// Container for the fields we wish to select
 		$fields = array();
 
-		// Loop over each field that we want to return and build it's SQL
+		// Loop over each field that we want to return and build its SQL
 		foreach ($this->_select as $select) {
 			$as = $select['as']
 				? " AS '{$select['as']}'"
@@ -562,9 +566,22 @@ class Model
 	 * @return string
 	 */
 	private function buildFragmentFrom() {
-		return empty($this->_from)
-			? "{$this->_table}"
-			: implode(', ', $this->_from);
+		// If there are no fields to select from then just return them all
+		if (empty($this->_from)) {
+			return $this->_table;
+		}
+
+		// Container for the tables we wish to use
+		$tables = array();
+
+		// Loop over each table and build its SQL
+		foreach ($this->_from as $from) {
+			$tables[] = $from['tableField'] && $from['joinField']
+				? "{$from['table']} ON {$from['tableField']} = {$from['joinField']}"
+				: $from['table'];
+		}
+
+		return implode(', ', $tables);
 	}
 
 	/**
@@ -674,7 +691,7 @@ class Model
 		// Container for the order by's
 		$orders = array();
 
-		// Loop over each order by and build it's SQL
+		// Loop over each order by and build its SQL
 		foreach ($this->_order as $order) {
 			$orders[] = "{$order['field']} {$order['direction']}";
 		}
