@@ -79,9 +79,7 @@ namespace Core;
  * @author    Christopher Hill <cjhill@gmail.com>
  * @package   MVC
  *
- * @todo      Table joins.
  * @todo      Some kind of config schema.
- * @todo      GROUP BY
  */
 class Model
 {
@@ -146,6 +144,14 @@ class Model
 	 * @var    array
 	 */
 	private $_having = array();
+
+	/**
+	 * How our queries should be grouped.
+	 *
+	 * @access private
+	 * @var    array
+	 */
+	private $_group = array();
 
 	/**
 	 * How we should order the returned rows.
@@ -347,6 +353,17 @@ class Model
 	}
 
 	/**
+	 * Group by a field.
+	 *
+	 * @access public
+	 * @param  string $field The field that we want to join on.
+	 * @return Model         For chainability.
+	 */
+	public function group($field) {
+		$this->_group[] = $field;
+	}
+
+	/**
 	 * Whether to open or close a brace.
 	 *
 	 * @access public
@@ -502,6 +519,7 @@ class Model
 			    FROM   {$this->buildFragmentFrom()}
 			           {$this->buildFragmentWhere()}
 			           {$this->buildFragmentWhere('HAVING')}
+			           {$this->buildFragmentGroup()}
 			           {$this->buildFragmentOrder()}
 			           {$this->buildFragmentLimit()}";
 	}
@@ -675,6 +693,18 @@ class Model
 		}
 
 		return "{$type} {$sqlClauses}";
+	}
+
+	/**
+	 * Build the GROUP BY portion of the statement.
+	 *
+	 * @access private
+	 * @return string
+	 */
+	private function buildFragmentGroup() {
+		return ! empty($this->_group)
+			? 'GROUP BY ' . implode(', ', $this->_group)
+			: '';
 	}
 
 	/**

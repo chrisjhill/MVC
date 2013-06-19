@@ -171,6 +171,20 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing GROUP BY.
+	 *
+	 * @access public
+	 */
+	public function testGroupBy() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->group('email');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user GROUP BY email");
+		$user->group('name');
+		$this->assertEquals($this->format($user->build('select')), "SELECT * FROM user GROUP BY email, name");
+	}
+
+	/**
 	 * Testing ORDER BY.
 	 *
 	 * @access public
