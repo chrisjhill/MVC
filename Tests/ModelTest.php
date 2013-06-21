@@ -225,6 +225,27 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing UPDATE statements.
+	 *
+	 * @access public
+	 */
+	public function testUpdate() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->name = 'Chris';
+		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET name = :name");
+		$user->where('user_id', '=', 1);
+		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET name = :name WHERE user_id = :__where_0");
+		$user->limit(1);
+		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET name = :name WHERE user_id = :__where_0 LIMIT 1");
+
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->update(array('email' => 'cjhill@gmail.com', 'foo' => 'bar'));
+		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET email = :email, foo = :foo");
+	}
+
+	/**
 	 * Strip all of the excess whitespace from the query
 	 * @param  [type] $sql [description]
 	 * @return [type]      [description]
