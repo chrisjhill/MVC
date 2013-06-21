@@ -3,6 +3,32 @@
 class ModelTest extends PHPUnit_Framework_TestCase
 {
 	/**
+	 * Testing the get and set magic methods.
+	 *
+	 * @access public
+	 */
+	public function testSetAndGet() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$this->assertFalse($user->name);
+		$user->name = 'Chris';
+		$this->assertEquals($user->name, 'Chris');
+	}
+
+	/**
+	 * Testing passing an array of data to the model.
+	 *
+	 * @access public
+	 */
+	public function testMassSettingOfData() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->update(array('name' => 'Chris', 'email' => 'cjhill@gmail.com'));
+		$this->assertEquals($user->name,  'Chris');
+		$this->assertEquals($user->email, 'cjhill@gmail.com');
+	}
+
+	/**
 	 * Testing SELECTing all fields.
 	 *
 	 * @access public
