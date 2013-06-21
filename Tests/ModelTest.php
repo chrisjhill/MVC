@@ -272,6 +272,21 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing DELETE statements.
+	 *
+	 * @access public
+	 */
+	public function testDelete() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$this->assertEquals($this->format($user->build('delete')), "DELETE FROM user");
+		$user->where('user_id', '=', 1);
+		$this->assertEquals($this->format($user->build('delete')), "DELETE FROM user WHERE user_id = :__where_0");
+		$user->limit(1);
+		$this->assertEquals($this->format($user->build('delete')), "DELETE FROM user WHERE user_id = :__where_0 LIMIT 1");
+	}
+
+	/**
 	 * Strip all of the excess whitespace from the query
 	 * @param  [type] $sql [description]
 	 * @return [type]      [description]
