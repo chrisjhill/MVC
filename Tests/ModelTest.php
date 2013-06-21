@@ -251,6 +251,20 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * Testing INSERT statements.
+	 *
+	 * @access public
+	 */
+	public function testInsert() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user->name = 'Chris';
+		$this->assertEquals($this->format($user->build('insert')), "INSERT INTO user (name) VALUES (:name)");
+		$user->email = 'cjhill@gmail.com';
+		$this->assertEquals($this->format($user->build('insert')), "INSERT INTO user (name, email) VALUES (:name, :email)");
+	}
+
+	/**
 	 * Testing UPDATE statements.
 	 *
 	 * @access public
