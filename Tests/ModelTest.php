@@ -16,19 +16,6 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Testing passing an array of data to the model.
-	 *
-	 * @access public
-	 */
-	public function testMassSettingOfData() {
-		// Create our test model object
-		$user = new MyProject\Model\User();
-		$user->update(array('name' => 'Chris', 'email' => 'cjhill@gmail.com'));
-		$this->assertEquals($user->name,  'Chris');
-		$this->assertEquals($user->email, 'cjhill@gmail.com');
-	}
-
-	/**
 	 * Testing SELECTing all fields.
 	 *
 	 * @access public
@@ -278,11 +265,6 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET name = :name WHERE user_id = :__where_0");
 		$user->limit(1);
 		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET name = :name WHERE user_id = :__where_0 LIMIT 1");
-
-		// Create our test model object
-		$user = new MyProject\Model\User();
-		$user->update(array('email' => 'cjhill@gmail.com', 'foo' => 'bar'));
-		$this->assertEquals($this->format($user->build('update')), "UPDATE user SET email = :email, foo = :foo");
 	}
 
 	/**
@@ -298,6 +280,45 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->format($user->build('delete')), "DELETE FROM user WHERE user_id = :__where_0");
 		$user->limit(1);
 		$this->assertEquals($this->format($user->build('delete')), "DELETE FROM user WHERE user_id = :__where_0 LIMIT 1");
+	}
+
+	/**
+	 * Testing the return values for when a query has not yet been run.
+	 *
+	 * @access public
+	 */
+	public function testNoQueryRun() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$this->assertFalse($user->rowCount());
+		$this->assertFalse($user->fetch());
+	}
+
+	/**
+	 * Testing the function that resets all of the query information.
+	 *
+	 * @access public
+	 */
+	public function testReset() {
+		// Create our test model object
+		$user = new MyProject\Model\User();
+		$user
+			->select('name')
+			->from('user_fake')
+			->where('name', '=', 'Chris')
+			->group('name')
+			->order('name')
+			->limit(1)
+			->name = 'Chris';
+
+		// Make sure everything has been set
+		$this->assertEquals($user->name, 'Chris');
+		$this->assertEquals($this->format($user->build('select')), 'SELECT name FROM user_fake WHERE name = :__where_0 GROUP BY name ORDER BY name ASC LIMIT 1');
+
+		// Now reset and make sure we have a fresh start
+		$user->reset();
+		$this->assertFalse($user->name);
+		$this->assertEquals($this->format($user->build('select')), 'SELECT * FROM user');
 	}
 
 	/**

@@ -361,6 +361,7 @@ class Model
 	 */
 	public function group($field) {
 		$this->_group[] = $field;
+		return $this;
 	}
 
 	/**
@@ -785,11 +786,13 @@ class Model
 	public function reset() {
 		$this->_select = array();
 		$this->_from   = array();
-		$this->_clause  = array();
+		$this->_clause = array();
 		$this->_having = array();
+		$this->_group  = array();
 		$this->_order  = array();
 		$this->_limit  = array();
 		$this->_data   = array();
+		$this->_store  = array();
 	}
 
 	/**
