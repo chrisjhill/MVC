@@ -81,24 +81,8 @@ namespace Core;
  *
  * @todo      Some kind of config schema.
  */
-class Model
+class Model extends Database
 {
-	/**
-	 * The connection to the database.
-	 *
-	 * @access private
-	 * @var    \PDO
-	 */
-	private $_connection;
-
-	/**
-	 * The query that we have just run.
-	 *
-	 * @access private
-	 * @var    \PDOStatement
-	 */
-	private $_statement;
-
 	/**
 	 * The primary key for the table.
 	 *
@@ -206,56 +190,6 @@ class Model
 				 ->find();
 			$this->_store = $this->fetch(\PDO::FETCH_ASSOC);
 		}
-	}
-
-	/**
-	 * Connect to the database if we have not already.
-	 *
-	 * @access private
-	 * @todo   Move this into a Core Database class.
-	 */
-	private function connect() {
-		// Get the connection details
-		$host     = Config::get('db', 'host');
-		$database = Config::get('db', 'database');
-		$username = Config::get('db', 'username');
-		$password = Config::get('db', 'password');
-
-		try {
-			// Connect to the database
-			$this->_connection = new \PDO(
-				"mysql:host={$host};dbname={$database};charset=utf8",
-				$username,
-				$password
-			);
-		} catch(\PDOException $e) {
-			if (Core::get('settings', 'environment') == 'Dev') {
-				var_dump($e);
-			}
-
-			die('<p>Sorry, we were unable to complete your request.</p>');
-		}
-	}
-
-	/**
-	 * Execute an SQL statement on the database.
-	 *
-	 * @access public
-	 * @param  string  $sql  The SQL statement to run.
-	 * @param  array   $data The data to pass into the prepared statement.
-	 * @return boolean       Whether the query was successful.
-	 */
-	public function run($sql, $data = array()) {
-		// If we do not have a connection then establish one
-		if (! $this->_connection) {
-			$this->connect();
-		}
-
-		// Prepare, execute, reset, and return the outcome
-		$this->_statement = $this->_connection->prepare($sql);
-		$result = $this->_statement->execute($data);
-		$this->reset();
-		return $result;
 	}
 
 	/**
@@ -672,8 +606,8 @@ class Model
 
 				// Loop over each value in the array
 				foreach ($clause['value'] as $index => $value) {
-					$clauseIn[]    = ":{$clauseVar}_{$value}";
-					$this->_data["{$clauseVar}_{$index}"] = $in;
+					$clauseIn[] = ":{$clauseVar}_{$index}";
+					$this->_data["{$clauseVar}_{$index}"] = $value;
 				}
 
 				// The SQL for this IN
