@@ -1,0 +1,15 @@
+{
+    "name": "MVC",
+    "description": "A simple, quick and easy to use PHP MVC.",
+    "license": "The MIT License",
+    "authors": [
+        {
+            "name": "Christopher Hill",
+            "email": "cjhill@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {
+
+    }
+}
