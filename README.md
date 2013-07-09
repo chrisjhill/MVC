@@ -18,7 +18,7 @@ We provide the basics of the MVC, everything from the router, dispatcher, contro
  * Store (APC, Cookie, Memcache(d), Request, and Session)
 
 ## Testing
-This project contains a PHPUnit test suite with 64 tests and 194 assertions.
+This project contains a PHPUnit test suite with 64 tests and 194 assertions (all passing).
 
 ---
 
