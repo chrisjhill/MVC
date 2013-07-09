@@ -9,6 +9,7 @@ To provide a compact codebase providing the basics for any application. It's des
 ## What does this project have to offer?
 We provide the basics of the MVC, everything from the router, dispatcher, controllers, views, and view helpers. We even have a few components you can make use of, including:
 
+ * Model ORM
  * Cache
  * Event listeners
  * Formatting of data
@@ -16,10 +17,13 @@ We provide the basics of the MVC, everything from the router, dispatcher, contro
  * Data validation
  * Store (APC, Cookie, Memcache(d), Request, and Session)
 
+## Testing
+This project contains a PHPUnit test suite with 64 tests and 194 assertions.
+
 ---
 
 ## Installation
-Checkout a copy of the source files and head over to your app's config in `/Library/MyProject/config.ini` and update the `path`'s to your specific directory structure.
+Checkout a copy of the source files and head over to your app's config in `/Library/MyProject/config.ini` and update the `path`'s to your specific directory structure. You can rename the `MyProject` in the `Library` directory, just make sure you also update the namespace definition in each of your `.class.php` files.
 
 ---
 
@@ -145,11 +149,6 @@ Your View Scripts can easily direct logic away from themselves into View Helpers
     return $this->renderPartial('test', array(
     	'testVar' => $params['testVar']
     ));
-
----
-
-## PHPUnit testing
-OK (64 tests, 194 assertions)
 
 ---
 
