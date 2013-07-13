@@ -1,6 +1,8 @@
 <?php
 session_start();
 include dirname(__FILE__) . '/../Library/autoloader.php';
+$loader = new SplClassLoader();
+$loader->register();
 
 // Start tests
 class CacheTest extends PHPUnit_Framework_TestCase
