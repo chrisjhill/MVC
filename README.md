@@ -23,7 +23,7 @@ This project contains a PHPUnit test suite with 64 tests and 194 assertions (all
 ---
 
 ## Installation
-Checkout a copy of the source files and head over to your app's config in `/Library/MyProject/config.ini` and update the `path`'s to your specific directory structure. You can rename the `MyProject` in the `Library` directory, just make sure you also update the namespace definition in each of your `.class.php` files.
+Checkout a copy of the source files and head over to your app's config in `/Library/MyProject/config.ini` and update the `path`'s to your specific directory structure. You can rename the `MyProject` in the `Library` directory, just make sure you also update the namespace definition in each of your `.php` files.
 
 ---
 
@@ -88,7 +88,7 @@ URL's will often change. Defining them in a single place (the router) will save 
 
 ### Controllers
 
-Controllers are created in `/Library/MyProject/Controller`, the file name begins with an uppercase letter and ends in a `.class.php` extension, so `index` would be called `Index.class.php`.
+Controllers are created in `/Library/MyProject/Controller`, the file name begins with an uppercase letter and ends in a `.php` extension, so `index` would be called `Index.php`.
 
 ### Actions
 

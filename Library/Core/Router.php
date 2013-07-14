@@ -58,7 +58,7 @@ namespace Core;
  * @author    Christopher Hill <cjhill@gmail.com>
  * @package   MVC
  *
- * @see       /Library/MyProject/View/Helper/Route.class.php
+ * @see       /Library/MyProject/View/Helper/Route.php
  */
 class Router
 {

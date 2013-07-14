@@ -14,7 +14,7 @@ namespace Core;
  * @author    Christopher Hill <cjhill@gmail.com>
  * @package   MVC
  *
- * @see       /Library/MyProject/View/Helper/Profiler.class.php
+ * @see       /Library/MyProject/View/Helper/Profiler.php
  */
 class Profiler
 {
