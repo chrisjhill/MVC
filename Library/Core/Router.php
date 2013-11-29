@@ -231,6 +231,6 @@ class Router
 			$url = str_replace(":{$variable}", urlencode($value), $url);
 		}
 
-		return $url;
+		return Config::get('path', 'root') . $url;
 	}
 }
