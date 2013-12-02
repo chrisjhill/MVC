@@ -59,11 +59,12 @@ class Database
 	 * Execute an SQL statement on the database.
 	 *
 	 * @access protected
-	 * @param  string    $sql  The SQL statement to run.
-	 * @param  array     $data The data to pass into the prepared statement.
+	 * @param  string    $sql   The SQL statement to run.
+	 * @param  array     $data  The data to pass into the prepared statement.
+	 * @param  boolean   $reset Whether we should reset the model data.
 	 * @return boolean
 	 */
-	protected function run($sql, $data = array()) {
+	protected function run($sql, $data = array(), $reset = true) {
 		// If we do not have a connection then establish one
 		if (! $this->_connection) {
 			$this->connect();
@@ -72,7 +73,9 @@ class Database
 		// Prepare, execute, reset, and return the outcome
 		$this->_statement = $this->_connection->prepare($sql);
 		$result = $this->_statement->execute($data);
-		$this->reset();
+		if ($reset) {
+			$this->reset();
+		}
 		return $result;
 	}
 }

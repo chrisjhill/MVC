@@ -170,6 +170,14 @@ class Model extends Database
 	private $_data;
 
 	/**
+	 * Whether, after running a query, we should reset the model data.
+	 *
+	 * @access private
+	 * @var    boolean
+	 */
+	private $_resetAfterQuery = true;
+
+	/**
 	 * Setup the model.
 	 *
 	 * If you want to load a row automatically then you can pass an int to this
@@ -190,6 +198,18 @@ class Model extends Database
 				 ->find();
 			$this->_store = $this->fetch(\PDO::FETCH_ASSOC);
 		}
+	}
+
+	/**
+	 * Whether we should reset the query data after we have run the query.
+	 *
+	 * @access public
+	 * @param  boolean $reset
+	 * @return Model          For chainability.
+	 */
+	public function setReset($reset = true) {
+		$this->_resetAfterQuery = $reset;
+		return $this;
 	}
 
 	/**
@@ -349,7 +369,7 @@ class Model extends Database
 		}
 
 		// If the insert was successful then add the primary key to the store
-		if ($this->run($this->build('insert'), $this->_store)) {
+		if ($this->run($this->build('insert'), $this->_store, $this->_resetAfterQuery)) {
 			$this->{$this->_primaryKey} = $this->_connection->lastInsertId();
 		}
 	}
@@ -360,7 +380,7 @@ class Model extends Database
 	 * @access public
 	 */
 	public function find() {
-		$this->run($this->build('select'), $this->_data);
+		$this->run($this->build('select'), $this->_data, $this->_resetAfterQuery);
 	}
 
 	/**
@@ -381,7 +401,7 @@ class Model extends Database
 		}
 
 		// If the insert was successful then add the primary key to the store
-		$this->run($this->build('update'), $this->_data);
+		$this->run($this->build('update'), $this->_data, $this->_resetAfterQuery);
 	}
 
 	/**
@@ -408,7 +428,7 @@ class Model extends Database
 			$this->where($this->_primaryKey, '=', $id);
 		}
 
-		$this->run($this->build('delete'), $this->_data);
+		$this->run($this->build('delete'), $this->_data, $this->_resetAfterQuery);
 	}
 
 	/**
