@@ -197,7 +197,7 @@ class Validate
 	}
 
 	/**
-	 * Test to see if the input's length is with bounds.
+	 * Test to see if the input's length is within bounds.
 	 *
 	 * Note: This function can deal with a min, a max, or a min and a max boundary.
 	 *

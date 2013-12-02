@@ -395,7 +395,7 @@ class Model extends Database
 			$this->$field = $value;
 		}
 
-		// If the where clause is empty then assume we are updating the user
+		// If the where clause is empty then assume we are updating via primary key
 		if (! $this->_clause) {
 			$this->where($this->_primaryKey, '=', $this->{$this->_primaryKey});
 		}
