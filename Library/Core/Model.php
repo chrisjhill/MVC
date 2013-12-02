@@ -64,6 +64,7 @@ namespace Core;
  * // 2. Advanced deletion:
  * $user = new Model\User();
  * $user->where('id', '=', 1)->limit(1)->delete();
+ * </code>
  *
  * Running your own queries
  * ------------------------
