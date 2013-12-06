@@ -327,7 +327,8 @@ class Model extends Database
 	 *
 	 * @access public
 	 * @param  string $status Either 'open' or 'close'.
-	 * @return Model                  For chainability.
+	 * @param  string $joiner Either 'AND' or 'OR'.
+	 * @return Model          For chainability.
 	 */
 	public function brace($status, $joiner = null) {
 		$this->_clause[] = ($status == 'open' ? '(' : ')')
@@ -592,6 +593,7 @@ class Model extends Database
 	 * variables prefixed with "__where_".
 	 *
 	 * @access private
+	 * @param  string  $type Whether this is a WHERE or HAVING clause.
 	 * @return string
 	 * @todo   Allow for OR's.
 	 */
@@ -726,7 +728,8 @@ class Model extends Database
 	 * Get the next row of the located results.
 	 *
 	 * @access public
-	 * @return int|array Array if statement was successful, boolean false otherwise.
+	 * @param  \PDO   $method In what format the dataset should be returned.
+	 * @return mixed          Array if statement was successful, boolean false otherwise.
 	 */
 	public function fetch($method = \PDO::FETCH_OBJ) {
 		return $this->_statement
@@ -760,8 +763,8 @@ class Model extends Database
 	 * also update any previous value the field had.
 	 *
 	 * @access public
-	 * @param  string $field The field to manipulate.
-	 * @param  mixed  $value The field's value.
+	 * @param  string $variable The field to manipulate.
+	 * @param  mixed  $value    The field's value.
 	 * @magic
 	 */
 	public function __set($variable, $value) {
