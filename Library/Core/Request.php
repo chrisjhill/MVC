@@ -49,7 +49,11 @@ class Request
 	/**
 	 * Return a breakdown of the URL into their sections.
 	 *
+	 * Note: This function accepts a URL as a parameter but is only made
+	 * available for unit testing. You shouldn't use this param in your project.
+	 *
 	 * @access public
+	 * @param  string $url Pass in a URL to use that instead of the request URL.
 	 * @return array
      * @static
 	 */

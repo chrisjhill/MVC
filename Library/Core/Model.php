@@ -238,8 +238,11 @@ class Model extends Database
 	 * to call this function.
 	 *
 	 * @access public
-	 * @param  string $table A table that is part of the statement.
-	 * @return Model         For chainability.
+	 * @param  string $table      A table that is part of the statement.
+	 * @param  string $joinType   How to join the table ('left', 'right', etc.).
+	 * @param  string $tableField First table join column.
+	 * @param  string $joinField  Second table join column.
+	 * @return Model              For chainability.
 	 */
 	public function from($table, $joinType = null, $tableField = null, $joinField = null) {
 		$this->_from[] = array(

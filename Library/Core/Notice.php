@@ -90,8 +90,8 @@ class Notice
 	 * Add a bullet point list to the notice.
 	 *
 	 * @access public
-	 * @param  string|array $message The items to place into a list.
-	 * @return Core\Notice           For chainability.
+	 * @param  string|array $items The items to place into a list.
+	 * @return Core\Notice         For chainability.
 	 * @recurvive
 	 */
 	public function setList($items) {

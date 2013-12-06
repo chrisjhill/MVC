@@ -326,8 +326,8 @@ class Validate
 	 * Add a human readable error message.
 	 *
 	 * @access private
-	 * @param  string  $inputValue The value of the input.
-	 * @param  array   $testName   The parameters for this test.
+	 * @param  string  $inputName The value of the input.
+	 * @param  array   $testName  The parameters for this test.
 	 * @return boolean
 	 */
 	private function addError($inputName, $testName) {
@@ -381,9 +381,9 @@ class Validate
 	 * The user has passed in a validating test that we do not know of.
 	 *
 	 * @access public
-	 * @param  string     $functionName The name of the method the user called.
-	 * @param  array      $params       The parameters that the user passed in.
-	 * @throws \Exception               If called then the user has entered an invalid test name.
+	 * @param  string     $testName The name of the method the user called.
+	 * @param  array      $params   The parameters that the user passed in.
+	 * @throws \Exception           If called then the user has entered an invalid test name.
 	 * @magic
 	 */
 	public function __call($testName, $params) {
