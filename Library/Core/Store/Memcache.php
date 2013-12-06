@@ -37,7 +37,7 @@ class Memcache implements StorageInterface
 		}
 
 		// Memcache instance created, add the server
-		self::_memcache->addServer($host, $port);
+		self::$_memcache->addServer($host, $port);
 	}
 
 	/**
