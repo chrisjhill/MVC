@@ -1,0 +1,1073 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Core\Model</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Core.html"><i class="icon-th"></i> Core</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/MVC.html"><i class="icon-folder-open"></i> MVC</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">23</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: Setup the model."><span class="description">Setup the model.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method___get" title="__get :: Get a field value."><span class="description">Get a field value.</span><pre>__get()</pre></a></li>
+<li class="method public "><a href="#method___set" title="__set :: Set a variable for the row."><span class="description">Set a variable for the row.</span><pre>__set()</pre></a></li>
+<li class="method public "><a href="#method_brace" title="brace :: Whether to open or close a brace."><span class="description">Whether to open or close a brace.</span><pre>brace()</pre></a></li>
+<li class="method public "><a href="#method_build" title="build :: Piece together all of the sections of the query."><span class="description">Piece together all of the sections of the query.</span><pre>build()</pre></a></li>
+<li class="method public "><a href="#method_delete" title="delete :: Delete rows from the table."><span class="description">Delete rows from the table.</span><pre>delete()</pre></a></li>
+<li class="method public "><a href="#method_fetch" title="fetch :: Get the next row of the located results."><span class="description">Get the next row of the located results.</span><pre>fetch()</pre></a></li>
+<li class="method public "><a href="#method_find" title="find :: Select some records from a table."><span class="description">Select some records from a table.</span><pre>find()</pre></a></li>
+<li class="method public "><a href="#method_from" title="from :: Add a table to the query."><span class="description">Add a table to the query.</span><pre>from()</pre></a></li>
+<li class="method public "><a href="#method_group" title="group :: Group by a field."><span class="description">Group by a field.</span><pre>group()</pre></a></li>
+<li class="method public "><a href="#method_having" title="having :: Add a having condition to the statement."><span class="description">Add a having condition to the statement.</span><pre>having()</pre></a></li>
+<li class="method public "><a href="#method_insert" title="insert :: Insert a row into the table."><span class="description">Insert a row into the table.</span><pre>insert()</pre></a></li>
+<li class="method public "><a href="#method_limit" title="limit :: How to limit the returned results."><span class="description">How to limit the returned results.</span><pre>limit()</pre></a></li>
+<li class="method public "><a href="#method_order" title="order :: How to order the returned results."><span class="description">How to order the returned results.</span><pre>order()</pre></a></li>
+<li class="method public "><a href="#method_reset" title="reset :: Reset the query ready for the next one to avoid contamination."><span class="description">Reset the query ready for the next one to avoid contamination.</span><pre>reset()</pre></a></li>
+<li class="method public "><a href="#method_rowCount" title="rowCount :: Get how many rows the statement located."><span class="description">Get how many rows the statement located.</span><pre>rowCount()</pre></a></li>
+<li class="method public "><a href="#method_save" title="save :: Shorthand for the insert and update functions."><span class="description">Shorthand for the insert and update functions.</span><pre>save()</pre></a></li>
+<li class="method public "><a href="#method_select" title="select :: Add a row to the SELECT section."><span class="description">Add a row to the SELECT section.</span><pre>select()</pre></a></li>
+<li class="method public "><a href="#method_setReset" title="setReset :: Whether we should reset the query data after we have run the query."><span class="description">Whether we should reset the query data after we have run the query.</span><pre>setReset()</pre></a></li>
+<li class="method public "><a href="#method_update" title="update :: Update a row in the table."><span class="description">Update a row in the table.</span><pre>update()</pre></a></li>
+<li class="method public "><a href="#method_where" title="where :: Add a where condition to the statement."><span class="description">Add a where condition to the statement.</span><pre>where()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul><li class="method protected inherited"><a href="#method_run" title="run :: Execute an SQL statement on the database."><span class="description">Execute an SQL statement on the database.</span><pre>run()</pre></a></li></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="method private "><a href="#method_buildDelete" title="buildDelete :: Build a delete statement."><span class="description">Build a delete statement.</span><pre>buildDelete()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentFrom" title="buildFragmentFrom :: Build the FROM portion of the statement."><span class="description">Build the FROM portion of the statement.</span><pre>buildFragmentFrom()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentGroup" title="buildFragmentGroup :: Build the GROUP BY portion of the statement."><span class="description">Build the GROUP BY portion of the statement.</span><pre>buildFragmentGroup()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentLimit" title="buildFragmentLimit :: Build the LIMIT portion of the statement."><span class="description">Build the LIMIT portion of the statement.</span><pre>buildFragmentLimit()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentOrder" title="buildFragmentOrder :: Build the ORDER BY portion of the statement."><span class="description">Build the ORDER BY portion of the statement.</span><pre>buildFragmentOrder()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentSelect" title="buildFragmentSelect :: Build the SELECT portion of the statement."><span class="description">Build the SELECT portion of the statement.</span><pre>buildFragmentSelect()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentUpdate" title="buildFragmentUpdate :: Build the SET portion of the statement."><span class="description">Build the SET portion of the statement.</span><pre>buildFragmentUpdate()</pre></a></li>
+<li class="method private "><a href="#method_buildFragmentWhere" title="buildFragmentWhere :: Build the WHERE portion of the statement."><span class="description">Build the WHERE portion of the statement.</span><pre>buildFragmentWhere()</pre></a></li>
+<li class="method private "><a href="#method_buildInsert" title="buildInsert :: Build an insert statement."><span class="description">Build an insert statement.</span><pre>buildInsert()</pre></a></li>
+<li class="method private "><a href="#method_buildSelect" title="buildSelect :: Build a select statement."><span class="description">Build a select statement.</span><pre>buildSelect()</pre></a></li>
+<li class="method private "><a href="#method_buildUpdate" title="buildUpdate :: Build an update statement."><span class="description">Build an update statement.</span><pre>buildUpdate()</pre></a></li>
+<li class="method private inherited"><a href="#method_connect" title="connect :: Connect to the database if we have not already."><span class="description">Connect to the database if we have not already.</span><pre>connect()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="property protected inherited"><a href="#property__connection" title="$_connection :: The connection to the database."><span class="description"></span><pre>$_connection</pre></a></li>
+<li class="property protected "><a href="#property__primaryKey" title="$_primaryKey :: The primary key for the table."><span class="description"></span><pre>$_primaryKey</pre></a></li>
+<li class="property protected inherited"><a href="#property__statement" title="$_statement :: The query that we have just run."><span class="description"></span><pre>$_statement</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property__clause" title="$_clause :: The clause conditions for where and having to apply to the query."><span class="description"></span><pre>$_clause</pre></a></li>
+<li class="property private "><a href="#property__data" title="$_data :: Data that will be passed to the query."><span class="description"></span><pre>$_data</pre></a></li>
+<li class="property private "><a href="#property__from" title="$_from :: The tables that we wish to select data from."><span class="description"></span><pre>$_from</pre></a></li>
+<li class="property private "><a href="#property__group" title="$_group :: How our queries should be grouped."><span class="description"></span><pre>$_group</pre></a></li>
+<li class="property private "><a href="#property__having" title="$_having :: The having conditions to apply."><span class="description"></span><pre>$_having</pre></a></li>
+<li class="property private "><a href="#property__limit" title="$_limit :: How we should limit the returned rows."><span class="description"></span><pre>$_limit</pre></a></li>
+<li class="property private "><a href="#property__order" title="$_order :: How we should order the returned rows."><span class="description"></span><pre>$_order</pre></a></li>
+<li class="property private "><a href="#property__resetAfterQuery" title="$_resetAfterQuery :: Whether, after running a query, we should reset the model data."><span class="description"></span><pre>$_resetAfterQuery</pre></a></li>
+<li class="property private "><a href="#property__select" title="$_select :: Which columns we want to select."><span class="description"></span><pre>$_select</pre></a></li>
+<li class="property private "><a href="#property__store" title="$_store :: Data that has been passed to the row to insert/update."><span class="description"></span><pre>$_store</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Core\Model"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/Core.html">Core</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Core.Model.html">Model</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">Provides a simple interface to gather data from a database.</p>
+<div class="details">
+<div class="long_description"><h2>Inserting</h2>
+
+<pre><code>// 1. Object-orientated inserting:
+$user = new Model\User();
+$user->name  = 'Chris';
+$user->email = 'cjhill@gmail.com';
+$user->save();
+
+// 2. Pass in an array of data:
+$user = new Model\User();
+$user->insert(array('name' => 'Chris', 'email' => 'cjhill@gmail.com'));
+</code></pre>
+
+<h2>Selecting</h2>
+
+<pre><code>// 1. Select a single user very quickly:
+$user = new Model\User(1);
+
+// 2. Advanced query selecting:
+$users = new Model\User();
+$users->where('active', '=', 1)->where('name', '=', 'Dave')->limit(10)->find();
+
+// 3. How many users the query found:
+echo 'I found ' . $users->rowCount() . ' users.';
+
+// 4. Loop over the found users:
+while ($user = $users->fetch()) {
+    echo 'Hello, ' . $user->name;
+}
+</code></pre>
+
+<h2>Updating</h2>
+
+<pre><code>1. Updating a user programatically:
+$user = new Model\User(1);
+$user->name = 'Dave';
+$user->save();
+
+2. Passing in an array of data:
+$user = new Model\User(1);
+$user->save(array('name' => 'Dave'));
+
+3. Advanced updating:
+$user = new Model\User();
+$user->where('id', '=', array(1, 2))->limit(2)->update(array('name' => 'Dave'));
+</code></pre>
+
+<h2>Deleting</h2>
+
+<pre><code>// 1. Simple deletion:
+$user = new Model\User();
+$user->delete(1);
+
+// 2. Advanced deletion:
+$user = new Model\User();
+$user->where('id', '=', 1)->limit(1)->delete();
+</code></pre>
+
+<h2>Running your own queries</h2>
+
+<pre><code>// 1. In your User Model, for instance:
+$this->run('SELECT * FROM user WHERE name = :name', array(':name' => 'Chris'));
+$user = $this->fetch();
+echo 'Hello, ' . $user->name;
+</code></pre></div>
+<table class="table table-bordered">
+<tr>
+<th>copyright</th>
+<td>Copyright (c) 2012-2013 Christopher Hill</td>
+</tr>
+<tr>
+<th>license</th>
+<td><a href="http://www.opensource.org/licenses/mit-license.php">The MIT License</a></td>
+</tr>
+<tr>
+<th>author</th>
+<td><a href="mailto:cjhill@gmail.com">Christopher Hill</a></td>
+</tr>
+<tr>
+<th>package</th>
+<td><a href="../packages/MVC.html">MVC</a></td>
+</tr>
+<tr>
+<th>todo</th>
+<td>Some kind of config schema.</td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Setup the model.</h2>
+<pre>__construct(mixed $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If you want to load a row automatically then you can pass an int to this
+function, or to load multiple rows then you can pass an array or ints.</p>
+
+<pre><code>// Load a single user row
+$user = new MyProject\Model\User(1);
+</code></pre></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>mixed</code><p>The ID to load automatically.</p></div>
+</div></div>
+</div>
+<a id="method___get"></a><div class="element clickable method public method___get" data-toggle="collapse" data-target=".method___get .collapse">
+<h2>Get a field value.</h2>
+<pre>__get(string $field) : string | boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: This is only used for inserting and updating statements. For all
+other statements you can use the fetch() function.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The name of the field.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>boolean</code>String if exists, boolean false otherwise.</div>
+</div></div>
+</div>
+<a id="method___set"></a><div class="element clickable method public method___set" data-toggle="collapse" data-target=".method___set .collapse">
+<h2>Set a variable for the row.</h2>
+<pre>__set(string $variable, mixed $value) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: This is only used for inserting and updating statements. It will
+also update any previous value the field had.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>public</td>
+</tr>
+<tr>
+<th>magic</th>
+<td></td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$variable</h4>
+<code>string</code><p>The field to manipulate.</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code><p>The field's value.</p>
+</div>
+</div></div>
+</div>
+<a id="method_brace"></a><div class="element clickable method public method_brace" data-toggle="collapse" data-target=".method_brace .collapse">
+<h2>Whether to open or close a brace.</h2>
+<pre>brace(string $status, string $joiner) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$status</h4>
+<code>string</code><p>Either 'open' or 'close'.</p>
+</div>
+<div class="subelement argument">
+<h4>$joiner</h4>
+<code>string</code><p>Either 'AND' or 'OR'.</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_build"></a><div class="element clickable method public method_build" data-toggle="collapse" data-target=".method_build .collapse">
+<h2>Piece together all of the sections of the query.</h2>
+<pre>build(string $type) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>What type of query we wish to build.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>The SQL that has been generated.</div>
+</div></div>
+</div>
+<a id="method_delete"></a><div class="element clickable method public method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
+<h2>Delete rows from the table.</h2>
+<pre>delete(int $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>int</code><p>The ID of the row we wish to delete.</p></div>
+</div></div>
+</div>
+<a id="method_fetch"></a><div class="element clickable method public method_fetch" data-toggle="collapse" data-target=".method_fetch .collapse">
+<h2>Get the next row of the located results.</h2>
+<pre>fetch(<a href="http://php.net/manual/en/class.pdo.php">\PDO</a> $method) : mixed</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$method</h4>
+<code><a href="http://php.net/manual/en/class.pdo.php">\PDO</a></code><p>In what format the dataset should be returned.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Array if statement was successful, boolean false otherwise.</div>
+</div></div>
+</div>
+<a id="method_find"></a><div class="element clickable method public method_find" data-toggle="collapse" data-target=".method_find .collapse">
+<h2>Select some records from a table.</h2>
+<pre>find() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_from"></a><div class="element clickable method public method_from" data-toggle="collapse" data-target=".method_from .collapse">
+<h2>Add a table to the query.</h2>
+<pre>from(string $table, string $joinType, string $tableField, string $joinField) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: If no table is supplied then we will use the table defined in the
+extending class. If you are not joining other tables then you do not need
+to call this function.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$table</h4>
+<code>string</code><p>A table that is part of the statement.</p></div>
+<div class="subelement argument">
+<h4>$joinType</h4>
+<code>string</code><p>How to join the table ('left', 'right', etc.).</p>
+</div>
+<div class="subelement argument">
+<h4>$tableField</h4>
+<code>string</code><p>First table join column.</p></div>
+<div class="subelement argument">
+<h4>$joinField</h4>
+<code>string</code><p>Second table join column.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_group"></a><div class="element clickable method public method_group" data-toggle="collapse" data-target=".method_group .collapse">
+<h2>Group by a field.</h2>
+<pre>group(string $field) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field that we want to join on.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_having"></a><div class="element clickable method public method_having" data-toggle="collapse" data-target=".method_having .collapse">
+<h2>Add a having condition to the statement.</h2>
+<pre>having(string $field, string $operator, string | array $value, string $joiner, int $brace) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field we wish to test.</p></div>
+<div class="subelement argument">
+<h4>$operator</h4>
+<code>string</code><p>How we wish to test the field (=, >, etc.)</p>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code><code>array</code><p>The value to test the field against.</p></div>
+<div class="subelement argument">
+<h4>$joiner</h4>
+<code>string</code><p>How to join the where clause to the next.</p></div>
+<div class="subelement argument">
+<h4>$brace</h4>
+<code>int</code><p>How many braces to open or close.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_insert"></a><div class="element clickable method public method_insert" data-toggle="collapse" data-target=".method_insert .collapse">
+<h2>Insert a row into the table.</h2>
+<pre>insert(array $data) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>array</code><p>The data to insert into the table.</p></div>
+</div></div>
+</div>
+<a id="method_limit"></a><div class="element clickable method public method_limit" data-toggle="collapse" data-target=".method_limit .collapse">
+<h2>How to limit the returned results.</h2>
+<pre>limit(int $limit, int $start) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$limit</h4>
+<code>int</code><p>How many results to return.</p></div>
+<div class="subelement argument">
+<h4>$start</h4>
+<code>int</code><p>The offset to start the results from.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_order"></a><div class="element clickable method public method_order" data-toggle="collapse" data-target=".method_order .collapse">
+<h2>How to order the returned results.</h2>
+<pre>order(string $field, string $direction) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field we wish to order by.</p></div>
+<div class="subelement argument">
+<h4>$direction</h4>
+<code>string</code><p>Either 'ASC' or 'DESC'. 'ASC' by default.</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_reset"></a><div class="element clickable method public method_reset" data-toggle="collapse" data-target=".method_reset .collapse">
+<h2>Reset the query ready for the next one to avoid contamination.</h2>
+<pre>reset() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: This function is called everytime we have run a query automatically.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="method_rowCount"></a><div class="element clickable method public method_rowCount" data-toggle="collapse" data-target=".method_rowCount .collapse">
+<h2>Get how many rows the statement located.</h2>
+<pre>rowCount() : int | boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>int</code><code>boolean</code>int if statement was successful, boolean false otherwise.</div>
+</div></div>
+</div>
+<a id="method_save"></a><div class="element clickable method public method_save" data-toggle="collapse" data-target=".method_save .collapse">
+<h2>Shorthand for the insert and update functions.</h2>
+<pre>save(array $data) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>array</code><p>The data to insert or update.</p></div>
+</div></div>
+</div>
+<a id="method_select"></a><div class="element clickable method public method_select" data-toggle="collapse" data-target=".method_select .collapse">
+<h2>Add a row to the SELECT section.</h2>
+<pre>select(string $field, string $as) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: The table name will always be prefixed to the field name to try and
+mitigate errors . If none is supplied then we assume you are using the
+table name that is declared in the extending class.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field name.</p></div>
+<div class="subelement argument">
+<h4>$as</h4>
+<code>string</code><p>The name of the field that is supplied to you.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_setReset"></a><div class="element clickable method public method_setReset" data-toggle="collapse" data-target=".method_setReset .collapse">
+<h2>Whether we should reset the query data after we have run the query.</h2>
+<pre>setReset(boolean $reset) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$reset</h4>
+<code>boolean</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_update"></a><div class="element clickable method public method_update" data-toggle="collapse" data-target=".method_update .collapse">
+<h2>Update a row in the table.</h2>
+<pre>update(array $data) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>array</code><p>The data to update the table with.</p></div>
+</div></div>
+</div>
+<a id="method_where"></a><div class="element clickable method public method_where" data-toggle="collapse" data-target=".method_where .collapse">
+<h2>Add a where condition to the statement.</h2>
+<pre>where(string $field, string $operator, string | array $value, string $joiner) : <a href="../classes/Core.Model.html">\Core\Model</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><pre><code>// 1. A simple condition:
+->where('name', '=', 'Chris')
+
+// 2. An IN condition:
+->where('name', 'IN', array('Chris', 'John', 'Smith'));
+
+// You can also use the equals operator for this!
+->where('name', '=',  array('Chris', 'John', 'Smith'));
+
+// 3. Multiple where's:
+->where('name', '=', 'Chris')->where('email', '=', 'cjhill@gmail.com')
+</code></pre></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$field</h4>
+<code>string</code><p>The field we wish to test.</p></div>
+<div class="subelement argument">
+<h4>$operator</h4>
+<code>string</code><p>How we wish to test the field (=, >, etc.)</p>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>string</code><code>array</code><p>The value to test the field against.</p></div>
+<div class="subelement argument">
+<h4>$joiner</h4>
+<code>string</code><p>How to join the where clause to the next.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/Core.Model.html">\Core\Model</a></code>For chainability.</div>
+</div></div>
+</div>
+<a id="method_run"></a><div class="element clickable method protected method_run" data-toggle="collapse" data-target=".method_run .collapse">
+<h2>Execute an SQL statement on the database.</h2>
+<pre>run(string $sql, array $data, boolean $reset) : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>protected</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Core\Database::run()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$sql</h4>
+<code>string</code><p>The SQL statement to run.</p></div>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>array</code><p>The data to pass into the prepared statement.</p></div>
+<div class="subelement argument">
+<h4>$reset</h4>
+<code>boolean</code><p>Whether we should reset the model data.</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>boolean</code></div>
+</div></div>
+</div>
+<a id="method_buildDelete"></a><div class="element clickable method private method_buildDelete" data-toggle="collapse" data-target=".method_buildDelete .collapse">
+<h2>Build a delete statement.</h2>
+<pre>buildDelete() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentFrom"></a><div class="element clickable method private method_buildFragmentFrom" data-toggle="collapse" data-target=".method_buildFragmentFrom .collapse">
+<h2>Build the FROM portion of the statement.</h2>
+<pre>buildFragmentFrom() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentGroup"></a><div class="element clickable method private method_buildFragmentGroup" data-toggle="collapse" data-target=".method_buildFragmentGroup .collapse">
+<h2>Build the GROUP BY portion of the statement.</h2>
+<pre>buildFragmentGroup() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentLimit"></a><div class="element clickable method private method_buildFragmentLimit" data-toggle="collapse" data-target=".method_buildFragmentLimit .collapse">
+<h2>Build the LIMIT portion of the statement.</h2>
+<pre>buildFragmentLimit() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentOrder"></a><div class="element clickable method private method_buildFragmentOrder" data-toggle="collapse" data-target=".method_buildFragmentOrder .collapse">
+<h2>Build the ORDER BY portion of the statement.</h2>
+<pre>buildFragmentOrder() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentSelect"></a><div class="element clickable method private method_buildFragmentSelect" data-toggle="collapse" data-target=".method_buildFragmentSelect .collapse">
+<h2>Build the SELECT portion of the statement.</h2>
+<pre>buildFragmentSelect() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentUpdate"></a><div class="element clickable method private method_buildFragmentUpdate" data-toggle="collapse" data-target=".method_buildFragmentUpdate .collapse">
+<h2>Build the SET portion of the statement.</h2>
+<pre>buildFragmentUpdate() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildFragmentWhere"></a><div class="element clickable method private method_buildFragmentWhere" data-toggle="collapse" data-target=".method_buildFragmentWhere .collapse">
+<h2>Build the WHERE portion of the statement.</h2>
+<pre>buildFragmentWhere(string $type) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: So we do not interfere with any field names we label our prepared
+variables prefixed with "__where_".</p></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>todo</th>
+<td>Allow for OR's.</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$type</h4>
+<code>string</code><p>Whether this is a WHERE or HAVING clause.</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildInsert"></a><div class="element clickable method private method_buildInsert" data-toggle="collapse" data-target=".method_buildInsert .collapse">
+<h2>Build an insert statement.</h2>
+<pre>buildInsert() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildSelect"></a><div class="element clickable method private method_buildSelect" data-toggle="collapse" data-target=".method_buildSelect .collapse">
+<h2>Build a select statement.</h2>
+<pre>buildSelect() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_buildUpdate"></a><div class="element clickable method private method_buildUpdate" data-toggle="collapse" data-target=".method_buildUpdate .collapse">
+<h2>Build an update statement.</h2>
+<pre>buildUpdate() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_connect"></a><div class="element clickable method private method_connect" data-toggle="collapse" data-target=".method_connect .collapse">
+<h2>Connect to the database if we have not already.</h2>
+<pre>connect() </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>private</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Core\Database::connect()</td>
+</tr>
+</table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property__connection"> </a><div class="element clickable property protected property__connection" data-toggle="collapse" data-target=".property__connection .collapse">
+<h2></h2>
+<pre>$_connection : <a href="http://php.net/manual/en/class.pdo.php">\PDO</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>protected</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Core\Database::$$_connection</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__primaryKey"> </a><div class="element clickable property protected property__primaryKey" data-toggle="collapse" data-target=".property__primaryKey .collapse">
+<h2></h2>
+<pre>$_primaryKey : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>This can (and should) be overridden by the extending class.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__statement"> </a><div class="element clickable property protected property__statement" data-toggle="collapse" data-target=".property__statement .collapse">
+<h2></h2>
+<pre>$_statement : <a href="http://php.net/manual/en/class.pdostatement.php">\PDOStatement</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>access</th>
+<td>protected</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Core\Database::$$_statement</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property__clause"> </a><div class="element clickable property private property__clause" data-toggle="collapse" data-target=".property__clause .collapse">
+<h2></h2>
+<pre>$_clause : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__data"> </a><div class="element clickable property private property__data" data-toggle="collapse" data-target=".property__data .collapse">
+<h2></h2>
+<pre>$_data : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__from"> </a><div class="element clickable property private property__from" data-toggle="collapse" data-target=".property__from .collapse">
+<h2></h2>
+<pre>$_from : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__group"> </a><div class="element clickable property private property__group" data-toggle="collapse" data-target=".property__group .collapse">
+<h2></h2>
+<pre>$_group : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__having"> </a><div class="element clickable property private property__having" data-toggle="collapse" data-target=".property__having .collapse">
+<h2></h2>
+<pre>$_having : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__limit"> </a><div class="element clickable property private property__limit" data-toggle="collapse" data-target=".property__limit .collapse">
+<h2></h2>
+<pre>$_limit : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__order"> </a><div class="element clickable property private property__order" data-toggle="collapse" data-target=".property__order .collapse">
+<h2></h2>
+<pre>$_order : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__resetAfterQuery"> </a><div class="element clickable property private property__resetAfterQuery" data-toggle="collapse" data-target=".property__resetAfterQuery .collapse">
+<h2></h2>
+<pre>$_resetAfterQuery : boolean</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__select"> </a><div class="element clickable property private property__select" data-toggle="collapse" data-target=".property__select .collapse">
+<h2></h2>
+<pre>$_select : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>To mitigate SQL errors we always append the table name to the start of
+the field name, whether or not one is supplied. If no table name is
+passed in then we use the default table the the extended class declared.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property__store"> </a><div class="element clickable property private property__store" data-toggle="collapse" data-target=".property__store .collapse">
+<h2></h2>
+<pre>$_store : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>private</td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-12-06T15:14:46Z.<br></footer></div>
+</div>
+</body>
+</html>

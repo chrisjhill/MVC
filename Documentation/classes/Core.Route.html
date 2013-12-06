@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Core\Route</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Core.html"><i class="icon-th"></i> Core</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/MVC.html"><i class="icon-folder-open"></i> MVC</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">23</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: Create the route."><span class="description">Create the route.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_setEndpoint" title="setEndpoint :: The endpoint for this route."><span class="description">The endpoint for this route.</span><pre>setEndpoint()</pre></a></li>
+<li class="method public "><a href="#method_setFormat" title="setFormat :: Set the regex patterns for each variable in the route."><span class="description">Set the regex patterns for each variable in the route.</span><pre>setFormat()</pre></a></li>
+<li class="method public "><a href="#method_setRoute" title="setRoute :: Set the path for this route."><span class="description">Set the path for this route.</span><pre>setRoute()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul>
+<li class="property public "><a href="#property_endpoint" title="$endpoint :: To which controller/action we will dispatch this request."><span class="description"></span><pre>$endpoint</pre></a></li>
+<li class="property public "><a href="#property_paramFormats" title="$paramFormats :: The regex tests for each variable in the URL."><span class="description"></span><pre>$paramFormats</pre></a></li>
+<li class="property public "><a href="#property_route" title="$route :: The path that we want to match."><span class="description"></span><pre>$route</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul><li class="property private "><a href="#property_name" title="$name :: The unique name of this route."><span class="description"></span><pre>$name</pre></a></li></ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Core\Route"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/Core.html">Core</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Core.Route.html">Route</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">A single route for the application.</p>
+<div class="details">
+<div class="long_description"><p>Routes can contain variables which are prepended by a colon. Paths are greedy
+by default, they will grab any URL that they match irrespective of what comes
+after the matched fragments of the request URL. Anything after the route path
+will be parsed as a GET variable. E.g., The route path of:</p>
+
+<pre><code>foo/:bar</code></pre>
+
+<p>Will turn the request URL of:</p>
+
+<pre><code>foo/hello/my/variables/go/here/foobar</code></pre>
+
+<p>Into the following GET variables (minus controller/action indexes):</p>
+
+<pre><code>array(
+    'bar'    => 'hello',
+    'my'     => 'variables',
+    'go'     => 'here',
+    'foobar' => true
+)
+</code></pre></div>
+<table class="table table-bordered">
+<tr>
+<th>copyright</th>
+<td>Copyright (c) 2012-2013 Christopher Hill</td>
+</tr>
+<tr>
+<th>license</th>
+<td><a href="http://www.opensource.org/licenses/mit-license.php">The MIT License</a></td>
+</tr>
+<tr>
+<th>author</th>
+<td><a href="mailto:cjhill@gmail.com">Christopher Hill</a></td>
+</tr>
+<tr>
+<th>package</th>
+<td><a href="../packages/MVC.html">MVC</a></td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Create the route.</h2>
+<pre>__construct(string $name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>The unique name of the route.</p></div>
+</div></div>
+</div>
+<a id="method_setEndpoint"></a><div class="element clickable method public method_setEndpoint" data-toggle="collapse" data-target=".method_setEndpoint .collapse">
+<h2>The endpoint for this route.</h2>
+<pre>setEndpoint(array $endpoint) : \Core\Core\Route</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Can receive a controller and action. If no controller name is passed in
+then the default 'index' controller is used. If no action name is passed
+in then the default 'index' action is used.</p>
+
+<pre><code>array(
+    'controller' => 'Foo',
+    'action'     => 'bar'
+)
+</code></pre></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$endpoint</h4>
+<code>array</code><p>Where we will dispatch this request.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Core\Core\Route</code>The Route, for chainability.</div>
+</div></div>
+</div>
+<a id="method_setFormat"></a><div class="element clickable method public method_setFormat" data-toggle="collapse" data-target=".method_setFormat .collapse">
+<h2>Set the regex patterns for each variable in the route.</h2>
+<pre>setFormat(array $formats) : \Core\Core\Route</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If no regex pattern is passed in for a variable then we use [\w&#45;]+</p>
+
+<p>All of your patterns will automatically start with ^, end with $, and will
+include the pattern modifiers i and u. So, if you were to pass in the
+regex pattern on \d+ then it would be evaluated as /^\d+$/iu</p>
+
+<p>If your path is</p>
+
+<pre>foo/:bar/:acme</pre>
+
+<p>then your $formats array could
+potentially look like:</p>
+
+<pre><code>array(
+   'bar'  => '\d+',
+   'acme' => '(foo|bar)'
+)
+</code></pre></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$formats</h4>
+<code>array</code><p>The regex patterns.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Core\Core\Route</code>The Route, for chainability.</div>
+</div></div>
+</div>
+<a id="method_setRoute"></a><div class="element clickable method public method_setRoute" data-toggle="collapse" data-target=".method_setRoute .collapse">
+<h2>Set the path for this route.</h2>
+<pre>setRoute(string $route) : \Core\Core\Route</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Paths will we be worked out relative to your path root (as defined in your
+projects config.ini). They can contain any combination of strings or
+variables. A variable is declared by starting with a colon (:) and then a
+series of a-z characters. The following are all examples of valid paths.</p>
+
+<ul>
+    <li>foo</li>
+    <li>foo/bar/:acme</li>
+    <li>:foo/:bar/:acme</li>
+    <li>:foo/bar/:acme</li>
+</ul>
+
+<p>To set the regex for these variables, use the setParamFormats() method.</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$route</h4>
+<code>string</code><p>The path for this route.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\Core\Core\Route</code>The Route, for chainability.</div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_endpoint"> </a><div class="element clickable property public property_endpoint" data-toggle="collapse" data-target=".property_endpoint .collapse">
+<h2></h2>
+<pre>$endpoint : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><pre><code>array(
+    'controller' => 'Foo',
+    'action'     => 'bar'
+)
+</code></pre></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_paramFormats"> </a><div class="element clickable property public property_paramFormats" data-toggle="collapse" data-target=".property_paramFormats .collapse">
+<h2></h2>
+<pre>$paramFormats : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>Note: If no regex test is added for a variable then we use [\w&#45;]+</p></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_route"> </a><div class="element clickable property public property_route" data-toggle="collapse" data-target=".property_route .collapse">
+<h2></h2>
+<pre>$route : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_name"> </a><div class="element clickable property private property_name" data-toggle="collapse" data-target=".property_name .collapse">
+<h2></h2>
+<pre>$name : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>public</td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-12-06T15:14:46Z.<br></footer></div>
+</div>
+</body>
+</html>
