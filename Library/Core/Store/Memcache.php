@@ -31,8 +31,8 @@ class Memcache implements StorageInterface
 	public static function setup($server, $host, $port) {
 		// Sanity check: Make sure we have received a valid
 		switch ($server) {
-			case 'Memcache'  : self::_memcache = new \Memcache();  break;
-			case 'Memcached' : self::_memcache = new \Memcached(); break;
+			case 'Memcache'  : self::$_memcache = new \Memcache();  break;
+			case 'Memcached' : self::$_memcache = new \Memcached(); break;
 			default          : throw new \Exception("Unknown server {$server}.");
 		}
 
