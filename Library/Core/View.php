@@ -154,8 +154,7 @@ class View
 		}
 
 		// And now, the journey ends
-		// We die so that we do not call other action's render()
-		die($template);
+		echo $template;
 	}
 
 	/**

@@ -104,7 +104,7 @@ Caching can be turned on or off from your projects configuration file (`/Library
 
 ### Forwarding
 
-You can forward to another action (or controller) via the `$this->forward('action', 'controller')` command in a controller.
+You can forward to another action (or controller) via the `return $this->forward('action', 'controller')` command in a controller.
 
 ### Layouts
 

@@ -1,6 +1,6 @@
 <?php
 // What status is our application in?
-if ($_SERVER['APP_ENVIRONMENT'] == 'Development') {
+if ($_SERVER['APP_ENVIRONMENT'] == 'Dev') {
 	// Development, show all errors
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
