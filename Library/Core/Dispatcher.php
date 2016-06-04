@@ -125,7 +125,8 @@ class Dispatcher
 		$controller->view->action     = $action;
 
 		// Call and render this action
-		$controller->{$action . 'Action'}();
-		$controller->view->render();
+		if ($controller->{$action . 'Action'}() !== false) {
+			$controller->view->render();
+		}
 	}
 }

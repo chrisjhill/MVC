@@ -99,6 +99,7 @@ class Controller
 	 * @param  string    $action     The action we wish to forward to.
 	 * @param  string    $controller The controller we wish to forward to.
 	 * @throws Exception             From the Dispatcher if the controller/action does not exist.
+	 * @return boolean               Returns false to signify not to render previous actions.
 	 */
 	public function forward($action = 'index', $controller = '') {
 		// Reregister the action in the profile
@@ -123,6 +124,8 @@ class Controller
 			Profiler::deregister('Controller', $this->view->controller);
 			Dispatcher::loadController($controller, $action);
 		}
+
+		return false;
 	}
 
 	/**
