@@ -36,8 +36,10 @@ class Controller
 	 * @access public
 	 */
 	public function __construct() {
+		// Which caching interface should we use?
+		$cacheInterface = 'Core\\Store\\' . Config::get('cache', 'interface');
 		// Get the view instance
-		$this->view = new View();
+		$this->view = new View(new $cacheInterface);
 	}
 
 	/**

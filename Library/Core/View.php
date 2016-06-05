@@ -45,14 +45,24 @@ class View
 	public $_variables = array();
 
 	/**
+	 * The interface for caching.
+	 *
+	 * @access private
+	 * @var    Cache
+	 */
+	private $_cache;
+
+	/**
 	 * The View has been created.
 	 *
 	 * We need to give a reference to ourself to the View Helper.
 	 *
+	 * @var    CacheInterface $cacheInterface The Interface to use for caching.
 	 * @access public
 	 */
-	public function __construct() {
+	public function __construct($cacheInterface) {
 		ViewHelper::$_view = $this;
+		$this->_cache = new Cache($cacheInterface);
 	}
 
 	/**
@@ -90,11 +100,14 @@ class View
 	 */
 	public function render() {
 		// Can we use a cache to speed things up?
+		$cacheItem = $this->_cache->has(Request::getUrl('_'))
+			? $this->_cache->get(Request::getUrl('_'))
+			: false;
 		// If the cache object exists then it means the controller wants to use caching
 		// However, the action might have disabled it
-		if (Cache::has(Request::getUrl('_'))) {
+		if ($cacheItem) {
 			// The cache is enabled and there is an instance of the file in cache
-			$this->_variables['viewContent'] = Cache::get(Request::getUrl('_'));
+			$this->_variables['viewContent'] = $cacheItem;
 		}
 
 		// Nope, there is no cache
@@ -192,7 +205,7 @@ class View
 
 		// If we are using the cache then save it
 		if ($cacheName && Config::get('cache', 'enable')) {
-			Cache::put(
+			$this->_cache->put(
 				$cacheName,
 				$content . '<!-- Cached: ' . date('r') . ' //-->'
 			);

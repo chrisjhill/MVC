@@ -1,15 +1,18 @@
 <?php
 namespace Core\Store;
 
+use Core\Config,
+    Core\Request;
+
 /**
- * Stores data for a user session.
+ * Stores data within the file system.
  *
- * @copyright Copyright (c) 2012-2013 Christopher Hill
+ * @copyright Copyright (c) 2012-2016 Christopher Hill
  * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
  * @author    Christopher Hill <cjhill@gmail.com>
  * @package   MVC
  */
-class Session implements StorageInterface
+class File implements StorageInterface
 {
 	/**
 	 * Check whether the variable exists in the store.
@@ -20,7 +23,19 @@ class Session implements StorageInterface
 	 * @static
 	 */
 	public static function has($variable) {
-		return isset($_SESSION[$variable]);
+		$filePath = Config::get('path', 'base') . Config::get('path', 'cache') . $variable;
+
+		if (
+			Request::server('REQUEST_METHOD') == 'POST' || // Unique content possible
+			! Config::get('cache', 'enable')            || // Caching disabled
+			! file_exists($filePath)                       // Cache entry does not exist
+		) {
+			return false;
+		}
+
+		// Check the time the item was created to see if it is stale
+		return (Request::server('REQUEST_TIME') - filemtime($filePath)) <=
+			Config::get('cache', 'life');
 	}
 
 	/**
@@ -37,11 +52,13 @@ class Session implements StorageInterface
 	public static function put($variable, $value, $overwrite = false) {
 		// If it exists, and we do not want to overwrite, then throw exception
 		if (self::has($variable) && ! $overwrite) {
-			throw new \Exception($variable . ' already exists in the store.');
+			throw new \Exception("{$variable} already exists in the store.");
 		}
 
-		$_SESSION[$variable] = serialize($value);
-		return self::has($variable);
+		file_put_contents(
+			Config::get('path', 'base') . Config::get('path', 'cache') . $variable,
+			$value
+		);
 	}
 
 	/**
@@ -49,7 +66,7 @@ class Session implements StorageInterface
 	 *
 	 * @access public
 	 * @param  string $variable The name of the variable in the store.
-	 * @return mixed
+	 * @return bool
 	 * @throws Exception        If the variable does not exist.
 	 * @static
 	 */
@@ -58,7 +75,11 @@ class Session implements StorageInterface
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		return unserialize($_SESSION[$variable]);
+		return file_get_contents(
+			  Config::get('path', 'base')
+			. Config::get('path', 'cache')
+			. $variable
+		);
 	}
 
 	/**
@@ -75,10 +96,6 @@ class Session implements StorageInterface
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		// Unset the variable
-		unset($_SESSION[$variable]);
-
-		// Was it removed
-		return ! self::has($variable);
+		return unlink(Config::get('path', 'base') . Config::get('path', 'cache') . $variable);
 	}
 }

@@ -7,12 +7,11 @@ namespace Core;
  * Sample usage:
  *
  * <code>
- * if (Core\Cache::has('foo')) {
- *     echo Core\Cache::get('foo');
- * } else {
- *     $var = 'Hello World!';
- *     Core\Cache::put('foo', $var);
- *     echo Core\Cache::get('foo');
+ * $cache     = new Core\Cache($StorageInterface);
+ * $cacheItem = $cache->get('foo');
+ *
+ * if ($cacheItem) {
+ *     echo $cacheItem;
  * }
  * </code>
  *
@@ -24,75 +23,67 @@ namespace Core;
 class Cache
 {
 	/**
+	 * How we interact with our cache items.
+	 *
+	 * @access private
+	 * @var    StorageInterface
+	 */
+	private $_storageInterface;
+
+	/**
+	 * Setup the cache by stating which StorageInterface we wish to use.
+	 *
+	 * @access public
+	 * @param  StorageInterface $storageInterface Which interface to interact with cache items.
+	 */
+	public function __construct($storageInterface) {
+		$this->_storageInterface = $storageInterface;
+	}
+
+	/**
 	 * Determines if the item is already cached, and that it is valid.
 	 *
 	 * @access public
-	 * @param  string  $name The name of the cached item.
+	 * @param  string  $variable The name of the cached item.
 	 * @return boolean
 	 * @static
 	 */
-	public static function has($name) {
-		// Do not cache POST'ed requests as it may effect the output
-		if (Request::server('REQUEST_METHOD') == 'POST') {
-			return false;
-		}
-
-		// If the cache is disabled then do not cache
-		else if (! Config::get('cache', 'enable')) {
-			return false;
-		}
-
-		// If the file does not exist then it has not been cached
-		if (! file_exists(Config::get('path', 'base') . Config::get('path', 'cache') . $name)) {
-			return false;
-		}
-
-		// Check the time the item was created to see if it is stale
-		return Request::server('REQUEST_TIME') - filemtime(Config::get('path', 'base') . Config::get('path', 'cache') . $name)
-			<= Config::get('cache', 'life');
+	public function has($variable) {
+		return $this->_storageInterface->has($variable);
 	}
 
 	/**
 	 * Get a cached item.
 	 *
-	 * Note: You should call has() before get()'ing and item to ensure it exists.
-	 *
 	 * @access public
-	 * @param  string $name The name of the cached item.
+	 * @param  string $variable The name of the cached item.
 	 * @return string
 	 * @static
 	 */
-	public static function get($name) {
-		return file_get_contents(Config::get('path', 'base') . Config::get('path', 'cache') . $name);
+	public function get($variable) {
+		return $this->_storageInterface->get($variable);
 	}
 
 	/**
 	 * Save an item to the cache.
 	 *
 	 * @access public
-	 * @param  string $name    The name of the cached item.
-	 * @param  string $content The content that we wish to cache.
+	 * @param  string $variable The name of the cached item.
+	 * @param  string $content  The content that we wish to cache.
 	 * @static
 	 */
-	public static function put($name, $content) {
-		file_put_contents(
-			Config::get('path', 'base') . Config::get('path', 'cache') . $name,
-			$content
-		);
+	public function put($variable, $content) {
+		return $this->_storageInterface->put($variable, $content);
 	}
 
 	/**
 	 * Remove an item from the cache.
 	 *
-	 * @param  string $name The name of the cached item.
-	 * @return boolean      Whether the cached object was successfully removed.
+	 * @param  string $variable The name of the cached item.
+	 * @return boolean          Whether the cached object was successfully removed.
 	 * @static
 	 */
-	public static function remove($name) {
-		if (Cache::has($name)) {
-			return unlink(Config::get('path', 'base') . Config::get('path', 'cache') . $name);
-		}
-
-		return false;
+	public function remove($variable) {
+		return $this->_storageInterface->remove($variable);
 	}
 }

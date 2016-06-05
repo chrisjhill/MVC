@@ -1,5 +1,5 @@
-# Either "Development" or "Production" 
-SetEnv APP_ENVIRONMENT "Development"
+# Either "Dev" or "Live"
+SetEnv APP_ENVIRONMENT "Dev"
 
 # Redirect all requests to our index.php file
 RewriteEngine On

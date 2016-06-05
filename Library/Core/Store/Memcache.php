@@ -82,7 +82,6 @@ class Memcache implements StorageInterface
 	 * @static
 	 */
 	public static function get($variable) {
-		// If it exists, and we do not want to overwrite, then throw exception
 		if (! self::has($variable)) {
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
@@ -100,7 +99,6 @@ class Memcache implements StorageInterface
 	 * @static
 	 */
 	public static function remove($variable) {
-		// If it exists, and we do not want to overwrite, then throw exception
 		if (! self::has($variable)) {
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
