@@ -96,11 +96,12 @@ Actions are named the same as specified in the URI, are lowercase, and end in `A
 
 ### Caching
 
-Caching can be turned on or off from your projects configuration file (`/Library/MyProject/config.ini`), and you can set how long you want before the cache is invalidated.
+Caching can be turned on or off from your projects configuration file (`/Library/MyProject/config.ini`), and you can set how long you want before the cache is invalidated. You can also select how you would like your cache to be stored: "File", "Apc", or "Memcache".
 
     [cache]
-        enable = true
-        life   = 60
+        interface = "File"
+        enable    = true
+        life      = 60
 
 ### Forwarding
 
