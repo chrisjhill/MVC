@@ -8,7 +8,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
 	 * @access public
 	 */
 	public function testAddVariableToView() {
-		$view = new Core\View();
+		$view = new Core\View(new Core\Store(new Core\Store\File()));
 		$view->addVariable('foo', 'bar');
 		$this->assertEquals('bar', $view->getVariable('foo'));
 	}

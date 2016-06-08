@@ -1,68 +1,31 @@
 <?php
+session_start();
+include dirname(__FILE__) . '/../Library/autoloader.php';
+$loader = new SplClassLoader();
+$loader->register();
+
 // Start tests
 class StoreTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * Test the Store can store variables.
-	 *
-	 * @access public
-	 */
-	public function testStoreCanPutVariable() {
-		// Set two variables, one in the request and one in the session
-		Core\Store\Request::put('foo', 'bar');
-	}
-
-	/**
-	 * Test the Store can detect it has a variable.
-	 *
-	 * @access public
-	 */
-	public function testStoreHasVariables() {
-		// Variables we have set
-		$this->assertTrue(Core\Store\Request::has('foo'));
-
-		// Variables we have not set
-		$this->assertFalse(Core\Store\Request::has('bar'));
-	}
-
-	/**
-	 * Test the Store can get a variable.
+	 * Can we create a store object?
 	 *
 	 * @access public
 	 * @expectedException Exception
 	 */
-	public function testStoreCanGetVariables() {
-		// Variables we have set
-		$this->assertEquals(Core\Store\Request::get('foo'), 'bar');
+	public function testCreateCachedObject() {
+		// Load the config file
+		Core\Config::load('MyProject');
+		Core\Config::set('cache', 'enable', true, true);
 
-		// Variables we have not set
-		$this->assertFalse(Core\Store\Request::get('bar'));
-	}
+		// Put the cache
+		$store = new Core\Store(new Core\Store\File());
+		$store->put('foo', 'bar');
 
-
-	/**
-	 * Test the Store can update a variable.
-	 *
-	 * @access public
-	 */
-	public function testStoreCanUpdateVariables() {
-		// Update variables
-		Core\Store\Request::put('foo', 'foo', true);
-
-		// Have they updated?
-		$this->assertEquals(Core\Store\Request::get('foo'), 'foo');
-	}
-
-	/**
-	 * Removing a config variable.
-	 *
-	 * @access public
-	 */
-	public function testStoreCanRemoveVariables() {
-		// Update variables
-		Core\Store\Request::remove('foo');
-
-		// Have they updated?
-		$this->assertFalse(Core\Store\Request::has('foo'));
+		$this->assertTrue($store->has('foo'));
+		$this->assertEquals($store->get('foo'), 'bar');
+		$this->assertTrue($store->remove('foo'));
+		$this->assertFalse($store->has('foo'));
+		$this->assertFalse($store->remove('foobar'));
 	}
 }

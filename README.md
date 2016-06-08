@@ -153,6 +153,27 @@ Your View Scripts can easily direct logic away from themselves into View Helpers
 
 ---
 
+## Storage
+
+Every storage method has exactly the same interface; `has`, `put`, `get`, and `remove`. You pass a storage method into the `Store` class and you can then interact with it.
+
+    $store = new Store(new Store\File());
+    $store->put('foo', 'bar');
+    $store->get('foo'); // Echo's "bar"
+
+Some storage methods might require setting up (such as `Memcache`), you can easily do this before passing it into the `Store`.
+
+    $memcache = new Store\Memcache();
+    $memcache->setup($server, $host, $port);
+
+    $store = new Store($memcache);
+    $store->put('foo', 'bar');
+    $store->get('foo'); // Echo's "bar"
+
+The advantages of a single interface is you can very easily switch your storage mechanism without having to change any of the logic.
+
+---
+
 ## Profiling
 A powerful in-built profiler will let you know exactly where your application is expending time and additional memory. Its waterfall display allows you to see which functions have been called by whom.
 

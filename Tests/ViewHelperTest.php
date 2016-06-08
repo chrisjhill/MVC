@@ -12,7 +12,7 @@ class ViewHelperTest extends PHPUnit_Framework_TestCase
 		Core\Config::load('MyProject');
 
 		// Get a new View
-		$view = new Core\View();
+		$view = new Core\View(new Core\Store(new Core\Store\File()));
 
 		// Load a View Helper
 		$viewHelperContent = $view->test(array('testVar' => 'foo'));
