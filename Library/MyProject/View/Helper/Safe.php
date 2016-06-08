@@ -1,6 +1,7 @@
 <?php
 namespace MyProject\View\Helper;
-use Core;
+
+use Core\Format;
 
 /**
  * Ensure that a string is safe to be outputted to the browser.
@@ -25,6 +26,6 @@ class Safe
 	 * @return string
 	 */
 	public function render($params) {
-		return Core\Format::safeHtml($params['string']);
+		return (new Format())->safeHtml($params['string']);
 	}
 }

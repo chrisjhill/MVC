@@ -17,9 +17,8 @@ class Format
 	 * @access public
 	 * @param  string $string The string that we want to make safe to output.
 	 * @return string
-	 * @static
 	 */
-	public static function safeHtml($string) {
+	public function safeHtml($string) {
 		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8', false);
 	}
 
@@ -29,9 +28,8 @@ class Format
 	 * @access public
 	 * @param  string $url The URL we need to parse.
 	 * @return string
-	 * @static
 	 */
-	public static function parseUrl($url) {
+	public function parseUrl($url) {
 		return preg_replace('/[^a-z0-9-]/', '',
 			strtolower(str_replace(' ', '-', $url))
 		);
