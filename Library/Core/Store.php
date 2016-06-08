@@ -1,16 +1,45 @@
 <?php
-namespace Core\Store;
+namespace Core;
 
 /**
- * Stores data for a user session.
+ * Interface for creating, getting, and removing items from a store.
+ *
+ * Sample usage:
+ *
+ * <code>
+ * $store     = new Core\Store($StorageInterface);
+ * $storeItem = $store->get('foo');
+ *
+ * if ($storeItem) {
+ *     echo $storeItem;
+ * }
+ * </code>
  *
  * @copyright Copyright (c) 2012-2013 Christopher Hill
  * @license   http://www.opensource.org/licenses/mit-license.php The MIT License
  * @author    Christopher Hill <cjhill@gmail.com>
  * @package   MVC
  */
-class Session implements StorageInterface
+class Store implements Store\StorageInterface
 {
+	/**
+	 * How we interact with our store items.
+	 *
+	 * @access private
+	 * @var    StorageInterface
+	 */
+	private $_storageInterface;
+
+	/**
+	 * Setup the store by stating which StorageInterface we wish to use.
+	 *
+	 * @access public
+	 * @param  StorageInterface $storageInterface Which interface to interact with store items.
+	 */
+	public function __construct($storageInterface) {
+		$this->_storageInterface = $storageInterface;
+	}
+
 	/**
 	 * Check whether the variable exists in the store.
 	 *
@@ -19,7 +48,7 @@ class Session implements StorageInterface
 	 * @return boolean           If the variable exists or not.
 	 */
 	public function has($variable) {
-		return isset($_SESSION[$variable]);
+		return $this->_storageInterface->has($variable);
 	}
 
 	/**
@@ -30,16 +59,9 @@ class Session implements StorageInterface
 	 * @param  mixed   $value     The data we wish to store.
 	 * @param  boolean $overwrite Whether we are allowed to overwrite the variable.
 	 * @return boolean            If we managed to store the variable.
-	 * @throws Exception          If the variable already exists when we try not to overwrite it.
 	 */
 	public function put($variable, $value, $overwrite = false) {
-		// If it exists, and we do not want to overwrite, then throw exception
-		if ($this->has($variable) && ! $overwrite) {
-			throw new \Exception($variable . ' already exists in the store.');
-		}
-
-		$_SESSION[$variable] = serialize($value);
-		return $this->has($variable);
+		return $this->_storageInterface->put($variable, $value);
 	}
 
 	/**
@@ -48,14 +70,9 @@ class Session implements StorageInterface
 	 * @access public
 	 * @param  string $variable The name of the variable in the store.
 	 * @return mixed
-	 * @throws Exception        If the variable does not exist.
 	 */
 	public function get($variable) {
-		if (! $this->has($variable)) {
-			throw new \Exception("{$variable} does not exist in the store.");
-		}
-
-		return unserialize($_SESSION[$variable]);
+		return $this->_storageInterface->get($variable);
 	}
 
 	/**
@@ -64,17 +81,8 @@ class Session implements StorageInterface
 	 * @access public
 	 * @param  string $variable The name of the variable to remove.
 	 * @return boolean          If the variable was removed successfully.
-	 * @throws Exception        If the variable does not exist.
 	 */
 	public function remove($variable) {
-		if (! $this->has($variable)) {
-			throw new \Exception("{$variable} does not exist in the store.");
-		}
-
-		// Unset the variable
-		unset($_SESSION[$variable]);
-
-		// Was it removed
-		return ! $this->has($variable);
+		return $this->_storageInterface->remove($variable);
 	}
 }

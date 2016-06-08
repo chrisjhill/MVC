@@ -28,16 +28,16 @@ class Memcache implements StorageInterface
 	 * @param  string     $port   The port the Memcache server lives on.
 	 * @throws \Exception         If passed an incorrect server.
 	 */
-	public static function setup($server, $host, $port) {
+	public function setup($server, $host, $port) {
 		// Sanity check: Make sure we have received a valid
 		switch ($server) {
-			case 'Memcache'  : self::$_memcache = new \Memcache();  break;
-			case 'Memcached' : self::$_memcache = new \Memcached(); break;
+			case 'Memcache'  : $this->$_memcache = new \Memcache();  break;
+			case 'Memcached' : $this->$_memcache = new \Memcached(); break;
 			default          : throw new \Exception("Unknown server {$server}.");
 		}
 
 		// Memcache instance created, add the server
-		self::$_memcache->addServer($host, $port);
+		$this->$_memcache->addServer($host, $port);
 	}
 
 	/**
@@ -46,10 +46,9 @@ class Memcache implements StorageInterface
 	 * @access public
 	 * @param  string  $variable The name of the variable to check existence of.
 	 * @return boolean           If the variable exists or not.
-	 * @static
 	 */
-	public static function has($variable) {
-		return (bool)self::$_memcache->get($variable);
+	public function has($variable) {
+		return (bool)$this->$_memcache->get($variable);
 	}
 
 	/**
@@ -61,15 +60,14 @@ class Memcache implements StorageInterface
 	 * @param  boolean $overwrite Whether we are allowed to overwrite the variable.
 	 * @return boolean            If we managed to store the variable.
 	 * @throws Exception          If the variable already exists when we try not to overwrite it.
-	 * @static
 	 */
-	public static function put($variable, $value, $overwrite = false) {
+	public function put($variable, $value, $overwrite = false) {
 		// If it exists, and we do not want to overwrite, then throw exception
-		if (self::has($variable) && ! $overwrite) {
+		if ($this->has($variable) && ! $overwrite) {
 			throw new \Exception("{$variable} already exists in the store.");
 		}
 
-		return self::$_memcache->set($variable, $value);
+		return $this->$_memcache->set($variable, $value);
 	}
 
 	/**
@@ -79,14 +77,13 @@ class Memcache implements StorageInterface
 	 * @param  string $variable The name of the variable in the store.
 	 * @return mixed
 	 * @throws Exception        If the variable does not exist.
-	 * @static
 	 */
-	public static function get($variable) {
-		if (! self::has($variable)) {
+	public function get($variable) {
+		if (! $this->has($variable)) {
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		return (bool)self::$_memcache->get($variable);
+		return (bool)$this->$_memcache->get($variable);
 	}
 
 	/**
@@ -96,13 +93,12 @@ class Memcache implements StorageInterface
 	 * @param  string $variable The name of the variable to remove.
 	 * @return boolean          If the variable was removed successfully.
 	 * @throws Exception        If the variable does not exist.
-	 * @static
 	 */
-	public static function remove($variable) {
-		if (! self::has($variable)) {
+	public function remove($variable) {
+		if (! $this->has($variable)) {
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
-		return (bool)self::$_memcache->delete($variable);
+		return (bool)$this->$_memcache->delete($variable);
 	}
 }

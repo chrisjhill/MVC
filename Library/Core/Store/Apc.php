@@ -17,9 +17,8 @@ class Apc implements StorageInterface
 	 * @access public
 	 * @param  string  $variable The name of the variable to check existence of.
 	 * @return boolean           If the variable exists or not.
-	 * @static
 	 */
-	public static function has($variable) {
+	public function has($variable) {
 		return apc_exists($variable);
 	}
 
@@ -32,17 +31,16 @@ class Apc implements StorageInterface
 	 * @param  boolean $overwrite Whether we are allowed to overwrite the variable.
 	 * @return boolean            If we managed to store the variable.
 	 * @throws Exception          If the variable already exists when we try not to overwrite it.
-	 * @static
 	 */
-	public static function put($variable, $value, $overwrite = false) {
+	public function put($variable, $value, $overwrite = false) {
 		// If it exists, and we do not want to overwrite, then throw exception
-		if (self::has($variable) && ! $overwrite) {
+		if ($this->has($variable) && ! $overwrite) {
 			throw new \Exception("{$variable} already exists in the store.");
 		}
 
 		// use apc_store() instead of apc_add() as add does not overwrite data
 		apc_store($variable, $value);
-		return self::has($variable);
+		return $this->has($variable);
 	}
 
 	/**
@@ -52,10 +50,9 @@ class Apc implements StorageInterface
 	 * @param  string $variable The name of the variable in the store.
 	 * @return mixed
 	 * @throws Exception        If the variable does not exist.
-	 * @static
 	 */
-	public static function get($variable) {
-		if (! self::has($variable)) {
+	public function get($variable) {
+		if (! $this->has($variable)) {
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
 
@@ -69,10 +66,9 @@ class Apc implements StorageInterface
 	 * @param  string $variable The name of the variable to remove.
 	 * @return boolean          If the variable was removed successfully.
 	 * @throws Exception        If the variable does not exist.
-	 * @static
 	 */
-	public static function remove($variable) {
-		if (! self::has($variable)) {
+	public function remove($variable) {
+		if (! $this->has($variable)) {
 			throw new \Exception("{$variable} does not exist in the store.");
 		}
 

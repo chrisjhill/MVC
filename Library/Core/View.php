@@ -62,7 +62,7 @@ class View
 	 */
 	public function __construct($cacheInterface) {
 		ViewHelper::$_view = $this;
-		$this->_cache = new Cache($cacheInterface);
+		$this->_cache = new Store($cacheInterface);
 	}
 
 	/**

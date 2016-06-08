@@ -18,7 +18,7 @@ interface StorageInterface
 	 * @param  string  $variable The name of the variable to check existence of.
 	 * @return boolean           If the variable exists or not.
 	 */
-	public static function has($variable);
+	public function has($variable);
 
 	/**
 	 * Store a variable for use.
@@ -29,7 +29,7 @@ interface StorageInterface
 	 * @param  boolean $overwrite Whether we are allowed to overwrite the variable.
 	 * @return boolean            If we managed to store the variable.
 	 */
-	public static function put($variable, $value, $overwrite);
+	public function put($variable, $value, $overwrite = false);
 
 	/**
 	 * Return the variable's value from the store.
@@ -38,7 +38,7 @@ interface StorageInterface
 	 * @param  string $variable The name of the variable in the store.
 	 * @return mixed
 	 */
-	public static function get($variable);
+	public function get($variable);
 
 	/**
 	 * Remove the variable in the store.
@@ -47,5 +47,5 @@ interface StorageInterface
 	 * @param  string $variable The name of the variable to remove.
 	 * @return boolean          If the variable was removed successfully.
 	 */
-	public static function remove($variable);
+	public function remove($variable);
 }
