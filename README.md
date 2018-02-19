@@ -90,6 +90,14 @@ URL's will often change. Defining them in a single place (the router) will save 
 
 Controllers are created in `/Library/MyProject/Controller`, the file name begins with an uppercase letter and ends in a `.php` extension, so `index` would be called `Index.php`.
 
+You can pass variables from the `Controller` to the `View` via:
+
+    public function indexAction() {
+        $this->view->addVariable($name = 'foo', $value = 'bar');
+    }
+
+Which you can then access in the Layout and View Script by simple using the name of the variable you added to the view, such as in the above example: `$foo`
+
 ### Actions
 
 Actions are named the same as specified in the URI, are lowercase, and end in `Action`. So the `index` action will be named `indexAction()`.
