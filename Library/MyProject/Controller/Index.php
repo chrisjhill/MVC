@@ -12,7 +12,11 @@ class Index extends Core\Controller
 	 * @access public
 	 */
 	public function indexAction() {
-		// Do nothing
+		// Let's add a variable to the view
+		$this->view->addVariable(
+			'foo', // Name of the variable
+			$this->request->get('foo') // Variable passed in via the URL
+		);
 	}
 
 	/**

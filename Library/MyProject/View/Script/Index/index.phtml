@@ -4,4 +4,36 @@
 
 <p>Just a recap to remind you that you can change this Layout in the <code>/Library/MyProject/Layout/default.phtml</code> file, edit Controllers in the <code>/Library/MyProject/Controller/</code> directory, and View Scripts in the <code>/Library/MyProject/View/Script/</code> directory.</p>
 
+<hr />
+
+<h3>Testing View Helpers:</h3>
+
+<p>
+	You can call View Helpers in this context:
+	<?=$this->test(['testVar' => 'Hello from the Test View Helper!'])?>
+</p>
+
+<h3>Safely output user supplied data:</h3>
+
+<p>
+	You can also securely output potentially dangerous output:
+	<?=$this->safe(['string' => '<script>alert("Hello World!");</script>'])?>
+</p>
+
+<h3>Passing variables to the View from the Controller:</h3>
+
+<?php if ($foo): ?>
+	<p>
+		The <var>$foo</var> variable was set in the Controller, and its value is:
+		<?=$this->safe(['string' => $foo])?>
+	</p>
+<?php else: ?>
+	<p>
+		Oh dear, <var>$foo</var> isn't set.
+		<a href="<?=$this->url(['variables' => ['foo' => 'bar']])?>">Click here to pass it in via the URL.</a>
+	</p>
+<?php endif; ?>
+
+<hr />
+
 <p>Happy coding!</p>

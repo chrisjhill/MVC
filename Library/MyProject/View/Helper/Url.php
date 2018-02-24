@@ -35,8 +35,8 @@ class Url
 	public function render($param = array()) {
 		// Set some defaults
 		$defaults = array(
-			'controller'      => $this->controller,
-			'action'          => '',
+			'controller'      => 'index',
+			'action'          => 'index',
 			'variables'       => isset($param['variable_retain']) && $param['variable_retain']
 									? $_GET
 									: array(),
