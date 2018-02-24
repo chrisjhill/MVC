@@ -98,6 +98,18 @@ You can pass variables from the `Controller` to the `View` via:
 
 Which you can then access in the Layout and View Script by simple using the name of the variable you added to the view, such as in the above example: `$foo`
 
+You can interact directly with the `Request` object (data passed by the URL and forms, server variables, and the URL object):
+
+    public function indexAction() {
+        if ($getVariable = $this->request->get('foo')) {
+            echo "Foo is: {$getVariable}";
+        }
+
+        if ($postVariable = $this->request->post('bar')) {
+            echo "Bar is: {$postVariable}";
+        }
+    }
+
 ### Actions
 
 Actions are named the same as specified in the URI, are lowercase, and end in `Action`. So the `index` action will be named `indexAction()`.
