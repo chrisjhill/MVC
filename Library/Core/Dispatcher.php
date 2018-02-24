@@ -35,6 +35,7 @@ class Dispatcher
 			Profiler::register('Core', 'Dispatcher');
 			Profiler::register('Controller', $controllerName);
 			$controller = new $controller();
+			$controller->request = new Request();
 
 			// Let the Core controller be aware of its child
 			$controller->child = $controller;
